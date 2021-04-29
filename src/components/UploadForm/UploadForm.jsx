@@ -1,4 +1,7 @@
 import React from 'react';
+import styled from '@emotion/styled';
+
+const UploadBtn = styled.button``;
 
 function UploadForm() {
   return (
@@ -15,7 +18,7 @@ function UploadForm() {
         />{' '}
       </label>
 
-      <button type="submit">Submit</button>
+      <UploadBtn type="submit">Submit</UploadBtn>
     </>
   );
 }
