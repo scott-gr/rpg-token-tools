@@ -1,0 +1,18 @@
+{
+  "plugins": [
+    "react",
+    "@emotion"
+  ],
+  "rules": {
+    "@emotion/pkg-renaming": "error"
+  },
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 2020,
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules": true,
+      "react/jsx-uses-react": 1
+    }
+  }
+}
