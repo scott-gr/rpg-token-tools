@@ -3,12 +3,14 @@ import styled from '@emotion/styled';
 
 const UploadBtn = styled.button``;
 
+const ChooseFile = styled.input``;
+
 function UploadForm() {
   return (
     <>
       <label htmlFor="imageFile">
         Upload an Image
-        <input
+        <ChooseFile
           type="file"
           id="imageFile"
           name="imageFile"
