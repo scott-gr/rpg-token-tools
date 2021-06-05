@@ -1,24 +1,28 @@
 import styled from '@emotion/styled';
 import UploadForm from './components/UploadForm/UploadForm';
 
-
 const Layout = styled.main`
   display: flex;
   flex-flow: column nowrap;
   height: 100%;
-  min-height: : 100vh;
-  overflow-x: : hidden;
+  min-height: 100vh;
+  overflow-x: hidden;
   place-self: center;
-  margin: 4rem 3rem 3rem 3rem;
-    
-  
+  margin: 2rem 2rem 2rem 2rem;
+  row-gap: 1rem;
+`;
+
+const PageTitle = styled.h1`
+  text-align: center;
+  margin: 0;
+  padding: 0;
 `;
 
 function App() {
   return (
     <>
       <Layout>
-        <h1>RPG Token Tools</h1>
+        <PageTitle>RPG Token Tools</PageTitle>
         <p>
           Ullamco consequat in in ad et aliquip qui ad irure cillum magna enim.
           In ex esse sit nulla ea. Anim nostrud commodo consequat consequat
@@ -27,7 +31,7 @@ function App() {
         </p>
         <UploadForm />
       </Layout>
-      </>
+    </>
   );
 }
 

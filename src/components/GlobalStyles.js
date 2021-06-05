@@ -36,6 +36,9 @@ export const GlobalStyles = () => (
         margin: 0;
         padding: 0;
       }
+      input[type='file' i]::-webkit-file-upload-button {
+        cursor: pointer;
+      }
     `}
   />
 );
