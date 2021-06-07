@@ -6,7 +6,6 @@ import 'normalize.css';
 import { GlobalStyles } from './components/GlobalStyles';
 
 
-
 ReactDOM.render(
   <React.StrictMode>
     <GlobalStyles />
