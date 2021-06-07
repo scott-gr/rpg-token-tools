@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import UploadForm from './components/UploadForm/UploadForm';
+import Window from './components/Window/Window';
 
 const Layout = styled.main`
   display: flex;
@@ -30,6 +31,7 @@ function App() {
           officia anim ea. Cupidatat adipisicing veniam cupidatat excepteur.
         </p>
         <UploadForm />
+        < Window />
       </Layout>
     </>
   );
