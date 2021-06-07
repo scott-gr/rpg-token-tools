@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import styled from '@emotion/styled';
+//
+// ─── STYLES ─────────────────────────────────────────────────────────────────────
+//
 
 const ChooseFile = styled.input`
   opacity: 0;
@@ -43,6 +46,8 @@ const ImgPreview = styled.img`
   object-fit: contain;
   place-self: center;
 `;
+// ────────────────────────────────────────────────────────────────────────────────
+
 
 class UploadForm extends Component {
   constructor(props) {
@@ -80,10 +85,6 @@ class UploadForm extends Component {
               accept="image/png, image/jpeg, image/webp"
             />
           </UploadBtn>
-
-          {/* <button onClick={uploadHandler} type="submit">
-          Submit
-        </button> */}
         </ImgForm>
       </>
     );

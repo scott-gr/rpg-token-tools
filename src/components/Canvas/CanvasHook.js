@@ -1,19 +1,22 @@
 import { useRef, useEffect } from 'react';
 
+//
+// ─── UPDATES CANVAS SIZE AND PIXEL RATIO TO FIT SCREEN ──────────────────────────
+//
 const updateCanvasSize = (canvas, context) => {
   const { width, height } = canvas.getBoundingClientRect();
 
   if (canvas.width !== width || canvas.height !== height) {
+    // Set ratio at 1 for 1:1 pixels for retina display
     const { devicePixelRatio: ratio = 1 } = window;
     canvas.width = width * ratio;
     canvas.height = height * ratio;
     context.scale(ratio, ratio);
     return true;
   }
-
   return false;
 };
-
+// ────────────────────────────────────────────────────────────────────────────────
 
 const useCanvas = (draw) => {
   const canvasRef = useRef(null);
