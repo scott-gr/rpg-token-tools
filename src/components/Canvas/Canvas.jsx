@@ -8,6 +8,9 @@ const MyCanvas = styled.canvas`
   border-color: red;
   border-style: solid;
   border-width: 2px;
+  width: 300px;
+  height: 300px;
+  place-self: center;
 `;
 // ────────────────────────────────────────────────────────────────────────────────
 
