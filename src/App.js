@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import UploadForm from './components/UploadForm/UploadForm';
-import Canvas from './components/Canvas/Canvas';
-import {draw} from './components/Canvas/Draw'
+
 
 const Layout = styled.main`
   display: flex;
@@ -33,7 +32,6 @@ function App() {
           officia anim ea. Cupidatat adipisicing veniam cupidatat excepteur.
         </p>
         <UploadForm />
-        < Canvas draw = {draw}/>
       </Layout>
     </>
   );
