@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 
+// https://reactsvgicons.com/
+
 const Success20 = styled.svg`
   color: var(--appwhite);
   height: 4rem;

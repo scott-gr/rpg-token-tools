@@ -1,16 +1,13 @@
 /** @jsxImportSource @emotion/react */
-import { css, jsx } from '@emotion/react';
+import { css } from '@emotion/react';
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
+///https://konvajs.org/docs/react/Intro.html
 import { Stage, Layer, Circle, Image } from 'react-konva';
-import { Portal } from 'react-konva-utils';
 import useImage from 'use-image';
 //
-// ─── STYLES ─────────────────────────────────────────────────────────────────────
+// ─── FORM STYLES ───────────────────────────────────────────────────────────────────
 //
-
-  
-
 const ChooseFile = styled.input`
   position: absolute;
   top: 0px;
@@ -23,12 +20,10 @@ const ChooseFile = styled.input`
   opacity: 0;
   cursor: pointer;
 `;
-
 const ImgForm = styled.form`
   justify-content: center;
   display: flex;
 `;
-
 const UploadBtn = styled.div`
   border-radius: 10px;
   transition: all 0.3s cubic-bezier(0.67, 0.17, 0.4, 0.83);
@@ -42,24 +37,26 @@ const UploadBtn = styled.div`
   padding: 1rem;
   cursor: pointer;
 `;
-
 const BtnLabel = styled.label`
   cursor: pointer;
 `;
 
 const UploadImage = () => {
   const [picture, setPicture] = useState('');
+  const [altText, setAltText] = React.useState('No image uploaded');
   const [isDragging, setDragging] = React.useState(false);
   const [image] = useImage(picture);
 
-
+  // When image uploaded in file input form, create a URL to use it as src and set default alt text
   const onImageChange = (e) => {
     setPicture(URL.createObjectURL(e.target.files[0]));
-    // alt: 'your uploaded image',
+    setAltText('Your uploaded image');
   };
 
   return (
     <>
+      {/* // // ─── CANVAS ELEMENT USING REACT-KONVA
+      https://konvajs.org/docs/react/Intro.html ------------ // */}
       <Stage
         width={326}
         height={326}
@@ -67,28 +64,57 @@ const UploadImage = () => {
           place-self: center;
           margin: 3rem;
           padding: 0;
-          border-color: var(--appwhite);
+          border-color: var(--appgrey);
           border-style: solid;
-          border-width: 3px;
+          border-width: 2px;
           width: 326px;
           height: 326px;
         `}
       >
         <Layer>
-          <Portal selector=".top" enabled={isDragging}>
-            <Image
-              image={image}
-              onDragStart={() => {
-                setDragging(true);
-              }}
-              onDragEnd={() => {
-                setDragging(false);
-              }}
-            />
-          </Portal>
-          <Circle x={163} y={163} stroke="black" radius={150} />
+          {/* //
+          // USER'S UPLOADED IMAGE
+          //          */}
+          <Image
+            image={image}
+            draggable={true}
+            alt = {altText}
+            //
+            // CURSOR GRABBING HAND
+            //
+            onMouseOver={() => {
+              document.body.style.cursor = 'grab';
+            }}
+            onMouseOut={() => {
+              document.body.style.cursor = 'default';
+            }}
+            onMouseDown={() => {
+              document.body.style.cursor = 'grabbing';
+            }}
+            onDragStart={() => {
+              setDragging(true);
+              document.body.style.cursor = 'grabbing';
+            }}
+            onDragEnd={() => {
+              setDragging(false);
+              document.body.style.cursor = 'grab';
+            }}
+          />
+          {/* //
+// ─── CIRCLE FOR TOKEN BORDER ────────────────────────────────────────────────────
+// */}
+          <Circle
+            x={163}
+            y={163}
+            stroke="black"
+            radius={150}
+            fillEnabled={false}
+          />
         </Layer>
       </Stage>
+      {/* //
+      // ─── IMAGE UPLOAD FORM ───────────────────────────────────────────
+      // */}
       <ImgForm method="post" encType="multipart/form-data">
         <UploadBtn>
           <BtnLabel htmlFor="imageFile">Upload an Image </BtnLabel>
@@ -104,7 +130,6 @@ const UploadImage = () => {
       </ImgForm>
     </>
   );
-  
 };
 
-export default UploadImage
+export default UploadImage;
