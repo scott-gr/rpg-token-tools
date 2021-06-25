@@ -2,6 +2,8 @@ import React from 'react';
 import styled from '@emotion/styled';
 import UploadImage from './components/UploadImage/UploadImage';
 
+
+// ─── FLEXBOX LAYOUT WRAPPER ──────────────
 const Layout = styled.main`
   display: flex;
   flex-flow: column nowrap;

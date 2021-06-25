@@ -6,10 +6,11 @@ export const GlobalStyles = () => (
       :root {
         --londrina: 'Londrina Solid', serif;
         --opensans: 'Open Sans', system;
-        --appblack: #292f36ff;
-        --appred: #fb4b4eff;
-        --appwhite: #f7fff7ff;
-        --appblue: #499dd4ff;
+        --appblack: #292f36;
+        --appgrey: #7e8286;
+        --appred: #fb4b4e;
+        --appwhite: #f7fff7;
+        --appblue: #499dd4;
         font-display: optional;
       }
       body {
