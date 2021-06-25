@@ -34,6 +34,7 @@ function App() {
           officia anim ea. Cupidatat adipisicing veniam cupidatat excepteur.
         </p>
         <UploadImage />
+        <input type="color"/>
       </Layout>
     </>
   );
