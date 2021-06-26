@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 ///https://konvajs.org/docs/react/Intro.html
 import { Stage, Layer, Circle, Image } from 'react-konva';
 import useImage from 'use-image';
+
 //
 // ─── FORM STYLES ───────────────────────────────────────────────────────────────────
 //
@@ -28,11 +29,13 @@ const UploadBtn = styled.div`
   border-radius: 10px;
   transition: all 0.3s cubic-bezier(0.67, 0.17, 0.4, 0.83);
   background-color: var(--appblue);
-  position: relative;
+  position: absolute;
+  bottom: 0;
   color: var(--appwhite);
   font-size: 1.5rem;
   width: fit-content;
   justify-self: center;
+  align-self: flex-end;
   justify-items: center;
   padding: 1rem;
   cursor: pointer;
@@ -40,12 +43,79 @@ const UploadBtn = styled.div`
 const BtnLabel = styled.label`
   cursor: pointer;
 `;
+// ─── EDITOR MENU STYLES ───────────────────────────
+const PaintTools = styled.section`
+  display: grid;
+  column-width: 25%;
+  grid-template-areas:
+    'bcolor bstyle overlay text'
+    'bclabel bslabel olabel textlabel';
+  gap: .5rem;
+`;
+
+const BorderColor = styled.input`
+  grid-area: bcolor;
+  width: 5rem;
+  height: 3rem;
+  padding: 0;
+  margin: 0;
+  border: none;
+  place-self: center;
+`;
+const Overlay = styled.input`
+  grid-area: overlay;
+  width: 5rem;
+  height: 3rem;
+  padding: 0;
+  margin: 0;
+  border: none;
+  place-self: center;
+`;
+const BorderColorLabel = styled.label`
+  grid-area: bclabel;
+  font-size: 1.5rem;
+  place-self: center;
+  text-align: center;
+`;
+const BorderStyleLabel = styled.label`
+  grid-area: bslabel;
+  font-size: 1.5rem;
+  place-self: center;
+  text-align: center;
+`;
+
+const OverlayLabel = styled.label`
+  grid-area: olabel;
+  font-size: 1.5rem;
+  overflow-wrap: anywhere;
+  place-self: center;
+  text-align: center;
+`;
+const TokenText = styled.textarea`
+  grid-area: text;
+  width: 10rem;
+  height: 3rem;
+  margin: 0;
+  border: none;
+  place-self: center;
+  resize: none;
+  padding:5px;
+`;
+const TextLabel = styled.label`
+  grid-area: textlabel;
+  font-size: 1.5rem;
+  place-self: center;
+  text-align: center;
+`;
+
 
 const UploadImage = () => {
   const [picture, setPicture] = useState('');
   const [altText, setAltText] = React.useState('No image uploaded');
   const [isDragging, setDragging] = React.useState(false);
   const [image] = useImage(picture);
+  const [bordercolor, setBorderColor] = useState('#fb4b4e');
+  const [overlay, setOverlay] = useState('');
 
   // When image uploaded in file input form, create a URL to use it as src and set default alt text
   const onImageChange = (e) => {
@@ -58,17 +128,15 @@ const UploadImage = () => {
       {/* // // ─── CANVAS ELEMENT USING REACT-KONVA
       https://konvajs.org/docs/react/Intro.html ------------ // */}
       <Stage
-        width={326}
-        height={326}
+        width={window.innerWidth}
+        height={window.innerHeight / 2}
         css={css`
           place-self: center;
-          margin: 3rem;
+          margin: 0;
           padding: 0;
           border-color: var(--appgrey);
-          border-style: solid;
-          border-width: 2px;
-          width: 326px;
-          height: 326px;
+          border-style: dashed;
+          border-width: 1px;
         `}
       >
         <Layer>
@@ -78,7 +146,7 @@ const UploadImage = () => {
           <Image
             image={image}
             draggable={true}
-            alt = {altText}
+            alt={altText}
             //
             // CURSOR GRABBING HAND
             //
@@ -104,14 +172,48 @@ const UploadImage = () => {
 // ─── CIRCLE FOR TOKEN BORDER ────────────────────────────────────────────────────
 // */}
           <Circle
-            x={163}
-            y={163}
-            stroke="black"
+            x={window.innerWidth / 2}
+            y={window.innerHeight / 4}
+            stroke={bordercolor}
             radius={150}
             fillEnabled={false}
           />
         </Layer>
       </Stage>
+
+      <PaintTools>
+        <BorderColor
+          name="bordercolor"
+          type="color"
+          value={bordercolor}
+          onChange={(e) => setBorderColor(e.target.value)}
+        />
+        <BorderColorLabel for="bordercolor">
+          Border
+          <br /> Color
+        </BorderColorLabel>
+        {/* Border Style picker */}
+        <BorderStyleLabel for="borderstyle">
+          Border
+          <br /> Style
+        </BorderStyleLabel>
+        <Overlay
+          name="overlay"
+          type="color"
+          value={overlay}
+          onChange={(e) => setOverlay(e.target.value)}
+        />
+        <OverlayLabel for="overlay">
+          Overlay
+          <br /> Color
+        </OverlayLabel>
+        <TokenText
+          name="tokentext"
+          placeholder="Optional nameplate..."
+          ></TokenText>
+        <TextLabel for="tokentext">Text</TextLabel>
+      </PaintTools>
+
       {/* //
       // ─── IMAGE UPLOAD FORM ───────────────────────────────────────────
       // */}
