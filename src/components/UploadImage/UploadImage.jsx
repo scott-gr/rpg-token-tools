@@ -91,7 +91,7 @@ const OverlayLabel = styled.label`
   place-self: center;
   text-align: center;
 `;
-const TokenText = styled.textarea`
+const TokenText = styled.input`
   grid-area: text;
   width: 10rem;
   height: 3rem;
@@ -116,6 +116,7 @@ const UploadImage = () => {
   const [image] = useImage(picture);
   const [bordercolor, setBorderColor] = useState('#fb4b4e');
   const [overlay, setOverlay] = useState('');
+  const [text, setText] = useState('');
 
   // When image uploaded in file input form, create a URL to use it as src and set default alt text
   const onImageChange = (e) => {
@@ -209,8 +210,11 @@ const UploadImage = () => {
         </OverlayLabel>
         <TokenText
           name="tokentext"
+          type="text"
+          value={text}
           placeholder="Optional nameplate..."
-          ></TokenText>
+          onChange={(e) => setText(e.target.value)}
+        ></TokenText>
         <TextLabel for="tokentext">Text</TextLabel>
       </PaintTools>
 
