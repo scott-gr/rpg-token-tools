@@ -29,7 +29,7 @@ const UploadBtn = styled.div`
   border-radius: 10px;
   transition: all 0.3s cubic-bezier(0.67, 0.17, 0.4, 0.83);
   background-color: var(--appblue);
-  position: absolute;
+  position: relative;
   bottom: 0;
   color: var(--appwhite);
   font-size: 1.5rem;
@@ -189,12 +189,12 @@ const UploadImage = () => {
           value={bordercolor}
           onChange={(e) => setBorderColor(e.target.value)}
         />
-        <BorderColorLabel for="bordercolor">
+        <BorderColorLabel htmlFor="bordercolor">
           Border
           <br /> Color
         </BorderColorLabel>
         {/* Border Style picker */}
-        <BorderStyleLabel for="borderstyle">
+        <BorderStyleLabel htmlFor="borderstyle">
           Border
           <br /> Style
         </BorderStyleLabel>
@@ -204,7 +204,7 @@ const UploadImage = () => {
           value={overlay}
           onChange={(e) => setOverlay(e.target.value)}
         />
-        <OverlayLabel for="overlay">
+        <OverlayLabel htmlFor="overlay">
           Overlay
           <br /> Color
         </OverlayLabel>
@@ -215,7 +215,7 @@ const UploadImage = () => {
           placeholder="Optional nameplate..."
           onChange={(e) => setText(e.target.value)}
         ></TokenText>
-        <TextLabel for="tokentext">Text</TextLabel>
+        <TextLabel htmlFor="tokentext">Text</TextLabel>
       </PaintTools>
 
       {/* //
