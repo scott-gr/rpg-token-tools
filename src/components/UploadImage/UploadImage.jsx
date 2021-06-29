@@ -3,7 +3,7 @@ import { css } from '@emotion/react';
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 ///https://konvajs.org/docs/react/Intro.html
-import { Stage, Layer, Circle, Image } from 'react-konva';
+import { Stage, Layer, Circle, Image, Text, Transformer } from 'react-konva';
 import useImage from 'use-image';
 
 //
@@ -118,6 +118,25 @@ const UploadImage = () => {
   const [overlay, setOverlay] = useState('');
   const [text, setText] = useState('');
 
+  //   const checkDeselect = (e) => {
+  //     // deselect when clicked on empty area
+  //     const clickedOnEmpty = e.target === e.target.getStage();
+  //     if (clickedOnEmpty) {
+  //       selectShape(null);
+  //     }
+  //   };
+
+  // const imageRef = React.useRef();
+  // const trRef = React.useRef();
+
+  //   React.useEffect(() => {
+  //     if (isSelected) {
+  //       // we need to attach transformer manually
+  //       trRef.current.nodes([shapeRef.current]);
+  //       trRef.current.getLayer().batchDraw();
+  //     }
+  //   }, [isSelected]);
+
   // When image uploaded in file input form, create a URL to use it as src and set default alt text
   const onImageChange = (e) => {
     setPicture(URL.createObjectURL(e.target.files[0]));
@@ -148,6 +167,7 @@ const UploadImage = () => {
             image={image}
             draggable={true}
             alt={altText}
+            // ref={imageRef}
             //
             // CURSOR GRABBING HAND
             //
@@ -178,6 +198,32 @@ const UploadImage = () => {
             stroke={bordercolor}
             radius={150}
             fillEnabled={false}
+          />
+          <Text
+            text={text}
+            x={window.innerWidth / 2}
+            y={window.innerHeight / 4 + 150}
+            fill="#FFFFFF"
+            align="center"
+            fontSize ={20}
+            draggable={true}
+            onMouseOver={() => {
+              document.body.style.cursor = 'grab';
+            }}
+            onMouseOut={() => {
+              document.body.style.cursor = 'default';
+            }}
+            onMouseDown={() => {
+              document.body.style.cursor = 'grabbing';
+            }}
+            onDragStart={() => {
+              setDragging(true);
+              document.body.style.cursor = 'grabbing';
+            }}
+            onDragEnd={() => {
+              setDragging(false);
+              document.body.style.cursor = 'grab';
+            }}
           />
         </Layer>
       </Stage>
