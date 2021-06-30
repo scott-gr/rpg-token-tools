@@ -48,9 +48,9 @@ const PaintTools = styled.section`
   display: grid;
   column-width: 25%;
   grid-template-areas:
-    'bcolor bstyle overlay text'
-    'bclabel bslabel olabel textlabel';
-  gap: .5rem;
+    'bcolor bstyle overlay texttools'
+    'bclabel bslabel olabel texttools';
+  gap: 0.5rem;
 `;
 
 const BorderColor = styled.input`
@@ -83,13 +83,21 @@ const BorderStyleLabel = styled.label`
   place-self: center;
   text-align: center;
 `;
-
 const OverlayLabel = styled.label`
   grid-area: olabel;
   font-size: 1.5rem;
   overflow-wrap: anywhere;
   place-self: center;
   text-align: center;
+`;
+
+// ─── TEXT EDITOR STYLES ────────────────────────────────────
+const TextEditor = styled.section`
+  grid-area: texttools;
+  display: grid;
+  grid-template-areas:
+    'text textcolor fontpicker size'
+    'textlabel textlabel textlabel textlabel';
 `;
 const TokenText = styled.input`
   grid-area: text;
@@ -99,7 +107,7 @@ const TokenText = styled.input`
   border: none;
   place-self: center;
   resize: none;
-  padding:5px;
+  padding: 5px;
 `;
 const TextLabel = styled.label`
   grid-area: textlabel;
@@ -107,7 +115,15 @@ const TextLabel = styled.label`
   place-self: center;
   text-align: center;
 `;
-
+const TextColorPicker = styled.input`
+  grid-area: textcolor;
+  width: 5rem;
+  height: 3rem;
+  padding: 0;
+  margin: 0;
+  border: none;
+  place-self: center;
+`;
 
 const UploadImage = () => {
   const [picture, setPicture] = useState('');
@@ -117,6 +133,7 @@ const UploadImage = () => {
   const [bordercolor, setBorderColor] = useState('#fb4b4e');
   const [overlay, setOverlay] = useState('');
   const [text, setText] = useState('');
+  const [textcolor, setTextcolor] = React.useState('#f7fff7');
 
   //   const checkDeselect = (e) => {
   //     // deselect when clicked on empty area
@@ -142,6 +159,7 @@ const UploadImage = () => {
     setPicture(URL.createObjectURL(e.target.files[0]));
     setAltText('Your uploaded image');
   };
+
 
   return (
     <>
@@ -203,9 +221,9 @@ const UploadImage = () => {
             text={text}
             x={window.innerWidth / 2}
             y={window.innerHeight / 4 + 150}
-            fill="#FFFFFF"
+            fill={textcolor}
             align="center"
-            fontSize ={20}
+            fontSize={20}
             draggable={true}
             onMouseOver={() => {
               document.body.style.cursor = 'grab';
@@ -254,14 +272,22 @@ const UploadImage = () => {
           Overlay
           <br /> Color
         </OverlayLabel>
-        <TokenText
-          name="tokentext"
-          type="text"
-          value={text}
-          placeholder="Optional nameplate..."
-          onChange={(e) => setText(e.target.value)}
-        ></TokenText>
-        <TextLabel htmlFor="tokentext">Text</TextLabel>
+        <TextEditor>
+          <TokenText
+            name="tokentext"
+            type="text"
+            value={text}
+            placeholder="Optional nameplate..."
+            onChange={(e) => setText(e.target.value)}
+          ></TokenText>
+          <TextColorPicker
+            name="textcolor"
+            type="color"
+            value={textcolor}
+            onChange={(e) => setTextcolor(e.target.value)}
+          />
+          <TextLabel htmlFor="tokentext">Add Text</TextLabel>
+        </TextEditor>
       </PaintTools>
 
       {/* //
