@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 ///https://konvajs.org/docs/react/Intro.html
 import { Stage, Layer, Circle, Image, Text, Transformer } from 'react-konva';
 import useImage from 'use-image';
-
+import TextEditor from '../TextEditor/TextEditor';
 //
 // ─── FORM STYLES ───────────────────────────────────────────────────────────────────
 //
@@ -53,6 +53,15 @@ const PaintTools = styled.section`
   gap: 0.5rem;
 `;
 
+// const dynamicStyle = (props) =>
+//   css`
+//     grid-area: ${props.gridarea};
+//   `;
+// const ToolBtn = styled.button`
+//   ${dynamicStyle};
+//   cursor: pointer;
+// `;
+
 const BorderColor = styled.input`
   grid-area: bcolor;
   width: 5rem;
@@ -92,38 +101,38 @@ const OverlayLabel = styled.label`
 `;
 
 // ─── TEXT EDITOR STYLES ────────────────────────────────────
-const TextEditor = styled.section`
-  grid-area: texttools;
-  display: grid;
-  grid-template-areas:
-    'text textcolor fontpicker size'
-    'textlabel textlabel textlabel textlabel';
-`;
-const TokenText = styled.input`
-  grid-area: text;
-  width: 10rem;
-  height: 3rem;
-  margin: 0;
-  border: none;
-  place-self: center;
-  resize: none;
-  padding: 5px;
-`;
-const TextLabel = styled.label`
-  grid-area: textlabel;
-  font-size: 1.5rem;
-  place-self: center;
-  text-align: center;
-`;
-const TextColorPicker = styled.input`
-  grid-area: textcolor;
-  width: 5rem;
-  height: 3rem;
-  padding: 0;
-  margin: 0;
-  border: none;
-  place-self: center;
-`;
+// const TextEditor = styled.section`
+//   grid-area: texttools;
+//   display: grid;
+//   grid-template-areas:
+//     'text textcolor fontpicker size'
+//     'textlabel textlabel textlabel textlabel';
+// `;
+// const TokenText = styled.input`
+//   grid-area: text;
+//   width: 10rem;
+//   height: 3rem;
+//   margin: 0;
+//   border: none;
+//   place-self: center;
+//   resize: none;
+//   padding: 5px;
+// `;
+// const TextLabel = styled.label`
+//   grid-area: textlabel;
+//   font-size: 1.5rem;
+//   place-self: center;
+//   text-align: center;
+// `;
+// const TextColorPicker = styled.input`
+//   grid-area: textcolor;
+//   width: 5rem;
+//   height: 3rem;
+//   padding: 0;
+//   margin: 0;
+//   border: none;
+//   place-self: center;
+// `;
 
 const UploadImage = () => {
   const [picture, setPicture] = useState('');
@@ -159,7 +168,6 @@ const UploadImage = () => {
     setPicture(URL.createObjectURL(e.target.files[0]));
     setAltText('Your uploaded image');
   };
-
 
   return (
     <>
@@ -253,41 +261,20 @@ const UploadImage = () => {
           value={bordercolor}
           onChange={(e) => setBorderColor(e.target.value)}
         />
-        <BorderColorLabel htmlFor="bordercolor">
-          Border
-          <br /> Color
-        </BorderColorLabel>
+        <BorderColorLabel htmlFor="bordercolor">Border Color</BorderColorLabel>
+
         {/* Border Style picker */}
-        <BorderStyleLabel htmlFor="borderstyle">
-          Border
-          <br /> Style
-        </BorderStyleLabel>
+        <BorderStyleLabel htmlFor="borderstyle">Border Style</BorderStyleLabel>
+
         <Overlay
           name="overlay"
           type="color"
           value={overlay}
           onChange={(e) => setOverlay(e.target.value)}
         />
-        <OverlayLabel htmlFor="overlay">
-          Overlay
-          <br /> Color
-        </OverlayLabel>
-        <TextEditor>
-          <TokenText
-            name="tokentext"
-            type="text"
-            value={text}
-            placeholder="Optional nameplate..."
-            onChange={(e) => setText(e.target.value)}
-          ></TokenText>
-          <TextColorPicker
-            name="textcolor"
-            type="color"
-            value={textcolor}
-            onChange={(e) => setTextcolor(e.target.value)}
-          />
-          <TextLabel htmlFor="tokentext">Add Text</TextLabel>
-        </TextEditor>
+        <OverlayLabel htmlFor="overlay">Overlay Color</OverlayLabel>
+
+        <TextEditor />
       </PaintTools>
 
       {/* //
