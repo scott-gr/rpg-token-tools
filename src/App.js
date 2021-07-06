@@ -2,7 +2,6 @@ import React from 'react';
 import styled from '@emotion/styled';
 import UploadImage from './components/UploadImage/UploadImage';
 
-
 // ─── FLEXBOX LAYOUT WRAPPER ──────────────
 const Layout = styled.main`
   display: flex;
@@ -11,26 +10,42 @@ const Layout = styled.main`
   min-height: 100vh;
   overflow-x: hidden;
   place-self: center;
-  margin: 2rem 2rem 2rem 2rem;
+  margin: 0 2rem 0 2rem;
   row-gap: 1rem;
 `;
 
 const PageTitle = styled.h1`
   text-align: center;
-  margin: 0;
+  margin-top: 1rem;
   padding: 0;
 `;
 
-function App() {
+const WipMessage = styled.h2`
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  color: var(--appred);
+`;
 
+const HowTo = styled.ol`
+  font-size: 1.5rem;
+`;
+
+function App() {
   return (
     <>
       <Layout>
         <PageTitle>RPG Token Tools</PageTitle>
-        <ol>
+        <HowTo>
           <li>Upload an image</li>
           <li>Select border style</li>
-        </ol>
+          <li>Add optional text and overlay</li>
+          <li>Download image</li>
+        </HowTo>
+        <WipMessage>
+          This is still a work in progress and some features may not be
+          functional. Thanks for checking it out though!
+        </WipMessage>
         <UploadImage />
       </Layout>
     </>
