@@ -4,13 +4,11 @@ import styled from '@emotion/styled';
 
 const TextModal = styled.details`
   grid-area: texttools;
-  justify-content: center;
-  align-content: bottom;
+  height: 100%;
 `;
 const TokenText = styled.input`
   grid-area: text;
   width: 10rem;
-  height: 3rem;
   margin: 0;
   border: none;
   place-self: center;
@@ -20,12 +18,12 @@ const TokenText = styled.input`
 
 const TextColorPicker = styled.input`
   grid-area: textcolor;
-  width: 5rem;
-  height: 3rem;
+  width: 3rem;
   padding: 0;
   margin: 0;
   border: none;
   place-self: center;
+  border: 1px var(--appgrey)
 `;
 
 const TextLabel = styled.summary`

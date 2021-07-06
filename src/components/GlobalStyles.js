@@ -6,6 +6,7 @@ export const GlobalStyles = () => (
       :root {
         --londrina: 'Londrina Solid', serif;
         --opensans: 'Open Sans', system;
+        --sans: 'Inconsolata', 'Helvetica', 'Arial', sans-serif;
         --appblack: #292f36;
         --appgrey: #7e8286;
         --appred: #fb4b4e;
@@ -14,7 +15,7 @@ export const GlobalStyles = () => (
         font-display: optional;
       }
       body {
-        font-family: var(--opensans);
+        font-family: var(--sans);
         margin: 0;
         padding: 0;
         bottom: 0;
