@@ -14,7 +14,7 @@ const dynamicStyle = (props) => css`
   background: ${props.bgColor};
   display: ${props.btnDisplay};
   grid-area: ${props.area};
-  color: ${props.textcolor};
+  color: ${props.labelcolor};
 `;
 
 const ChooseFile = styled.input`
@@ -42,10 +42,6 @@ const btnStyle = css`
   display: flex;
   gap: 1rem;
   flex-flow: row-reverse wrap;
-  /* &:hover {
-    box-shadow: 0 6px 18px 0 rgba(#000, 0.1);
-    transform: translateY(-6px);
-  } */
   font-family: 'Inconsolata', 'Helvetica', 'Arial', sans-serif;
   text-align: center;
   place-content: center;
@@ -55,11 +51,9 @@ const btnStyle = css`
   letter-spacing: 1px;
   text-transform: uppercase;
   text-decoration: none;
-  /*Button Color & Border*/
   border: 4px solid var(--appgrey);
   color: var(--appblack);
   background: var(--appwhite);
-  /*Position, Display, Size*/
   position: relative;
   padding: 12px;
   cursor: pointer;
@@ -111,7 +105,7 @@ const ToolBtn = styled.button`
   ${dynamicStyle};
 `;
 
-const BorderColor = styled.input`
+const ColorInput = styled.input`
   z-index: 4;
   width: 100%;
   height: 100%;
@@ -126,16 +120,8 @@ const BorderColor = styled.input`
   bottom: 0px;
   position: absolute;
 `;
-const Overlay = styled.input`
-  width: 5rem;
-  height: 3rem;
-  padding: 0;
-  margin: 0;
-  border: none;
-  place-self: center;
-  cursor: pointer;
-`;
-const BorderColorLabel = styled.label`
+
+const ColorLabel = styled.label`
   ${dynamicStyle};
   z-index: 1;
   font-size: 1.5rem;
@@ -151,20 +137,13 @@ const BorderStyleLabel = styled.label`
   text-align: center;
   cursor: pointer;
 `;
-const OverlayLabel = styled.label`
-  font-size: 1.5rem;
-  overflow-wrap: anywhere;
-  place-self: center;
-  text-align: center;
-  cursor: pointer;
-`;
 
 const UploadImage = () => {
   const [picture, setPicture] = useState('');
   const [altText, setAltText] = React.useState('No image uploaded');
   const [isDragging, setDragging] = React.useState(false);
   const [image] = useImage(picture);
-  const [bordercolor, setBorderColor] = useState('#f7fff7');
+  const [bordercolor, setBorderColor] = useState(null);
   const [overlay, setOverlay] = useState('');
   const [text, setText] = useState('');
   const [textcolor, setTextcolor] = React.useState('#f7fff7');
@@ -246,14 +225,14 @@ const UploadImage = () => {
           <Circle
             x={window.innerWidth / 2}
             y={window.innerHeight / 6}
-            stroke={bordercolor}
+            stroke={bordercolor ? bordercolor : '#fb4b4e'}
             radius={150}
             fillEnabled={false}
           />
           <Text
             text={text}
             x={window.innerWidth / 2}
-            y={window.innerHeight / 4 + 150}
+            y={window.innerHeight / 6 + 150}
             fill={textcolor}
             align="center"
             fontSize={20}
@@ -281,15 +260,18 @@ const UploadImage = () => {
 
       <PaintTools>
         <ToolBtn bgColor={bordercolor} btnDisplay={'block'} area="bcolor">
-          <BorderColor
+          <ColorInput
             name="bordercolor"
             type="color"
+            onInput={(e) => setBorderColor(e.target.value)}
             value={bordercolor}
-            onChange={(e) => setBorderColor(e.target.value)}
           />
-          <BorderColorLabel htmlFor="bordercolor" textcolor={bordercolor}>
+          <ColorLabel
+            htmlFor="bordercolor"
+            labelcolor={bordercolor ? bordercolor : '#f7fff7'}
+          >
             Border Color
-          </BorderColorLabel>
+          </ColorLabel>
         </ToolBtn>
         <ToolBtn area="bstyle">
           {/* Border Style picker */}
@@ -297,14 +279,19 @@ const UploadImage = () => {
             Border Style
           </BorderStyleLabel>
         </ToolBtn>
-        <ToolBtn area="overlay">
-          <Overlay
+        <ToolBtn bgColor={overlay} btnDisplay={'block'} area="overlay">
+          <ColorInput
             name="overlay"
             type="color"
             value={overlay}
-            onChange={(e) => setOverlay(e.target.value)}
+            onInput={(e) => setOverlay(e.target.value)}
           />
-          <OverlayLabel htmlFor="overlay">Overlay Color</OverlayLabel>
+          <ColorLabel
+            htmlFor="overlay"
+            labelcolor={overlay ? overlay : '#f7fff7'}
+          >
+            Overlay Color
+          </ColorLabel>
         </ToolBtn>
         <ToolBtn area="texttools">
           <TextEditor />
@@ -321,8 +308,7 @@ const UploadImage = () => {
             type="file"
             id="imageFile"
             name="imageFile"
-            capture="user"
-            onChange={onImageChange}
+            onInput={onImageChange}
             accept="image/png, image/jpeg, image/webp"
           />
         </UploadBtn>
