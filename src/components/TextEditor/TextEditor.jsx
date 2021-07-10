@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 
-
 const TextModal = styled.details`
-  grid-area: texttools;
   height: 100%;
 `;
 const TokenText = styled.input`
@@ -11,7 +9,7 @@ const TokenText = styled.input`
   width: 10rem;
   margin: 0;
   border: none;
-  place-self: center;
+
   resize: none;
   padding: 5px;
 `;
@@ -23,15 +21,13 @@ const TextColorPicker = styled.input`
   margin: 0;
   border: none;
   place-self: center;
-  border: 1px var(--appgrey)
+  border: 1px var(--appgrey);
 `;
 
 const TextLabel = styled.summary`
   grid-area: textlabel;
   font-size: 1.5rem;
-  justify-content: left;
-  text-align: left;
-  align-content: bottom;
+
   cursor: pointer;
   list-style: none;
   & ::-webkit-details-marker {
@@ -51,13 +47,13 @@ const TextEditor = () => {
         type="text"
         value={text}
         placeholder="Optional nameplate..."
-        onChange={(e) => setText(e.target.value)}
+        onInput={(e) => setText(e.target.value)}
       />
       <TextColorPicker
         name="textcolor"
         type="color"
         value={textcolor}
-        onChange={(e) => setTextcolor(e.target.value)}
+        onInput={(e) => setTextcolor(e.target.value)}
       />
     </TextModal>
   );
