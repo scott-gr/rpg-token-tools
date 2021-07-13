@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import React, { useState } from 'react';
-import styled from '@emotion/styled';
+import styled from '@emotion/styled/macro';
 ///https://konvajs.org/docs/react/Intro.html
 import { Stage, Layer, Circle, Image, Text, Transformer } from 'react-konva';
 import useImage from 'use-image';
@@ -36,17 +36,15 @@ const ImgForm = styled.form`
 
 const BtnLabel = styled.label`
   cursor: pointer;
+  place-self: center;
 `;
 // ─── EDITOR MENU STYLES ───────────────────────────
 const btnStyle = css`
   display: flex;
-  gap: 1rem;
-  flex-flow: row-reverse wrap;
+  place-content: center;
   font-family: 'Inconsolata', 'Helvetica', 'Arial', sans-serif;
   text-align: center;
-  place-content: center;
-  place-self: center;
-  height: 100%;
+  height: 3.5rem;
   font-weight: bold;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -55,7 +53,7 @@ const btnStyle = css`
   color: var(--appblack);
   background: var(--appwhite);
   position: relative;
-  padding: 12px;
+
   cursor: pointer;
   width: 100%;
   &:after {
@@ -77,6 +75,7 @@ const btnStyle = css`
     top: 2px;
     left: 2px;
     cursor: pointer;
+    border: 4px solid var(--appblack);
   }
   &:hover:after {
     top: -2px;
@@ -92,15 +91,19 @@ const UploadBtn = styled.div`
     border-color: var(--appblue);
     background-color: var(--appblue);
   }
+  place-content: center;
 `;
 const PaintTools = styled.section`
-  display: grid;
-  column-width: 25%;
+  display: flex;
+  gap:.25rem;
+  flex-flow: row wrap;
   grid-template-areas: 'bcolor bstyle overlay texttools';
   padding-bottom: 0.5rem;
 `;
 
 const ToolBtn = styled.button`
+  width: 25%;
+  flex: 1 1 25%;
   ${btnStyle}
   ${dynamicStyle};
 `;
@@ -114,14 +117,11 @@ const ColorInput = styled.input`
   margin: 0;
   border: none;
   cursor: pointer;
-  top: 0px;
-  left: 0;
-  right: 0px;
-  bottom: 0px;
+  inset: 0px;
   position: absolute;
 `;
 
-const ColorLabel = styled.label`
+const ButtonLabel = styled.label`
   ${dynamicStyle};
   z-index: 1;
   font-size: 1.5rem;
@@ -131,19 +131,13 @@ const ColorLabel = styled.label`
   -webkit-filter: invert(100%);
   filter: invert(100%);
 `;
-const BorderStyleLabel = styled.label`
-  font-size: 1.5rem;
-  place-self: center;
-  text-align: center;
-  cursor: pointer;
-`;
 
 const UploadImage = () => {
   const [picture, setPicture] = useState('');
   const [altText, setAltText] = React.useState('No image uploaded');
   const [isDragging, setDragging] = React.useState(false);
   const [image] = useImage(picture);
-  const [bordercolor, setBorderColor] = useState(null);
+  const [bordercolor, setBorderColor] = useState(undefined);
   const [overlay, setOverlay] = useState('');
   const [text, setText] = useState('');
   const [textcolor, setTextcolor] = React.useState('#f7fff7');
@@ -179,7 +173,7 @@ const UploadImage = () => {
       https://konvajs.org/docs/react/Intro.html ------------ // */}
       <Stage
         width={window.innerWidth}
-        height={window.innerHeight / 3}
+        height={window.innerHeight * .4}
         css={css`
           place-self: center;
           margin: 0;
@@ -226,7 +220,7 @@ const UploadImage = () => {
             x={window.innerWidth / 2}
             y={window.innerHeight / 6}
             stroke={bordercolor ? bordercolor : '#fb4b4e'}
-            radius={150}
+            radius={125}
             fillEnabled={false}
           />
           <Text
@@ -259,50 +253,55 @@ const UploadImage = () => {
       </Stage>
 
       <PaintTools>
-        <ToolBtn bgColor={bordercolor} btnDisplay={'block'} area="bcolor">
+        <ToolBtn bgColor={bordercolor} area="bcolor">
           <ColorInput
             name="bordercolor"
             type="color"
             onInput={(e) => setBorderColor(e.target.value)}
             value={bordercolor}
           />
-          <ColorLabel
+          <ButtonLabel
             htmlFor="bordercolor"
             labelcolor={bordercolor ? bordercolor : '#f7fff7'}
           >
             Border Color
-          </ColorLabel>
+          </ButtonLabel>
         </ToolBtn>
         <ToolBtn area="bstyle">
           {/* Border Style picker */}
-          <BorderStyleLabel htmlFor="borderstyle">
+          <ButtonLabel htmlFor="borderstyle" labelcolor={'#f7fff7'}>
             Border Style
-          </BorderStyleLabel>
+          </ButtonLabel>
         </ToolBtn>
-        <ToolBtn bgColor={overlay} btnDisplay={'block'} area="overlay">
+        <ToolBtn bgColor={overlay} area="overlay" form="overlaycolor">
           <ColorInput
             name="overlay"
+            id="overlaycolor"
             type="color"
             value={overlay}
             onInput={(e) => setOverlay(e.target.value)}
           />
-          <ColorLabel
+          <ButtonLabel
             htmlFor="overlay"
             labelcolor={overlay ? overlay : '#f7fff7'}
           >
             Overlay Color
-          </ColorLabel>
+          </ButtonLabel>
         </ToolBtn>
-        <ToolBtn area="texttools">
-          <TextEditor />
-        </ToolBtn>
+        <TextEditor
+          renderas={ToolBtn}
+          textvalue={text}
+          ontextinput={(e) => setText(e.target.value)}
+          txtcolorvalue={textcolor}
+          ontxtcolorinput={(e) => setTextcolor(e.target.value)}
+        />
       </PaintTools>
 
       {/* //
       // ─── IMAGE UPLOAD FORM ───────────────────────────────────────────
       // */}
       <ImgForm method="post" encType="multipart/form-data">
-        <UploadBtn>
+        <UploadBtn form="imagefile">
           <BtnLabel htmlFor="imageFile">Upload an Image </BtnLabel>
           <ChooseFile
             type="file"

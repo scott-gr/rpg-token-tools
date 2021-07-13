@@ -1,3 +1,5 @@
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
 import React from 'react';
 import styled from '@emotion/styled';
 import UploadImage from './components/UploadImage/UploadImage';
@@ -10,25 +12,38 @@ const Layout = styled.main`
   min-height: 100vh;
   overflow-x: hidden;
   place-self: center;
-  margin: 0 2rem 0 2rem;
-  row-gap: 1rem;
+  margin: 1rem 1rem 0 1rem;
+  row-gap: 0.5rem;
 `;
 
 const PageTitle = styled.h1`
   text-align: center;
-  margin-top: 1rem;
+  margin: 0;
+  padding: 0;
+  flex: 0 1 auto;
+`;
+
+const Intro = styled.section`
+  height: fit-content;
+  flex: 0 1 auto;
+  font-size: 1rem;
+  margin: 0;
   padding: 0;
 `;
 
 const WipMessage = styled.h2`
   text-align: center;
+  height: auto;
+  font-size: 1rem;
   margin: 0;
   padding: 0;
   color: var(--appred);
 `;
 
 const HowTo = styled.ol`
-  font-size: 1.5rem;
+  font-size: 1rem;
+  height: auto;
+  padding: 0 2rem;
 `;
 
 function App() {
@@ -36,17 +51,21 @@ function App() {
     <>
       <Layout>
         <PageTitle>RPG Token Tools</PageTitle>
-        <HowTo>
-          <li>Upload an image</li>
-          <li>Select border style</li>
-          <li>Add optional text and overlay</li>
-          <li>Download image</li>
-        </HowTo>
-        <WipMessage>
-          This is still a work in progress and some features may not be
-          functional. Thanks for checking it out though!
-        </WipMessage>
-        <UploadImage />
+        <Intro>
+          <HowTo>
+            <li>Upload an image</li>
+            <li>Edit border, text, and overlay</li>
+            <li>Download image</li>
+          </HowTo>
+          <WipMessage>
+            Work in progress. Some features may not be functional.
+          </WipMessage>
+        </Intro>
+        <UploadImage
+          css={css`
+            flex: 1 0 auto;
+          `}
+        />
       </Layout>
     </>
   );

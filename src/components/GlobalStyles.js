@@ -21,10 +21,13 @@ export const GlobalStyles = () => (
         bottom: 0;
         overflow-x: hidden;
         width: 100%;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
       }
       html {
         background-color: var(--appblack);
         color: var(--appwhite);
+        font-size: 16px;
         padding: 0;
         margin: 0;
         overflow-x: hidden;
@@ -40,6 +43,13 @@ export const GlobalStyles = () => (
       }
       input[type='file' i]::-webkit-file-upload-button {
         cursor: pointer;
+      }
+      details summary {
+        cursor: pointer;
+        list-style: none;
+      }
+      details summary > * {
+        display: inline;
       }
     `}
   />
