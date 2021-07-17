@@ -289,7 +289,7 @@ const UploadImage = () => {
           </ButtonLabel>
         </ToolBtn>
         <TextEditor
-          renderas={ToolBtn}
+          usecss={btnStyle}
           textvalue={text}
           ontextinput={(e) => setText(e.target.value)}
           txtcolorvalue={textcolor}

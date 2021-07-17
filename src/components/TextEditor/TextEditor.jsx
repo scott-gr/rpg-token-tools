@@ -2,6 +2,7 @@
 import { css } from '@emotion/react';
 import React from 'react';
 import styled from '@emotion/styled/macro';
+import CloseModal from '../svg/Close';
 
 const customStyle = (props) =>
   css`
@@ -9,6 +10,7 @@ const customStyle = (props) =>
   `;
 
 const OpenModal = styled.div`
+  background: var(--appwhite);
   border-radius: 0.5em;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   left: 50%;
@@ -31,10 +33,9 @@ const OpenBtn = styled.div`
 `;
 const TokenText = styled.input`
   ${customStyle}
-  background-color: blue;
-  padding: 0;
-  margin: 0;
-  border: none;
+  padding: .5rem;
+  margin: 1rem;
+  border: 1px solid var(--appgrey);
   cursor: pointer;
 `;
 
@@ -56,6 +57,16 @@ const Summary = styled.summary`
   & ::-webkit-details-marker {
     display: none;
   }
+  &:focus {
+    outline: none;
+  }
+`;
+
+const TextModal = styled.details`
+  flex: 1 1 25%;
+  & ::-webkit-details-marker {
+    display: none;
+  }
 `;
 
 const Overlay = styled.div`
@@ -68,17 +79,10 @@ const Overlay = styled.div`
   right: 0;
   left: 0;
   top: 0;
-`;
-
-const TextModal = styled.details`
-  flex: 1 1 25%;
-
-  &[open] > ${Overlay} {
-    pointer-events: all;
+   ${TextModal}[open] & {
     opacity: 0.5;
-  }
-  & ::-webkit-details-marker {
-    display: none;
+    pointer-events: all;
+    z-index: 0;
   }
 `;
 
@@ -91,10 +95,11 @@ const TextEditor = (props) => {
   return (
     <TextModal>
       <Summary>
-        <OpenBtn as={props.renderas}>Add Text</OpenBtn>
+        <OpenBtn css={props.usecss}>Add Text</OpenBtn>
         <Overlay />
       </Summary>
       <OpenModal>
+        <CloseModal />
         <ModalContent>
           <TokenText
             name="tokentext"
