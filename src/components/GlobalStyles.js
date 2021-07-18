@@ -1,4 +1,4 @@
-import { Global, css} from '@emotion/react';
+import { Global, css } from '@emotion/react';
 
 export const GlobalStyles = () => (
   <Global
@@ -41,9 +41,22 @@ export const GlobalStyles = () => (
         margin: 0;
         padding: 0;
       }
+      input[type='color'] {
+        -webkit-appearance: none;
+        padding: 0;
+      }
       input[type='file' i]::-webkit-file-upload-button {
         cursor: pointer;
       }
+      input[type='color']::-webkit-color-swatch-wrapper {
+        padding: 0;
+        border: none;
+      }
+      input[type='color']::-webkit-color-swatch {
+        padding: 0;
+        border: none;
+      }
+
       details summary {
         cursor: pointer;
         list-style: none;
