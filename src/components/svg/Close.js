@@ -1,17 +1,30 @@
 import styled from '@emotion/styled';
 
 const CloseIcon = styled.svg`
-  color: var(--appred);
-  height: 4rem;
-  width: 4rem;
-  fill: currentColor;
+  color: var(--appblack);
+  height: 3rem;
+  width: 3rem;
+  z-index: 6;
+  fill: var(--appblack);
+  background-color: transparent;
+  pointer-events: all;
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+  flex: 1 1 25%;
+
+  & :hover {
+    fill: var(--appred);
+    stroke: var(--appred);
+  }
 `;
 
 const CloseModal = () => {
   return (
-    <CloseIcon viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
-      <path d="M354 671h58.9c4.7 0 9.2-2.1 12.3-5.7L512 561.8l86.8 103.5c3 3.6 7.5 5.7 12.3 5.7H670c6.8 0 10.5-7.9 6.1-13.1L553.8 512l122.4-145.9c4.4-5.2.7-13.1-6.1-13.1h-58.9c-4.7 0-9.2 2.1-12.3 5.7L512 462.2l-86.8-103.5c-3-3.6-7.5-5.7-12.3-5.7H354c-6.8 0-10.5 7.9-6.1 13.1L470.2 512 347.9 657.9A7.95 7.95 0 00354 671z" />
-      <path d="M880 112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V144c0-17.7-14.3-32-32-32zm-40 728H184V184h656v656z" />
+    <CloseIcon viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M20 6.91L17.09 4 12 9.09 6.91 4 4 6.91 9.09 12 4 17.09 6.91 20 12 14.91 17.09 20 20 17.09 14.91 12 20 6.91z" />
     </CloseIcon>
   );
 };

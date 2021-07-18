@@ -86,7 +86,7 @@ const btnStyle = css`
 const UploadBtn = styled.div`
   ${btnStyle};
   border-color: var(--appblue);
-  font-size: 2.5rem;
+  font-size: 2rem;
   &:after {
     border-color: var(--appblue);
     background-color: var(--appblue);
@@ -95,7 +95,7 @@ const UploadBtn = styled.div`
 `;
 const PaintTools = styled.section`
   display: flex;
-  gap:.25rem;
+  gap: 0.25rem;
   flex-flow: row wrap;
   grid-template-areas: 'bcolor bstyle overlay texttools';
   padding-bottom: 0.5rem;
@@ -167,13 +167,19 @@ const UploadImage = () => {
     setAltText('Your uploaded image');
   };
 
+  const canvassize = {
+    width: window.innerWidth,
+    height: window.innerHeight * 0.5,
+  };
+
   return (
     <>
       {/* // // ─── CANVAS ELEMENT USING REACT-KONVA
       https://konvajs.org/docs/react/Intro.html ------------ // */}
       <Stage
-        width={window.innerWidth}
-        height={window.innerHeight * .4}
+        width={canvassize.width}
+        pixelratio={1}
+        height={canvassize.height}
         css={css`
           place-self: center;
           margin: 0;
@@ -217,16 +223,16 @@ const UploadImage = () => {
 // ─── CIRCLE FOR TOKEN BORDER ────────────────────────────────────────────────────
 // */}
           <Circle
-            x={window.innerWidth / 2}
-            y={window.innerHeight / 6}
+            x={canvassize.width / 2}
+            y={canvassize.height / 2}
             stroke={bordercolor ? bordercolor : '#fb4b4e'}
             radius={125}
             fillEnabled={false}
           />
           <Text
             text={text}
-            x={window.innerWidth / 2}
-            y={window.innerHeight / 6 + 150}
+            x={canvassize.width / 2}
+            y={canvassize.height / 2 + 150}
             fill={textcolor}
             align="center"
             fontSize={20}
