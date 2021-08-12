@@ -29,6 +29,7 @@ const OpenModal = styled.div`
 
 const OpenBtn = styled.div`
   font-size: 1.5rem;
+  
   display: flex;
   align-items: center;
 `;
@@ -55,11 +56,10 @@ const TextColorPicker = styled.input`
 `;
 
 const Summary = styled.summary`
-  padding: 0;
-  margin: 0;
   z-index: 5;
-  width: inherit;
   border: none;
+  /* height: 3rem; */
+
   cursor: pointer;
   list-style: none;
   & ::-webkit-details-marker {
@@ -71,7 +71,6 @@ const Summary = styled.summary`
 `;
 
 const TextModal = styled.details`
-  flex: 1 1 25%;
   & ::-webkit-details-marker {
     display: none;
   }
@@ -116,7 +115,7 @@ const TextEditor = (props) => {
         <CloseModal />
         <ModalContent>
           <TokenText
-            name="tokentext"d
+            name="tokentext"
             type="text"
             value={props.textvalue}
             placeholder="Enter text here..."

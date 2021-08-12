@@ -13,16 +13,43 @@ import TextEditor from '../TextEditor/TextEditor';
 const dynamicStyle = (props) => css`
   background: ${props.bgColor};
   display: ${props.btnDisplay};
-  grid-area: ${props.area};
   color: ${props.labelcolor};
 `;
 
+const Container = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+gap: var(--s0);
+  & > :last-child {
+    flex-basis: 20rem;
+    flex-grow: 1;
+  }
+  & > :first-child {
+    flex-basis: 0;
+    flex-grow: 999;
+    min-width: 60%;
+  }
+`;
+
+const ButtonBar = styled.menu`
+  display: flex;
+  flex-wrap: wrap;
+  font-size: var(--s2);
+  gap: var(--s0);
+  padding-inline-start: 0;
+  margin-block-start: 0;
+  & > * {
+    flex-grow: 1;
+    height: var(--s4);
+    flex-basis: calc((30rem - 100%) * 999);
+  }
+  & > :nth-last-child(n + 6),
+  :nth-last-child(n + 6) ~ * {
+    flex-basis: 100%;
+  }
+`;
+
 const ChooseFile = styled.input`
-  position: absolute;
-  top: 0px;
-  left: 0;
-  right: 0px;
-  bottom: 0px;
   width: 100%;
   -webkit-tap-highlight-color: transparent;
   z-index: 1;
@@ -30,21 +57,14 @@ const ChooseFile = styled.input`
   cursor: pointer;
 `;
 const ImgForm = styled.form`
-  justify-content: center;
-  display: flex;
-`;
 
-const BtnLabel = styled.label`
-  cursor: pointer;
-  place-self: center;
 `;
 // ─── EDITOR MENU STYLES ───────────────────────────
 const btnStyle = css`
   display: flex;
   place-content: center;
   font-family: 'Inconsolata', 'Helvetica', 'Arial', sans-serif;
-  text-align: center;
-  height: 3.5rem;
+  height: var(--s4);
   font-weight: bold;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -86,24 +106,13 @@ const btnStyle = css`
 const UploadBtn = styled.div`
   ${btnStyle};
   border-color: var(--appblue);
-  font-size: 2rem;
   &:after {
     border-color: var(--appblue);
     background-color: var(--appblue);
   }
-  place-content: center;
-`;
-const PaintTools = styled.section`
-  display: flex;
-  gap: 0.25rem;
-  flex-flow: row wrap;
-  grid-template-areas: 'bcolor bstyle overlay texttools';
-  padding-bottom: 0.5rem;
 `;
 
 const ToolBtn = styled.button`
-  width: 25%;
-  flex: 1 1 25%;
   ${btnStyle}
   ${dynamicStyle};
 `;
@@ -124,8 +133,9 @@ const ColorInput = styled.input`
 const ButtonLabel = styled.label`
   ${dynamicStyle};
   z-index: 1;
-  font-size: 1.5rem;
-  place-self: center;
+  font-size: var(--s1);
+  position: absolute;
+  align-self: center;
   text-align: center;
   cursor: pointer;
   -webkit-filter: invert(100%);
@@ -142,51 +152,27 @@ const UploadImage = () => {
   const [text, setText] = useState('');
   const [textcolor, setTextcolor] = React.useState('#f7fff7');
 
-  //   const checkDeselect = (e) => {
-  //     // deselect when clicked on empty area
-  //     const clickedOnEmpty = e.target === e.target.getStage();
-  //     if (clickedOnEmpty) {
-  //       selectShape(null);
-  //     }
-  //   };
-
-  // const imageRef = React.useRef();
-  // const trRef = React.useRef();
-
-  //   React.useEffect(() => {
-  //     if (isSelected) {
-  //       // we need to attach transformer manually
-  //       trRef.current.nodes([shapeRef.current]);
-  //       trRef.current.getLayer().batchDraw();
-  //     }
-  //   }, [isSelected]);
-
-  // When image uploaded in file input form, create a URL to use it as src and set default alt text
   const onImageChange = (e) => {
     setPicture(URL.createObjectURL(e.target.files[0]));
     setAltText('Your uploaded image');
   };
 
   const canvassize = {
-    width: window.innerWidth,
     height: window.innerHeight * 0.5,
   };
 
   return (
-    <>
+    <Container>
       {/* // // ─── CANVAS ELEMENT USING REACT-KONVA
       https://konvajs.org/docs/react/Intro.html ------------ // */}
       <Stage
-        width={canvassize.width}
         pixelratio={1}
         height={canvassize.height}
         css={css`
-          place-self: center;
-          margin: 0;
-          padding: 0;
           border-color: var(--appgrey);
           border-style: dashed;
           border-width: 1px;
+          box-sizing: content-box;
         `}
       >
         <Layer>
@@ -257,9 +243,8 @@ const UploadImage = () => {
           />
         </Layer>
       </Stage>
-
-      <PaintTools>
-        <ToolBtn bgColor={bordercolor} area="bcolor">
+      <ButtonBar>
+        <ToolBtn bgColor={bordercolor} >
           <ColorInput
             name="bordercolor"
             type="color"
@@ -273,13 +258,13 @@ const UploadImage = () => {
             Border Color
           </ButtonLabel>
         </ToolBtn>
-        <ToolBtn area="bstyle">
+        <ToolBtn >
           {/* Border Style picker */}
           <ButtonLabel htmlFor="borderstyle" labelcolor={'#f7fff7'}>
             Border Style
           </ButtonLabel>
         </ToolBtn>
-        <ToolBtn bgColor={overlay} area="overlay" form="overlaycolor">
+        <ToolBtn bgColor={overlay} form="overlaycolor">
           <ColorInput
             name="overlay"
             id="overlaycolor"
@@ -301,24 +286,26 @@ const UploadImage = () => {
           txtcolorvalue={textcolor}
           ontxtcolorinput={(e) => setTextcolor(e.target.value)}
         />
-      </PaintTools>
 
-      {/* //
+        {/* //
       // ─── IMAGE UPLOAD FORM ───────────────────────────────────────────
       // */}
-      <ImgForm method="post" encType="multipart/form-data">
-        <UploadBtn form="imagefile">
-          <BtnLabel htmlFor="imageFile">Upload an Image </BtnLabel>
-          <ChooseFile
-            type="file"
-            id="imageFile"
-            name="imageFile"
-            onInput={onImageChange}
-            accept="image/png, image/jpeg, image/webp"
-          />
-        </UploadBtn>
-      </ImgForm>
-    </>
+        <ImgForm method="post" encType="multipart/form-data">
+          <UploadBtn form="imagefile">
+            <ButtonLabel htmlFor="imageFile" labelcolor="#f7fff7">
+              Upload an Image{' '}
+            </ButtonLabel>
+            <ChooseFile
+              type="file"
+              id="imageFile"
+              name="imageFile"
+              onInput={onImageChange}
+              accept="image/png, image/jpeg, image/webp"
+            />
+          </UploadBtn>
+        </ImgForm>
+      </ButtonBar>
+    </Container>
   );
 };
 

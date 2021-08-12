@@ -13,14 +13,22 @@ export const GlobalStyles = () => (
         --appwhite: #f7fff7;
         --appblue: #499dd4;
         font-display: optional;
+        --ratio: 1.5;
+        --s-5: calc(var(--s-4) / var(--ratio));
+        --s-4: calc(var(--s-3) / var(--ratio));
+        --s-3: calc(var(--s-2) / var(--ratio));
+        --s-2: calc(var(--s-1) / var(--ratio));
+        --s-1: calc(var(--s0) / var(--ratio));
+        --s0: 1rem;
+        --s1: calc(var(--s0) * var(--ratio));
+        --s2: calc(var(--s1) * var(--ratio));
+        --s3: calc(var(--s2) * var(--ratio));
+        --s4: calc(var(--s3) * var(--ratio));
+        --s5: calc(var(--s4) * var(--ratio));
       }
       body {
         font-family: var(--sans);
-        margin: 0;
-        padding: 0;
-        bottom: 0;
         overflow-x: hidden;
-        width: 100%;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
       }
@@ -28,18 +36,9 @@ export const GlobalStyles = () => (
         background-color: var(--appblack);
         color: var(--appwhite);
         font-size: 16px;
-        padding: 0;
-        margin: 0;
-        overflow-x: hidden;
-        bottom: 0;
-        min-height: 100%;
       }
       button {
         cursor: pointer;
-      }
-      img {
-        margin: 0;
-        padding: 0;
       }
       input[type='color'] {
         -webkit-appearance: none;
