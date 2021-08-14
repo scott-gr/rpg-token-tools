@@ -116,6 +116,7 @@ const TextEditor = (props) => {
         <ModalContent>
           <TokenText
             name="tokentext"
+            title="tokentext"
             type="text"
             value={props.textvalue}
             placeholder="Enter text here..."
@@ -124,6 +125,7 @@ const TextEditor = (props) => {
           />
           <TextColorPicker
             name="textcolor"
+            title="textcolor"
             type="color"
             value={props.txtcolorvalue}
             onInput={props.ontxtcolorinput}

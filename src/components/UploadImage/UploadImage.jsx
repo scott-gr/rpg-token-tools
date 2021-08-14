@@ -31,20 +31,22 @@ gap: var(--s0);
   }
 `;
 
-const ButtonBar = styled.menu`
+const ButtonBar = styled.section`
   display: flex;
   flex-wrap: wrap;
   font-size: var(--s2);
   gap: var(--s0);
   padding-inline-start: 0;
+  padding-inline-end: 0;
   margin-block-start: 0;
+  margin-block-end: 0;
   & > * {
     flex-grow: 1;
     height: var(--s4);
     flex-basis: calc((30rem - 100%) * 999);
   }
-  & > :nth-last-child(n + 6),
-  :nth-last-child(n + 6) ~ * {
+  & > :nth-last-of-type(n + 6),
+  :nth-last-of-type(n + 6) ~ * {
     flex-basis: 100%;
   }
 `;
@@ -147,7 +149,7 @@ const UploadImage = () => {
   const [altText, setAltText] = React.useState('No image uploaded');
   const [isDragging, setDragging] = React.useState(false);
   const [image] = useImage(picture);
-  const [bordercolor, setBorderColor] = useState(undefined);
+  const [bordercolor, setBorderColor] = useState('#f7fff7');
   const [overlay, setOverlay] = useState('');
   const [text, setText] = useState('');
   const [textcolor, setTextcolor] = React.useState('#f7fff7');
@@ -159,6 +161,7 @@ const UploadImage = () => {
 
   const canvassize = {
     height: window.innerHeight * 0.5,
+    width: window.innerWidth,
   };
 
   return (
@@ -167,23 +170,21 @@ const UploadImage = () => {
       https://konvajs.org/docs/react/Intro.html ------------ // */}
       <Stage
         pixelratio={1}
+        width={canvassize.width}
         height={canvassize.height}
         css={css`
           border-color: var(--appgrey);
           border-style: dashed;
           border-width: 1px;
           box-sizing: content-box;
+          overflow: hidden;
         `}
       >
         <Layer>
-          {/* //
-          // USER'S UPLOADED IMAGE
-          //          */}
           <Image
             image={image}
             draggable={true}
             alt={altText}
-            // ref={imageRef}
             //
             // CURSOR GRABBING HAND
             //
@@ -244,9 +245,10 @@ const UploadImage = () => {
         </Layer>
       </Stage>
       <ButtonBar>
-        <ToolBtn bgColor={bordercolor} >
+        <ToolBtn bgColor={bordercolor}>
           <ColorInput
             name="bordercolor"
+            title="bordercolor"
             type="color"
             onInput={(e) => setBorderColor(e.target.value)}
             value={bordercolor}
@@ -258,7 +260,7 @@ const UploadImage = () => {
             Border Color
           </ButtonLabel>
         </ToolBtn>
-        <ToolBtn >
+        <ToolBtn>
           {/* Border Style picker */}
           <ButtonLabel htmlFor="borderstyle" labelcolor={'#f7fff7'}>
             Border Style
@@ -267,6 +269,7 @@ const UploadImage = () => {
         <ToolBtn bgColor={overlay} form="overlaycolor">
           <ColorInput
             name="overlay"
+            title="overlay"
             id="overlaycolor"
             type="color"
             value={overlay}
@@ -299,6 +302,7 @@ const UploadImage = () => {
               type="file"
               id="imageFile"
               name="imageFile"
+              title="imageFile"
               onInput={onImageChange}
               accept="image/png, image/jpeg, image/webp"
             />
