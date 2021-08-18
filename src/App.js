@@ -12,10 +12,8 @@ const Layout = styled.main`
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
   }
-  & > :first-child:not(header) {
+  & > *:not(header) {
     margin-top: 0;
-  }
-  & > :last-child:not(header) {
     margin-bottom: 0;
   }
   & > header > h1 {

@@ -6,6 +6,12 @@ import styled from '@emotion/styled/macro';
 import { Stage, Layer, Circle, Image, Text, Transformer } from 'react-konva';
 import useImage from 'use-image';
 import TextEditor from '../TextEditor/TextEditor';
+import UploadIcon from '../icons/Upload';
+import PersonCircleOutlineIcon from '../icons/Download';
+//https://github.com/wellyshen/react-cool-dimensions
+import useDimensions from 'react-cool-dimensions';
+import { ResizeObserver } from '@juggle/resize-observer';
+
 //
 // ─── FORM STYLES ───────────────────────────────────────────────────────────────────
 //
@@ -16,55 +22,73 @@ const dynamicStyle = (props) => css`
   color: ${props.labelcolor};
 `;
 
-const Container = styled.div`
+const CanvasArea = styled.div`
+  max-height: 400px;
+  min-height: 300px;
   display: flex;
   flex-wrap: wrap;
-gap: var(--s0);
-  & > :last-child {
-    flex-basis: 20rem;
+  gap: var(--s0);
+  --threshold: 30rem;
+  & > * {
     flex-grow: 1;
+    height: 99%;
+    flex-basis: calc((var(--threshold) - 100%) * 999);
   }
   & > :first-child {
-    flex-basis: 0;
-    flex-grow: 999;
-    min-width: 60%;
+    flex-grow: 2;
+    min-width: 65%;
   }
 `;
 
-const ButtonBar = styled.menu`
+const ButtonBar = styled.section`
   display: flex;
   flex-wrap: wrap;
   font-size: var(--s2);
   gap: var(--s0);
   padding-inline-start: 0;
+  padding-inline-end: 0;
   margin-block-start: 0;
+  height: 100%;
+  margin-block-end: 0;
   & > * {
     flex-grow: 1;
-    height: var(--s4);
+
     flex-basis: calc((30rem - 100%) * 999);
   }
-  & > :nth-last-child(n + 6),
-  :nth-last-child(n + 6) ~ * {
+  & > :nth-last-of-type(n + 7),
+  :nth-last-of-type(n + 7) ~ * {
     flex-basis: 100%;
+
   }
+`;
+const ButtonLabel = styled.label`
+  ${dynamicStyle};
+  z-index: 1;
+  font-size: var(--s1);
+  position: absolute;
+  align-self: center;
+  text-align: center;
+  cursor: pointer;
+  -webkit-filter: invert(100%);
+  filter: invert(100%);
 `;
 
 const ChooseFile = styled.input`
-  width: 100%;
+  width: 50%;
   -webkit-tap-highlight-color: transparent;
   z-index: 1;
   opacity: 0;
   cursor: pointer;
 `;
 const ImgForm = styled.form`
-
+  width: 50%;
 `;
 // ─── EDITOR MENU STYLES ───────────────────────────
 const btnStyle = css`
   display: flex;
-  place-content: center;
+  justify-content: center;
   font-family: 'Inconsolata', 'Helvetica', 'Arial', sans-serif;
-  height: var(--s4);
+  height: var(--s3);
   font-weight: bold;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -75,7 +99,7 @@ const btnStyle = css`
   position: relative;
 
   cursor: pointer;
-  width: 100%;
+  /* width: 100%; */
   &:after {
     position: absolute;
     width: 100%;
@@ -105,10 +129,24 @@ const btnStyle = css`
 `;
 const UploadBtn = styled.div`
   ${btnStyle};
+  align-items: center;
+  column-gap: var(--s0);
   border-color: var(--appblue);
   &:after {
     border-color: var(--appblue);
     background-color: var(--appblue);
+  }
+  & > * {
+    /* font-size: var(--s1); */
+  }
+`;
+
+const DownloadBtn = styled.button`
+  ${btnStyle};
+  border-color: var(--appred);
+  &:after {
+    border-color: var(--appred);
+    background-color: var(--appred);
   }
 `;
 
@@ -130,123 +168,126 @@ const ColorInput = styled.input`
   position: absolute;
 `;
 
-const ButtonLabel = styled.label`
-  ${dynamicStyle};
-  z-index: 1;
-  font-size: var(--s1);
-  position: absolute;
-  align-self: center;
-  text-align: center;
-  cursor: pointer;
-  -webkit-filter: invert(100%);
-  filter: invert(100%);
-`;
-
 const UploadImage = () => {
   const [picture, setPicture] = useState('');
   const [altText, setAltText] = React.useState('No image uploaded');
   const [isDragging, setDragging] = React.useState(false);
   const [image] = useImage(picture);
-  const [bordercolor, setBorderColor] = useState(undefined);
+  const [bordercolor, setBorderColor] = useState('#f7fff7');
   const [overlay, setOverlay] = useState('');
   const [text, setText] = useState('');
   const [textcolor, setTextcolor] = React.useState('#f7fff7');
+
+  const { observe, width, height } = useDimensions({
+    useBorderBoxSize: true, // Tell the hook to measure based on the border-box size, default is false
+    polyfill: ResizeObserver, // Use polyfill to make this feature works on more browsers
+  });
 
   const onImageChange = (e) => {
     setPicture(URL.createObjectURL(e.target.files[0]));
     setAltText('Your uploaded image');
   };
 
-  const canvassize = {
-    height: window.innerHeight * 0.5,
-  };
-
   return (
-    <Container>
+    <CanvasArea>
       {/* // // ─── CANVAS ELEMENT USING REACT-KONVA
       https://konvajs.org/docs/react/Intro.html ------------ // */}
-      <Stage
-        pixelratio={1}
-        height={canvassize.height}
+      <div
+        ref={observe}
         css={css`
-          border-color: var(--appgrey);
-          border-style: dashed;
-          border-width: 1px;
-          box-sizing: content-box;
+          height: unset;
+          max-height: 400px;
+          min-height: 350px;
         `}
       >
-        <Layer>
-          {/* //
-          // USER'S UPLOADED IMAGE
-          //          */}
-          <Image
-            image={image}
-            draggable={true}
-            alt={altText}
-            // ref={imageRef}
-            //
-            // CURSOR GRABBING HAND
-            //
-            onMouseOver={() => {
-              document.body.style.cursor = 'grab';
-            }}
-            onMouseOut={() => {
-              document.body.style.cursor = 'default';
-            }}
-            onMouseDown={() => {
-              document.body.style.cursor = 'grabbing';
-            }}
-            onDragStart={() => {
-              setDragging(true);
-              document.body.style.cursor = 'grabbing';
-            }}
-            onDragEnd={() => {
-              setDragging(false);
-              document.body.style.cursor = 'grab';
-            }}
-          />
-          {/* //
+        <Stage
+          pixelratio={1}
+          width={width}
+          height={height * 0.99}
+          css={css`
+            border-color: var(--appgrey);
+            border-style: dashed;
+            border-width: 1px;
+            overflow: hidden;
+            height: 100%;
+          `}
+        >
+          <Layer>
+            <Image
+              image={image}
+              draggable={true}
+              alt={altText}
+              css={css`
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+              `}
+              //
+              // CURSOR GRABBING HAND
+              //
+              onMouseOver={() => {
+                document.body.style.cursor = 'grab';
+              }}
+              onMouseOut={() => {
+                document.body.style.cursor = 'default';
+              }}
+              onMouseDown={() => {
+                document.body.style.cursor = 'grabbing';
+              }}
+              onDragStart={() => {
+                setDragging(true);
+                document.body.style.cursor = 'grabbing';
+              }}
+              onDragEnd={() => {
+                setDragging(false);
+                document.body.style.cursor = 'grab';
+              }}
+            />
+            {/* //
 // ─── CIRCLE FOR TOKEN BORDER ────────────────────────────────────────────────────
 // */}
-          <Circle
-            x={canvassize.width / 2}
-            y={canvassize.height / 2}
-            stroke={bordercolor ? bordercolor : '#fb4b4e'}
-            radius={125}
-            fillEnabled={false}
-          />
-          <Text
-            text={text}
-            x={canvassize.width / 2}
-            y={canvassize.height / 2 + 150}
-            fill={textcolor}
-            align="center"
-            fontSize={20}
-            draggable={true}
-            onMouseOver={() => {
-              document.body.style.cursor = 'grab';
-            }}
-            onMouseOut={() => {
-              document.body.style.cursor = 'default';
-            }}
-            onMouseDown={() => {
-              document.body.style.cursor = 'grabbing';
-            }}
-            onDragStart={() => {
-              setDragging(true);
-              document.body.style.cursor = 'grabbing';
-            }}
-            onDragEnd={() => {
-              setDragging(false);
-              document.body.style.cursor = 'grab';
-            }}
-          />
-        </Layer>
-      </Stage>
+            <Circle
+              x={width / 2}
+              y={height / 2}
+              stroke={bordercolor ? bordercolor : '#fb4b4e'}
+              radius={125}
+              fillEnabled={false}
+            />
+            <Text
+              text={text}
+              x={width / 2}
+              y={height / 2 + 150}
+              fill={textcolor}
+              align="center"
+              fontSize={20}
+              draggable={true}
+              onMouseOver={() => {
+                document.body.style.cursor = 'grab';
+              }}
+              onMouseOut={() => {
+                document.body.style.cursor = 'default';
+              }}
+              onMouseDown={() => {
+                document.body.style.cursor = 'grabbing';
+              }}
+              onDragStart={() => {
+                setDragging(true);
+                document.body.style.cursor = 'grabbing';
+              }}
+              onDragEnd={() => {
+                setDragging(false);
+                document.body.style.cursor = 'grab';
+              }}
+            />
+          </Layer>
+        </Stage>
+      </div>
+
       <ButtonBar>
-        <ToolBtn bgColor={bordercolor} >
+        <ToolBtn bgColor={bordercolor}>
           <ColorInput
             name="bordercolor"
+            title="bordercolor"
             type="color"
             onInput={(e) => setBorderColor(e.target.value)}
             value={bordercolor}
@@ -258,7 +299,7 @@ const UploadImage = () => {
             Border Color
           </ButtonLabel>
         </ToolBtn>
-        <ToolBtn >
+        <ToolBtn>
           {/* Border Style picker */}
           <ButtonLabel htmlFor="borderstyle" labelcolor={'#f7fff7'}>
             Border Style
@@ -267,6 +308,7 @@ const UploadImage = () => {
         <ToolBtn bgColor={overlay} form="overlaycolor">
           <ColorInput
             name="overlay"
+            title="overlay"
             id="overlaycolor"
             type="color"
             value={overlay}
@@ -293,19 +335,27 @@ const UploadImage = () => {
         <ImgForm method="post" encType="multipart/form-data">
           <UploadBtn form="imagefile">
             <ButtonLabel htmlFor="imageFile" labelcolor="#f7fff7">
-              Upload an Image{' '}
+              Upload <UploadIcon />
             </ButtonLabel>
+
             <ChooseFile
               type="file"
               id="imageFile"
               name="imageFile"
+              title="imageFile"
               onInput={onImageChange}
               accept="image/png, image/jpeg, image/webp"
             />
           </UploadBtn>
         </ImgForm>
+        <DownloadBtn>
+          {' '}
+          <ButtonLabel labelcolor="#f7fff7">
+            Download <PersonCircleOutlineIcon />{' '}
+          </ButtonLabel>
+        </DownloadBtn>
       </ButtonBar>
-    </Container>
+    </CanvasArea>
   );
 };
 
