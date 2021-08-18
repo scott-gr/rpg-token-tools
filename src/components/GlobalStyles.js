@@ -55,13 +55,20 @@ export const GlobalStyles = () => (
         padding: 0;
         border: none;
       }
+      img {
+        width: 100%;
+      }
 
       details summary {
         cursor: pointer;
         list-style: none;
       }
+
       details summary > * {
         display: inline;
+      }
+      * {
+        box-sizing: border-box;
       }
     `}
   />

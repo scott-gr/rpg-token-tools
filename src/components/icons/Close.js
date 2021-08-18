@@ -4,7 +4,7 @@ const CloseIcon = styled.svg`
   color: var(--appblack);
   height: 3rem;
   width: 3rem;
-  z-index: 6;
+  z-index: 2;
   fill: var(--appblack);
   background-color: transparent;
   pointer-events: all;

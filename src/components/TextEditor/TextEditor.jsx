@@ -2,7 +2,7 @@
 import { css } from '@emotion/react';
 import React from 'react';
 import styled from '@emotion/styled/macro';
-import CloseModal from '../svg/Close';
+import CloseModal from '../icons/Close';
 
 const customStyle = (props) =>
   css`
@@ -36,7 +36,7 @@ const OpenBtn = styled.div`
 const TokenText = styled.input`
   ${customStyle}
   font-size: 1.5rem;
-  height: 3rem;
+  /* height: 3rem; */
   border: 2px solid var(--appgrey);
   cursor: text;
   &:hover {
@@ -119,7 +119,7 @@ const TextEditor = (props) => {
             title="tokentext"
             type="text"
             value={props.textvalue}
-            placeholder="Enter text here..."
+            placeholder="Text... color ->->->"
             onInput={props.ontextinput}
             color={props.txtcolorvalue ? props.txtcolorvalue : '#f7fff7'}
           />
