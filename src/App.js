@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import UploadImage from './components/UploadImage/UploadImage';
+import MainView from './views/Main';
 
 // ─── FLEXBOX LAYOUT WRAPPER ──────────────
 const Layout = styled.main`
@@ -35,7 +35,7 @@ function App() {
             <li>Download image</li>
           </ol>
         </header>
-        <UploadImage />
+        <MainView />
       </Layout>
     </>
   );
