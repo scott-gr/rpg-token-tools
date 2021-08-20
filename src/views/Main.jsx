@@ -5,15 +5,19 @@ import styled from '@emotion/styled/macro';
 ///https://konvajs.org/docs/react/Intro.html
 import { Stage, Layer, Circle, Image, Text, Transformer } from 'react-konva';
 import useImage from 'use-image';
-import TextEditor from '../TextEditor/TextEditor';
-import UploadIcon from '../icons/Upload';
-import PersonCircleOutlineIcon from '../icons/Download';
 //https://github.com/wellyshen/react-cool-dimensions
 import useDimensions from 'react-cool-dimensions';
 import { ResizeObserver } from '@juggle/resize-observer';
 
+//component imports
+import TextEditor from '../components/TextEditor';
+import UploadIcon from '../components/icons/Upload';
+import UploadImage from '../components/UploadImage';
+import DownloadImage from '../components/DownloadImage';
+import DownloadIcon from '../components/icons/Download';
+
 //
-// ─── FORM STYLES ───────────────────────────────────────────────────────────────────
+// ─── STYLES ───────────────────────────────────────────────────────────────────
 //
 
 const dynamicStyle = (props) => css`
@@ -44,7 +48,7 @@ const ButtonBar = styled.section`
   display: flex;
   flex-wrap: wrap;
   font-size: var(--s2);
-  gap: var(--s0);
+  gap: 0.5rem;
   padding-inline-start: 0;
   padding-inline-end: 0;
   margin-block-start: 0;
@@ -53,12 +57,11 @@ const ButtonBar = styled.section`
   & > * {
     flex-grow: 1;
 
-    flex-basis: calc((30rem - 100%) * 999);
+    flex-basis: calc((40rem - 100%) * 999);
   }
   & > :nth-last-of-type(n + 7),
   :nth-last-of-type(n + 7) ~ * {
     flex-basis: 100%;
-
   }
 `;
 const ButtonLabel = styled.label`
@@ -73,16 +76,6 @@ const ButtonLabel = styled.label`
   filter: invert(100%);
 `;
 
-const ChooseFile = styled.input`
-  width: 50%;
-  -webkit-tap-highlight-color: transparent;
-  z-index: 1;
-  opacity: 0;
-  cursor: pointer;
-`;
-const ImgForm = styled.form`
-  width: 50%;
-`;
 // ─── EDITOR MENU STYLES ───────────────────────────
 const btnStyle = css`
   display: flex;
@@ -127,28 +120,6 @@ const btnStyle = css`
     cursor: pointer;
   }
 `;
-const UploadBtn = styled.div`
-  ${btnStyle};
-  align-items: center;
-  column-gap: var(--s0);
-  border-color: var(--appblue);
-  &:after {
-    border-color: var(--appblue);
-    background-color: var(--appblue);
-  }
-  & > * {
-    /* font-size: var(--s1); */
-  }
-`;
-
-const DownloadBtn = styled.button`
-  ${btnStyle};
-  border-color: var(--appred);
-  &:after {
-    border-color: var(--appred);
-    background-color: var(--appred);
-  }
-`;
 
 const ToolBtn = styled.button`
   ${btnStyle}
@@ -168,7 +139,17 @@ const ColorInput = styled.input`
   position: absolute;
 `;
 
-const UploadImage = () => {
+// function from https://stackoverflow.com/a/15832662/512042
+function downloadURI(uri, name) {
+  var link = document.createElement('a');
+  link.download = name;
+  link.href = uri;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+const MainView = () => {
   const [picture, setPicture] = useState('');
   const [altText, setAltText] = React.useState('No image uploaded');
   const [isDragging, setDragging] = React.useState(false);
@@ -187,6 +168,15 @@ const UploadImage = () => {
     setPicture(URL.createObjectURL(e.target.files[0]));
     setAltText('Your uploaded image');
   };
+  const stageRef = React.useRef(null);
+
+  const handleExport = () => {
+    const uri = stageRef.current.toDataURL({
+      pixelratio: 2,
+    });
+    console.log(uri);
+    downloadURI(uri, 'token.png');
+  };
 
   return (
     <CanvasArea>
@@ -197,13 +187,13 @@ const UploadImage = () => {
         css={css`
           height: unset;
           max-height: 400px;
-          min-height: 350px;
+          min-height: 288px;
         `}
       >
         <Stage
-          pixelratio={1}
           width={width}
           height={height * 0.99}
+          ref={stageRef}
           css={css`
             border-color: var(--appgrey);
             border-style: dashed;
@@ -250,7 +240,7 @@ const UploadImage = () => {
               x={width / 2}
               y={height / 2}
               stroke={bordercolor ? bordercolor : '#fb4b4e'}
-              radius={125}
+              radius={135}
               fillEnabled={false}
             />
             <Text
@@ -322,41 +312,71 @@ const UploadImage = () => {
           </ButtonLabel>
         </ToolBtn>
         <TextEditor
-          usecss={btnStyle}
+          usecss={css`
+            ${btnStyle}
+          `}
           textvalue={text}
           ontextinput={(e) => setText(e.target.value)}
           txtcolorvalue={textcolor}
           ontxtcolorinput={(e) => setTextcolor(e.target.value)}
-        />
-
-        {/* //
-      // ─── IMAGE UPLOAD FORM ───────────────────────────────────────────
-      // */}
-        <ImgForm method="post" encType="multipart/form-data">
-          <UploadBtn form="imagefile">
-            <ButtonLabel htmlFor="imageFile" labelcolor="#f7fff7">
-              Upload <UploadIcon />
-            </ButtonLabel>
-
-            <ChooseFile
-              type="file"
-              id="imageFile"
-              name="imageFile"
-              title="imageFile"
-              onInput={onImageChange}
-              accept="image/png, image/jpeg, image/webp"
-            />
-          </UploadBtn>
-        </ImgForm>
-        <DownloadBtn>
+        >
           {' '}
-          <ButtonLabel labelcolor="#f7fff7">
-            Download <PersonCircleOutlineIcon />{' '}
+          <ButtonLabel htmlFor="overlay" labelcolor={'#f7fff7'}>
+            Add Text
           </ButtonLabel>
-        </DownloadBtn>
+        </TextEditor>
+        {/* // ─── IMAGE UPLOAD FORM ───────────────────────────────────────────
+      //  */}
+
+        <UploadImage
+          onImageInput={onImageChange}
+          usecss={css`
+            ${btnStyle}
+            align-items: center;
+            column-gap: var(--s0);
+            border-color: var(--appblue);
+            &:after {
+              border-color: var(--appblue);
+              background-color: var(--appblue);
+            }
+            &:hover {
+              > * > * {
+                fill: var(--appblue);
+                filter: invert(1);
+              }
+            }
+          `}
+        >
+          <ButtonLabel htmlFor="imageFile" labelcolor="#f7fff7">
+            Upload <UploadIcon />
+          </ButtonLabel>
+        </UploadImage>
+        <DownloadImage
+          handleclick={handleExport}
+          usecss={css`
+            ${btnStyle};
+            width: 100%;
+            border-color: var(--appred);
+            &:after {
+              border-color: var(--appred);
+              background-color: var(--appred);
+            }
+            &:hover {
+              > * > * {
+                fill: var(--appred);
+                stroke: var(--appred);
+                filter: invert(1);
+              }
+            }
+          `}
+        >
+          <ButtonLabel labelcolor="#f7fff7">
+            Download <DownloadIcon />{' '}
+          </ButtonLabel>
+        </DownloadImage>
       </ButtonBar>
     </CanvasArea>
   );
 };
 
-export default UploadImage;
+export default MainView;

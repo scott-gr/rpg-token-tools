@@ -20,6 +20,7 @@ export const GlobalStyles = () => (
         --s-2: calc(var(--s-1) / var(--ratio));
         --s-1: calc(var(--s0) / var(--ratio));
         --s0: 1rem;
+        --s00: .75rem;
         --s1: calc(var(--s0) * var(--ratio));
         --s2: calc(var(--s1) * var(--ratio));
         --s3: calc(var(--s2) * var(--ratio));
@@ -35,7 +36,7 @@ export const GlobalStyles = () => (
       html {
         background-color: var(--appblack);
         color: var(--appwhite);
-        font-size: 16px;
+        font-size: 1em;
       }
       button {
         cursor: pointer;

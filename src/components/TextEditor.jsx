@@ -1,8 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import React from 'react';
 import styled from '@emotion/styled/macro';
-import CloseModal from '../icons/Close';
+import CloseModal from './icons/Close';
 
 const customStyle = (props) =>
   css`
@@ -15,7 +14,7 @@ const OpenModal = styled.div`
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   left: 50%;
   max-width: 90%;
-  pointer-events: all;
+  pointer-events: none;
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -23,13 +22,13 @@ const OpenModal = styled.div`
   max-height: 90vh;
   z-index: 2;
   display: flex;
+  cursor: default;
   place-content: center;
   flex-direction: column;
 `;
 
 const OpenBtn = styled.div`
   font-size: 1.5rem;
-  
   display: flex;
   align-items: center;
 `;
@@ -107,10 +106,21 @@ const ModalContent = styled.div`
 const TextEditor = (props) => {
   return (
     <TextModal>
+      {/* //
+      // ─── BUTTON ON MAIN VIEW ─────────────────────────────────────────
+      // */}
       <Summary>
-        <OpenBtn css={props.usecss}>Add Text</OpenBtn>
+        <OpenBtn css={props.usecss}>
+          {/* 'ADD TEXT' label is here */}
+          {props.children}
+        </OpenBtn>
         <Overlay />
       </Summary>
+      {/* // ──────────────────────────────────────────────────────────────────────────────── */}
+
+      {/* //
+// ─── MODAL ──────────────────────────────────────────────────────────────────────
+// */}
       <OpenModal>
         <CloseModal />
         <ModalContent>
@@ -132,6 +142,7 @@ const TextEditor = (props) => {
           />
         </ModalContent>
       </OpenModal>
+      {/* // MODAL END ───────────────────────────────────────────────────────────────── */}
     </TextModal>
   );
 };
