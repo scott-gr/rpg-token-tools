@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import MainView from './views/Main';
+import D20Icon from './components/icons/d20';
 
 // ─── FLEXBOX LAYOUT WRAPPER ──────────────
 const Layout = styled.main`
@@ -16,7 +17,7 @@ const Layout = styled.main`
     margin-top: 0;
     margin-bottom: 0;
   }
-  & > header > h1 {
+  & > header > * {
     margin-top: auto;
     margin-bottom: auto;
     text-align: center;
@@ -28,12 +29,10 @@ function App() {
     <>
       <Layout>
         <header>
-          <h1>RPG Token Tools</h1>
-          <ol>
-            <li>Upload an image</li>
-            <li>Edit border, text, and overlay</li>
-            <li>Download image</li>
-          </ol>
+          <h2>RPG Token Tools</h2>
+          <p>
+            <D20Icon /> Upload, select styles, download <D20Icon />
+          </p>
         </header>
         <MainView />
       </Layout>

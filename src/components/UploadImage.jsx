@@ -16,7 +16,11 @@ const UploadImage = (props) => {
   return (
     <ImgForm method="post" encType="multipart/form-data">
       <div css={props.usecss} form="imagefile">
+
+        {/* // UPLOAD LABEL AND ICON HERE-----------*/}
         {props.children}
+        {/* //----------------------- */}
+        
         <input
           type="file"
           id="imageFile"

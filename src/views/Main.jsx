@@ -48,7 +48,7 @@ const ButtonBar = styled.section`
   display: flex;
   flex-wrap: wrap;
   font-size: var(--s2);
-  gap: var(--s0);
+  gap: 0.5rem;
   padding-inline-start: 0;
   padding-inline-end: 0;
   margin-block-start: 0;
@@ -57,7 +57,7 @@ const ButtonBar = styled.section`
   & > * {
     flex-grow: 1;
 
-    flex-basis: calc((30rem - 100%) * 999);
+    flex-basis: calc((40rem - 100%) * 999);
   }
   & > :nth-last-of-type(n + 7),
   :nth-last-of-type(n + 7) ~ * {
@@ -187,11 +187,10 @@ const MainView = () => {
         css={css`
           height: unset;
           max-height: 400px;
-          min-height: 350px;
+          min-height: 288px;
         `}
       >
         <Stage
-          pixelratio={1}
           width={width}
           height={height * 0.99}
           ref={stageRef}
@@ -241,7 +240,7 @@ const MainView = () => {
               x={width / 2}
               y={height / 2}
               stroke={bordercolor ? bordercolor : '#fb4b4e'}
-              radius={125}
+              radius={135}
               fillEnabled={false}
             />
             <Text
@@ -313,12 +312,19 @@ const MainView = () => {
           </ButtonLabel>
         </ToolBtn>
         <TextEditor
-          usecss={btnStyle}
+          usecss={css`
+            ${btnStyle}
+          `}
           textvalue={text}
           ontextinput={(e) => setText(e.target.value)}
           txtcolorvalue={textcolor}
           ontxtcolorinput={(e) => setTextcolor(e.target.value)}
-        />
+        >
+          {' '}
+          <ButtonLabel htmlFor="overlay" labelcolor={'#f7fff7'}>
+            Add Text
+          </ButtonLabel>
+        </TextEditor>
         {/* // ─── IMAGE UPLOAD FORM ───────────────────────────────────────────
       //  */}
 
@@ -333,6 +339,12 @@ const MainView = () => {
               border-color: var(--appblue);
               background-color: var(--appblue);
             }
+            &:hover {
+              > * > * {
+                fill: var(--appblue);
+                filter: invert(1);
+              }
+            }
           `}
         >
           <ButtonLabel htmlFor="imageFile" labelcolor="#f7fff7">
@@ -343,10 +355,18 @@ const MainView = () => {
           handleclick={handleExport}
           usecss={css`
             ${btnStyle};
+            width: 100%;
             border-color: var(--appred);
             &:after {
               border-color: var(--appred);
               background-color: var(--appred);
+            }
+            &:hover {
+              > * > * {
+                fill: var(--appred);
+                stroke: var(--appred);
+                filter: invert(1);
+              }
             }
           `}
         >

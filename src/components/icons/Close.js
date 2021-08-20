@@ -17,20 +17,11 @@ const CloseIcon = styled.svg`
   margin: 0;
   padding: 0;
   flex: 1 1 25%;
-
-  & :hover {
-    fill: var(--appred);
-    stroke: var(--appred);
-  }
 `;
 
 const CloseModal = () => {
   return (
-    <CloseIcon
-
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <CloseIcon viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
       <path
         id="closeicon"
         d="M20 6.91L17.09 4 12 9.09 6.91 4 4 6.91 9.09 12 4 17.09 6.91 20 12 14.91 17.09 20 20 17.09 14.91 12 20 6.91z"
