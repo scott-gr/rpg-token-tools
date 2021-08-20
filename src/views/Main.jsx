@@ -10,10 +10,11 @@ import useDimensions from 'react-cool-dimensions';
 import { ResizeObserver } from '@juggle/resize-observer';
 
 //component imports
-import TextEditor from '../components/TextEditor/TextEditor';
+import TextEditor from '../components/TextEditor';
 import UploadIcon from '../components/icons/Upload';
+import UploadImage from '../components/UploadImage';
+import DownloadImage from '../components/DownloadImage';
 import DownloadIcon from '../components/icons/Download';
-import UploadImage from '../components/UploadImage/UploadImage';
 
 //
 // ─── STYLES ───────────────────────────────────────────────────────────────────
@@ -120,15 +121,6 @@ const btnStyle = css`
   }
 `;
 
-const DownloadBtn = styled.button`
-  ${btnStyle};
-  border-color: var(--appred);
-  &:after {
-    border-color: var(--appred);
-    background-color: var(--appred);
-  }
-`;
-
 const ToolBtn = styled.button`
   ${btnStyle}
   ${dynamicStyle};
@@ -146,6 +138,16 @@ const ColorInput = styled.input`
   inset: 0px;
   position: absolute;
 `;
+
+// function from https://stackoverflow.com/a/15832662/512042
+function downloadURI(uri, name) {
+  var link = document.createElement('a');
+  link.download = name;
+  link.href = uri;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
 
 const MainView = () => {
   const [picture, setPicture] = useState('');
@@ -166,6 +168,15 @@ const MainView = () => {
     setPicture(URL.createObjectURL(e.target.files[0]));
     setAltText('Your uploaded image');
   };
+  const stageRef = React.useRef(null);
+
+  const handleExport = () => {
+    const uri = stageRef.current.toDataURL({
+      pixelratio: 2,
+    });
+    console.log(uri);
+    downloadURI(uri, 'token.png');
+  };
 
   return (
     <CanvasArea>
@@ -183,6 +194,7 @@ const MainView = () => {
           pixelratio={1}
           width={width}
           height={height * 0.99}
+          ref={stageRef}
           css={css`
             border-color: var(--appgrey);
             border-style: dashed;
@@ -327,12 +339,21 @@ const MainView = () => {
             Upload <UploadIcon />
           </ButtonLabel>
         </UploadImage>
-        <DownloadBtn>
-          {' '}
+        <DownloadImage
+          handleclick={handleExport}
+          usecss={css`
+            ${btnStyle};
+            border-color: var(--appred);
+            &:after {
+              border-color: var(--appred);
+              background-color: var(--appred);
+            }
+          `}
+        >
           <ButtonLabel labelcolor="#f7fff7">
             Download <DownloadIcon />{' '}
           </ButtonLabel>
-        </DownloadBtn>
+        </DownloadImage>
       </ButtonBar>
     </CanvasArea>
   );

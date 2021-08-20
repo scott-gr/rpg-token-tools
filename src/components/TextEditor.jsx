@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import styled from '@emotion/styled/macro';
-import CloseModal from '../icons/Close';
+import CloseModal from './icons/Close';
 
 const customStyle = (props) =>
   css`
