@@ -169,13 +169,14 @@ const MainView = () => {
     setAltText('Your uploaded image');
   };
   const stageRef = React.useRef(null);
-
+  let uri = '';
   const handleExport = () => {
-    const uri = stageRef.current.toDataURL({
-      pixelratio: 2,
-    });
-    console.log(uri);
-    downloadURI(uri, 'token.png');
+    picture === ''
+      ? alert('upload an image first')
+      : ((uri = stageRef.current.toDataURL({
+          pixelratio: 2,
+        })),
+        downloadURI(uri, 'token.png'));
   };
 
   return (
@@ -352,6 +353,11 @@ const MainView = () => {
           </ButtonLabel>
         </UploadImage>
         <DownloadImage
+          onClick={(e) => {
+            props.inputText === ''
+              ? alert('Text cannot be blank.')
+              : props.onSubmit(props.inputText);
+          }}
           handleclick={handleExport}
           usecss={css`
             ${btnStyle};
