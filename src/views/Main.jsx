@@ -8,23 +8,12 @@ import useImage from 'use-image';
 //https://github.com/wellyshen/react-cool-dimensions
 import useDimensions from 'react-cool-dimensions';
 import { ResizeObserver } from '@juggle/resize-observer';
-
-//component imports
+import ButtonBar from '../components/ButtonBar';
 import TextEditor from '../components/TextEditor';
-import UploadIcon from '../components/icons/Upload';
-import UploadImage from '../components/UploadImage';
-import DownloadImage from '../components/DownloadImage';
-import DownloadIcon from '../components/icons/Download';
 
 //
 // ─── STYLES ───────────────────────────────────────────────────────────────────
 //
-
-const dynamicStyle = (props) => css`
-  background: ${props.bgColor};
-  display: ${props.btnDisplay};
-  color: ${props.labelcolor};
-`;
 
 const CanvasArea = styled.div`
   max-height: 400px;
@@ -43,40 +32,13 @@ const CanvasArea = styled.div`
     min-width: 65%;
   }
 `;
+// // ─── EDITOR MENU STYLES ───────────────────────────
 
-const ButtonBar = styled.section`
-  display: flex;
-  flex-wrap: wrap;
-  font-size: var(--s2);
-  gap: 0.5rem;
-  padding-inline-start: 0;
-  padding-inline-end: 0;
-  margin-block-start: 0;
-  height: 100%;
-  margin-block-end: 0;
-  & > * {
-    flex-grow: 1;
-
-    flex-basis: calc((40rem - 100%) * 999);
-  }
-  & > :nth-last-of-type(n + 7),
-  :nth-last-of-type(n + 7) ~ * {
-    flex-basis: 100%;
-  }
+const dynamicStyle = (props) => css`
+  background: ${props.bgColor};
+  display: ${props.btnDisplay};
+  color: ${props.labelcolor};
 `;
-const ButtonLabel = styled.label`
-  ${dynamicStyle};
-  z-index: 1;
-  font-size: var(--s1);
-  position: absolute;
-  align-self: center;
-  text-align: center;
-  cursor: pointer;
-  -webkit-filter: invert(100%);
-  filter: invert(100%);
-`;
-
-// ─── EDITOR MENU STYLES ───────────────────────────
 const btnStyle = css`
   display: flex;
   justify-content: center;
@@ -85,6 +47,7 @@ const btnStyle = css`
   font-weight: bold;
   letter-spacing: 1px;
   text-transform: uppercase;
+  z-index: 1;
   text-decoration: none;
   border: 4px solid var(--appgrey);
   color: var(--appblack);
@@ -120,23 +83,16 @@ const btnStyle = css`
     cursor: pointer;
   }
 `;
-
-const ToolBtn = styled.button`
-  ${btnStyle}
+const ButtonLabel = styled.label`
   ${dynamicStyle};
-`;
-
-const ColorInput = styled.input`
-  z-index: 4;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  padding: 0;
-  margin: 0;
-  border: none;
-  cursor: pointer;
-  inset: 0px;
+  z-index: 0;
+  font-size: var(--s1);
   position: absolute;
+  align-self: center;
+  text-align: center;
+  cursor: pointer;
+  -webkit-filter: invert(100%);
+  filter: invert(100%);
 `;
 
 // function from https://stackoverflow.com/a/15832662/512042
@@ -155,7 +111,7 @@ const MainView = () => {
   const [isDragging, setDragging] = React.useState(false);
   const [image] = useImage(picture);
   const [bordercolor, setBorderColor] = useState('#f7fff7');
-  const [overlay, setOverlay] = useState('');
+  // const [overlay, setOverlay] = useState('');
   const [text, setText] = useState('');
   const [textcolor, setTextcolor] = React.useState('#f7fff7');
 
@@ -168,7 +124,11 @@ const MainView = () => {
     setPicture(URL.createObjectURL(e.target.files[0]));
     setAltText('Your uploaded image');
   };
+  const onBorderColorChange = (e) => setBorderColor(e.target.value);
+  const onTextColorChange = (e) => setTextcolor(e.target.value);
+
   const stageRef = React.useRef(null);
+
   let uri = '';
   const handleExport = () => {
     picture === ''
@@ -273,45 +233,13 @@ const MainView = () => {
           </Layer>
         </Stage>
       </div>
-
-      <ButtonBar>
-        <ToolBtn bgColor={bordercolor}>
-          <ColorInput
-            name="bordercolor"
-            title="bordercolor"
-            type="color"
-            onInput={(e) => setBorderColor(e.target.value)}
-            value={bordercolor}
-          />
-          <ButtonLabel
-            htmlFor="bordercolor"
-            labelcolor={bordercolor ? bordercolor : '#f7fff7'}
-          >
-            Border Color
-          </ButtonLabel>
-        </ToolBtn>
-        <ToolBtn>
-          {/* Border Style picker */}
-          <ButtonLabel htmlFor="borderstyle" labelcolor={'#f7fff7'}>
-            Border Style
-          </ButtonLabel>
-        </ToolBtn>
-        <ToolBtn bgColor={overlay} form="overlaycolor">
-          <ColorInput
-            name="overlay"
-            title="overlay"
-            id="overlaycolor"
-            type="color"
-            value={overlay}
-            onInput={(e) => setOverlay(e.target.value)}
-          />
-          <ButtonLabel
-            htmlFor="overlay"
-            labelcolor={overlay ? overlay : '#f7fff7'}
-          >
-            Overlay Color
-          </ButtonLabel>
-        </ToolBtn>
+      <ButtonBar
+        ImageChange={onImageChange}
+        export={handleExport}
+        bordercolor={bordercolor}
+        bordercolorinput={onBorderColorChange}
+        ontextcolorinput={onTextColorChange}
+      >
         <TextEditor
           usecss={css`
             ${btnStyle}
@@ -325,61 +253,7 @@ const MainView = () => {
           <ButtonLabel htmlFor="overlay" labelcolor={'#f7fff7'}>
             Add Text
           </ButtonLabel>
-        </TextEditor>
-        {/* // ─── IMAGE UPLOAD FORM ───────────────────────────────────────────
-      //  */}
-
-        <UploadImage
-          onImageInput={onImageChange}
-          usecss={css`
-            ${btnStyle}
-            align-items: center;
-            column-gap: var(--s0);
-            border-color: var(--appblue);
-            &:after {
-              border-color: var(--appblue);
-              background-color: var(--appblue);
-            }
-            &:hover {
-              > * > * {
-                fill: var(--appblue);
-                filter: invert(1);
-              }
-            }
-          `}
-        >
-          <ButtonLabel htmlFor="imageFile" labelcolor="#f7fff7">
-            Upload <UploadIcon />
-          </ButtonLabel>
-        </UploadImage>
-        <DownloadImage
-          onClick={(e) => {
-            props.inputText === ''
-              ? alert('Text cannot be blank.')
-              : props.onSubmit(props.inputText);
-          }}
-          handleclick={handleExport}
-          usecss={css`
-            ${btnStyle};
-            width: 100%;
-            border-color: var(--appred);
-            &:after {
-              border-color: var(--appred);
-              background-color: var(--appred);
-            }
-            &:hover {
-              > * > * {
-                fill: var(--appred);
-                stroke: var(--appred);
-                filter: invert(1);
-              }
-            }
-          `}
-        >
-          <ButtonLabel labelcolor="#f7fff7">
-            Download <DownloadIcon />{' '}
-          </ButtonLabel>
-        </DownloadImage>
+        </TextEditor>{' '}
       </ButtonBar>
     </CanvasArea>
   );

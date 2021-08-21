@@ -31,6 +31,7 @@ const OpenBtn = styled.div`
   font-size: 1.5rem;
   display: flex;
   align-items: center;
+  
 `;
 const TokenText = styled.input`
   ${customStyle}
@@ -88,7 +89,7 @@ const Overlay = styled.div`
   ${TextModal}[open] & {
     opacity: 0.5;
     pointer-events: all;
-    z-index: 2;
+    z-index: 3;
   }
 `;
 
@@ -130,15 +131,15 @@ const TextEditor = (props) => {
             type="text"
             value={props.textvalue}
             placeholder="Text... color ->->->"
-            onInput={props.ontextinput}
-            color={props.txtcolorvalue ? props.txtcolorvalue : '#f7fff7'}
+            onChange={props.ontextinput}
+            color={props.colortext}
           />
           <TextColorPicker
             name="textcolor"
             title="textcolor"
             type="color"
             value={props.txtcolorvalue}
-            onInput={props.ontxtcolorinput}
+            onChange={props.ontxtcolorinput}
           />
         </ModalContent>
       </OpenModal>
