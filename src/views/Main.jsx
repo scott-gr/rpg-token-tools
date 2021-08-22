@@ -113,7 +113,7 @@ const MainView = () => {
   const [bordercolor, setBorderColor] = useState('#f7fff7');
   // const [overlay, setOverlay] = useState('');
   const [text, setText] = useState('');
-  const [textcolor, setTextcolor] = React.useState('#f7fff7');
+  const [textcolor, setTextcolor] = React.useState('#fb4b4e');
 
   const { observe, width, height } = useDimensions({
     useBorderBoxSize: true, // Tell the hook to measure based on the border-box size, default is false
@@ -207,10 +207,11 @@ const MainView = () => {
             <Text
               text={text}
               x={width / 2}
-              y={height / 2 + 150}
+              y={height / 2 + 100}
               fill={textcolor}
               align="center"
-              fontSize={20}
+              fontSize={30}
+              fontStyle='bold'
               draggable={true}
               onMouseOver={() => {
                 document.body.style.cursor = 'grab';
@@ -238,22 +239,14 @@ const MainView = () => {
         export={handleExport}
         bordercolor={bordercolor}
         bordercolorinput={onBorderColorChange}
-        ontextcolorinput={onTextColorChange}
       >
         <TextEditor
-          usecss={css`
-            ${btnStyle}
-          `}
+          ontextcolorinput={onTextColorChange}
           textvalue={text}
           ontextinput={(e) => setText(e.target.value)}
           txtcolorvalue={textcolor}
           ontxtcolorinput={(e) => setTextcolor(e.target.value)}
-        >
-          {' '}
-          <ButtonLabel htmlFor="overlay" labelcolor={'#f7fff7'}>
-            Add Text
-          </ButtonLabel>
-        </TextEditor>{' '}
+        />
       </ButtonBar>
     </CanvasArea>
   );

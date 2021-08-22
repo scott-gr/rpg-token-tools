@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled/macro';
 import UploadIcon from './icons/Upload';
 import UploadImage from './UploadImage';
-// import TextEditor from './TextEditor';
 import DownloadImage from './DownloadImage';
 import DownloadIcon from './icons/Download';
+import TextEditor from './TextEditor';
 //
 // ─── STYLES ─────────────────────────────────────────────────────────────────────
 //
@@ -20,7 +20,7 @@ const dynamicStyle = (props) => css`
 const Buttons = styled.section`
   display: flex;
   flex-wrap: wrap;
-  font-size: var(--s2);
+  font-size: var(--s1);
   gap: 0.5rem;
   padding-inline-start: 0;
   padding-inline-end: 0;
@@ -63,9 +63,7 @@ const btnStyle = css`
   color: var(--appblack);
   background: var(--appwhite);
   position: relative;
-
   cursor: pointer;
-  /* width: 100%; */
   &:after {
     position: absolute;
     width: 100%;
@@ -112,6 +110,31 @@ const ColorInput = styled.input`
   position: absolute;
 `;
 
+const Summary = ToolBtn.withComponent('summary');
+
+const TextModal = styled.details`
+  & ::-webkit-details-marker {
+    display: none;
+  }
+`;
+
+const Overlay = styled.div`
+  transition: opacity 0.2s ease-out;
+  pointer-events: none;
+  background: rgba(15, 23, 42, 0.8);
+  position: fixed;
+  opacity: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  top: 0;
+  ${TextModal}[open] & {
+    opacity: 0.5;
+    pointer-events: all;
+    z-index: 2;
+  }
+`;
+
 const ButtonBar = (props) => {
   const [overlay, setOverlay] = useState('');
 
@@ -153,12 +176,29 @@ const ButtonBar = (props) => {
         >
           Overlay Color
         </ButtonLabel>
-      </ToolBtn>
-      {props.children}
+      </ToolBtn>{' '}
+      <TextModal>
+        <Summary
+          labelcolor={'#080008'}
+          css={css`
+            ${ButtonLabel}
 
+            cursor: pointer;
+            list-style: none;
+            &:focus {
+              outline: none;
+            }
+            align-items: center;
+          `}
+        >
+          Add Text
+          <Overlay />
+        </Summary>
+        {props.children}
+      </TextModal>
+      {/* {props.children} */}
       {/* // ─── IMAGE UPLOAD FORM ───────────────────────────────────────────
       //  */}
-
       <UploadImage
         onImageInput={props.ImageChange}
         usecss={css`
