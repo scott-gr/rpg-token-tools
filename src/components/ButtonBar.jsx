@@ -1,0 +1,252 @@
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
+import React, { useState } from 'react';
+import styled from '@emotion/styled/macro';
+import UploadIcon from './icons/Upload';
+import UploadImage from './UploadImage';
+import DownloadImage from './DownloadImage';
+import DownloadIcon from './icons/Download';
+import TextEditor from './TextEditor';
+//
+// ─── STYLES ─────────────────────────────────────────────────────────────────────
+//
+
+const dynamicStyle = (props) => css`
+  background: ${props.bgColor};
+  display: ${props.btnDisplay};
+  color: ${props.labelcolor};
+`;
+
+const Buttons = styled.section`
+  display: flex;
+  flex-wrap: wrap;
+  font-size: var(--s1);
+  gap: 0.5rem;
+  padding-inline-start: 0;
+  padding-inline-end: 0;
+  margin-block-start: 0;
+  height: 100%;
+  margin-block-end: 0;
+  & > * {
+    flex-grow: 1;
+
+    flex-basis: calc((40rem - 100%) * 999);
+  }
+  & > :nth-last-of-type(n + 7),
+  :nth-last-of-type(n + 7) ~ * {
+    flex-basis: 100%;
+  }
+`;
+const ButtonLabel = styled.label`
+  ${dynamicStyle};
+  z-index: 0;
+  font-size: var(--s1);
+  position: absolute;
+  align-self: center;
+  text-align: center;
+  cursor: pointer;
+  -webkit-filter: invert(100%);
+  filter: invert(100%);
+`;
+
+// ─── EDITOR MENU STYLES ───────────────────────────
+const btnStyle = css`
+  display: flex;
+  justify-content: center;
+  font-family: 'Inconsolata', 'Helvetica', 'Arial', sans-serif;
+  height: var(--s3);
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 4px solid var(--appgrey);
+  color: var(--appblack);
+  background: var(--appwhite);
+  position: relative;
+  cursor: pointer;
+  &:after {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 2px solid var(--appgrey);
+    background-color: var(--appgrey);
+    left: 4px;
+    top: 4px;
+    z-index: -1;
+    content: '';
+    transition: all 0.2s;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -o-transition: all 0.2s;
+  }
+  &:hover {
+    top: 2px;
+    left: 2px;
+    cursor: pointer;
+    border: 4px solid var(--appblack);
+  }
+  &:hover:after {
+    top: -2px;
+    left: -2px;
+    cursor: pointer;
+  }
+`;
+
+const ToolBtn = styled.button`
+  ${btnStyle}
+  ${dynamicStyle};
+`;
+
+const ColorInput = styled.input`
+  z-index: 4;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  padding: 0;
+  margin: 0;
+  border: none;
+  cursor: pointer;
+  inset: 0px;
+  position: absolute;
+`;
+
+const Summary = ToolBtn.withComponent('summary');
+
+const TextModal = styled.details`
+  & ::-webkit-details-marker {
+    display: none;
+  }
+`;
+
+const Overlay = styled.div`
+  transition: opacity 0.2s ease-out;
+  pointer-events: none;
+  background: rgba(15, 23, 42, 0.8);
+  position: fixed;
+  opacity: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  top: 0;
+  ${TextModal}[open] & {
+    opacity: 0.5;
+    pointer-events: all;
+    z-index: 2;
+  }
+`;
+
+const ButtonBar = (props) => {
+  const [overlay, setOverlay] = useState('');
+
+  return (
+    <Buttons>
+      <ToolBtn bgColor={props.bordercolor}>
+        <ColorInput
+          name="bordercolor"
+          title="bordercolor"
+          type="color"
+          onInput={props.bordercolorinput}
+          value={props.bordercolor}
+        />
+        <ButtonLabel
+          htmlFor="bordercolor"
+          labelcolor={props.bordercolor ? props.bordercolor : '#f7fff7'}
+        >
+          Border Color
+        </ButtonLabel>
+      </ToolBtn>
+      <ToolBtn>
+        {/* Border Style picker */}
+        <ButtonLabel htmlFor="borderstyle" labelcolor={'#f7fff7'}>
+          Border Style
+        </ButtonLabel>
+      </ToolBtn>
+      <ToolBtn bgColor={overlay} form="overlaycolor">
+        <ColorInput
+          name="overlay"
+          title="overlay"
+          id="overlaycolor"
+          type="color"
+          value={overlay}
+          onInput={(e) => setOverlay(e.target.value)}
+        />
+        <ButtonLabel
+          htmlFor="overlay"
+          labelcolor={overlay ? overlay : '#f7fff7'}
+        >
+          Overlay Color
+        </ButtonLabel>
+      </ToolBtn>{' '}
+      <TextModal>
+        <Summary
+          labelcolor={'#080008'}
+          css={css`
+            ${ButtonLabel}
+
+            cursor: pointer;
+            list-style: none;
+            &:focus {
+              outline: none;
+            }
+            align-items: center;
+          `}
+        >
+          Add Text
+          <Overlay />
+        </Summary>
+        {props.children}
+      </TextModal>
+      {/* {props.children} */}
+      {/* // ─── IMAGE UPLOAD FORM ───────────────────────────────────────────
+      //  */}
+      <UploadImage
+        onImageInput={props.ImageChange}
+        usecss={css`
+          ${btnStyle}
+          align-items: center;
+          column-gap: var(--s0);
+          border-color: var(--appblue);
+          &:after {
+            border-color: var(--appblue);
+            background-color: var(--appblue);
+          }
+          &:hover {
+            > * > * {
+              fill: var(--appblue);
+              filter: invert(1);
+            }
+          }
+        `}
+      >
+        <ButtonLabel htmlFor="imageFile" labelcolor="#f7fff7">
+          Upload <UploadIcon />
+        </ButtonLabel>
+      </UploadImage>
+      <DownloadImage
+        handleclick={props.export}
+        usecss={css`
+          ${btnStyle};
+          width: 100%;
+          border-color: var(--appred);
+          &:after {
+            border-color: var(--appred);
+            background-color: var(--appred);
+          }
+          &:hover {
+            > * > * {
+              fill: var(--appred);
+              stroke: var(--appred);
+              filter: invert(1);
+            }
+          }
+        `}
+      >
+        <ButtonLabel labelcolor="#f7fff7">
+          Download <DownloadIcon />{' '}
+        </ButtonLabel>
+      </DownloadImage>
+    </Buttons>
+  );
+};
+
+export default ButtonBar;

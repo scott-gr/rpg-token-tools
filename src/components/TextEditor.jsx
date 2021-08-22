@@ -27,15 +27,9 @@ const OpenModal = styled.div`
   flex-direction: column;
 `;
 
-const OpenBtn = styled.div`
-  font-size: 1.5rem;
-  display: flex;
-  align-items: center;
-`;
 const TokenText = styled.input`
   ${customStyle}
-  font-size: 1.5rem;
-  /* height: 3rem; */
+  font-size: var(--s1);
   border: 2px solid var(--appgrey);
   cursor: text;
   &:hover {
@@ -53,45 +47,6 @@ const TextColorPicker = styled.input`
     border: 2px dashed var(--appblack);
   }
 `;
-
-const Summary = styled.summary`
-  z-index: 5;
-  border: none;
-  /* height: 3rem; */
-
-  cursor: pointer;
-  list-style: none;
-  & ::-webkit-details-marker {
-    display: none;
-  }
-  &:focus {
-    outline: none;
-  }
-`;
-
-const TextModal = styled.details`
-  & ::-webkit-details-marker {
-    display: none;
-  }
-`;
-
-const Overlay = styled.div`
-  transition: opacity 0.2s ease-out;
-  pointer-events: none;
-  background: rgba(15, 23, 42, 0.8);
-  position: fixed;
-  opacity: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  top: 0;
-  ${TextModal}[open] & {
-    opacity: 0.5;
-    pointer-events: all;
-    z-index: 2;
-  }
-`;
-
 const ModalContent = styled.div`
   pointer-events: all;
   overflow: auto;
@@ -105,22 +60,7 @@ const ModalContent = styled.div`
 
 const TextEditor = (props) => {
   return (
-    <TextModal>
-      {/* //
-      // ─── BUTTON ON MAIN VIEW ─────────────────────────────────────────
-      // */}
-      <Summary>
-        <OpenBtn css={props.usecss}>
-          {/* 'ADD TEXT' label is here */}
-          {props.children}
-        </OpenBtn>
-        <Overlay />
-      </Summary>
-      {/* // ──────────────────────────────────────────────────────────────────────────────── */}
 
-      {/* //
-// ─── MODAL ──────────────────────────────────────────────────────────────────────
-// */}
       <OpenModal>
         <CloseModal />
         <ModalContent>
@@ -130,20 +70,18 @@ const TextEditor = (props) => {
             type="text"
             value={props.textvalue}
             placeholder="Text... color ->->->"
-            onInput={props.ontextinput}
-            color={props.txtcolorvalue ? props.txtcolorvalue : '#f7fff7'}
+            onChange={props.ontextinput}
+            color={props.colortext}
           />
           <TextColorPicker
             name="textcolor"
             title="textcolor"
             type="color"
             value={props.txtcolorvalue}
-            onInput={props.ontxtcolorinput}
+            onChange={props.ontxtcolorinput}
           />
         </ModalContent>
       </OpenModal>
-      {/* // MODAL END ───────────────────────────────────────────────────────────────── */}
-    </TextModal>
   );
 };
 
