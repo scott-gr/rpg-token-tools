@@ -2,12 +2,15 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled/macro';
 import CloseModal from './icons/Close';
-
+ //
+ // ─── STYLES ─────────────────────────────────────────────────────────────────────
+ //
 const customStyle = (props) =>
   css`
     color: ${props.color};
   `;
 
+// This is the text input and color form modal
 const OpenModal = styled.div`
   background: var(--appwhite);
   border-radius: 0.5em;

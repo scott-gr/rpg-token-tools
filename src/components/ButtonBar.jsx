@@ -10,6 +10,7 @@ import DownloadIcon from './icons/Download';
 // ─── STYLES ─────────────────────────────────────────────────────────────────────
 //
 
+// Dynamic color props for button style to match color selector input values
 const dynamicStyle = (props) => css`
   background: ${props.bgColor};
   display: ${props.btnDisplay};
@@ -48,7 +49,6 @@ const ButtonLabel = styled.label`
   filter: invert(100%);
 `;
 
-// ─── EDITOR MENU STYLES ───────────────────────────
 const btnStyle = css`
   display: flex;
   justify-content: center;
@@ -64,6 +64,7 @@ const btnStyle = css`
   background: var(--appwhite);
   position: relative;
   cursor: pointer;
+  /* hovering over a button has a 'pushed button' animation */
   &:after {
     position: absolute;
     width: 100%;
@@ -110,6 +111,7 @@ const ColorInput = styled.input`
   position: absolute;
 `;
 
+// Add Text button is an html details Element. Instead of expanding/ dropping down, the details appear as a modal
 const Summary = ToolBtn.withComponent('summary');
 
 const TextModal = styled.details`
@@ -118,6 +120,7 @@ const TextModal = styled.details`
   }
 `;
 
+// gray overlay over everything when modal is open
 const Overlay = styled.div`
   transition: opacity 0.2s ease-out;
   pointer-events: none;
@@ -140,6 +143,7 @@ const ButtonBar = (props) => {
 
   return (
     <Buttons>
+      {/* // ─── BORDER COLOR BUTTON ───────────────────────────────────────── */}
       <ToolBtn bgColor={props.bordercolor}>
         <ColorInput
           name="bordercolor"
@@ -155,12 +159,13 @@ const ButtonBar = (props) => {
           Border Color
         </ButtonLabel>
       </ToolBtn>
+      {/* // ─── BORDER STYLE BUTTON ───────────────────────────────────────── */}
       <ToolBtn>
-        {/* Border Style picker */}
         <ButtonLabel htmlFor="borderstyle" labelcolor={'#f7fff7'}>
           Border Style
         </ButtonLabel>
       </ToolBtn>
+      {/* // ─── Image overlay color button ───────────────────────────────────────── */}
       <ToolBtn bgColor={overlay} form="overlaycolor">
         <ColorInput
           name="overlay"
@@ -177,6 +182,7 @@ const ButtonBar = (props) => {
           Overlay Color
         </ButtonLabel>
       </ToolBtn>{' '}
+      {/* // ─── ADD TEXT BUTTON ───────────────────────────────────────── */}
       <TextModal>
         <Summary
           labelcolor={'#080008'}
@@ -197,9 +203,7 @@ const ButtonBar = (props) => {
         </Summary>
         {props.children}
       </TextModal>
-      {/* {props.children} */}
-      {/* // ─── IMAGE UPLOAD FORM ───────────────────────────────────────────
-      //  */}
+      {/* // ─── IMAGE UPLOAD FORM ───────────────────────────────────────────  */}
       <UploadImage
         onImageInput={props.ImageChange}
         usecss={css`
@@ -223,6 +227,7 @@ const ButtonBar = (props) => {
           Upload <UploadIcon />
         </ButtonLabel>
       </UploadImage>
+      {/* // ─── DOWNLOAD BUTTON, opens new tab with token image ───────────────────────────────────────── */}
       <DownloadImage
         handleclick={props.export}
         usecss={css`

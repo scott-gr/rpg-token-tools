@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled/macro';
 ///https://konvajs.org/docs/react/Intro.html
 import { Stage, Layer, Circle, Image, Text, Transformer } from 'react-konva';
@@ -14,7 +14,6 @@ import TextEditor from '../components/TextEditor';
 //
 // ─── STYLES ───────────────────────────────────────────────────────────────────
 //
-
 const CanvasArea = styled.div`
   max-height: 400px;
   min-height: 300px;
@@ -32,80 +31,12 @@ const CanvasArea = styled.div`
     min-width: 65%;
   }
 `;
-// // ─── EDITOR MENU STYLES ───────────────────────────
-
-const dynamicStyle = (props) => css`
-  background: ${props.bgColor};
-  display: ${props.btnDisplay};
-  color: ${props.labelcolor};
-`;
-const btnStyle = css`
-  display: flex;
-  justify-content: center;
-  font-family: 'Inconsolata', 'Helvetica', 'Arial', sans-serif;
-  height: var(--s3);
-  font-weight: bold;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  z-index: 1;
-  text-decoration: none;
-  border: 4px solid var(--appgrey);
-  color: var(--appblack);
-  background: var(--appwhite);
-  position: relative;
-
-  cursor: pointer;
-  /* width: 100%; */
-  &:after {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border: 2px solid var(--appgrey);
-    background-color: var(--appgrey);
-    left: 4px;
-    top: 4px;
-    z-index: -1;
-    content: '';
-    transition: all 0.2s;
-    -webkit-transition: all 0.2s;
-    -moz-transition: all 0.2s;
-    -o-transition: all 0.2s;
-  }
-  &:hover {
-    top: 2px;
-    left: 2px;
-    cursor: pointer;
-    border: 4px solid var(--appblack);
-  }
-  &:hover:after {
-    top: -2px;
-    left: -2px;
-    cursor: pointer;
-  }
-`;
-const ButtonLabel = styled.label`
-  ${dynamicStyle};
-  z-index: 0;
-  font-size: var(--s1);
-  position: absolute;
-  align-self: center;
-  text-align: center;
-  cursor: pointer;
-  -webkit-filter: invert(100%);
-  filter: invert(100%);
-`;
-
-// function from https://stackoverflow.com/a/15832662/512042
-function downloadURI(uri, name) {
-  var link = document.createElement('a');
-  link.download = name;
-  link.href = uri;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-}
+// ────────────────────────────────────────────────────────────────────────────────
 
 const MainView = () => {
+  //
+  // ─── State Hooks ─────────────────────────────────────────────────────────────────────
+  //
   const [picture, setPicture] = useState('');
   const [altText, setAltText] = React.useState('No image uploaded');
   const [isDragging, setDragging] = React.useState(false);
@@ -115,20 +46,37 @@ const MainView = () => {
   const [text, setText] = useState('');
   const [textcolor, setTextcolor] = React.useState('#fb4b4e');
 
+  // useDimensions hook, observes the size of Stage for the other canvas elements to reference
   const { observe, width, height } = useDimensions({
     useBorderBoxSize: true, // Tell the hook to measure based on the border-box size, default is false
     polyfill: ResizeObserver, // Use polyfill to make this feature works on more browsers
   });
 
+  // Creates image object url when file is uploaded
   const onImageChange = (e) => {
     setPicture(URL.createObjectURL(e.target.files[0]));
     setAltText('Your uploaded image');
   };
+
+  // Change colors with input values
   const onBorderColorChange = (e) => setBorderColor(e.target.value);
   const onTextColorChange = (e) => setTextcolor(e.target.value);
 
+  // refs for stage, image, and transformer nodes
   const stageRef = React.useRef(null);
+  const imageRef = React.useRef();
+  const trRef = React.useRef();
 
+  // attach transformer node to canvas image https://konvajs.org/docs/react/Transformer.html
+  React.useEffect(() => {
+    if (isSelected) {
+      // we need to attach transformer manually
+      trRef.current.nodes([imageRef.current]);
+      // trRef.current.getLayer().batchDraw();
+    }
+  }, [isSelected]);
+
+  // the browser won't open the base64 DataURL, this solution puts it in an iframe to open in a new tab
   // https://ourcodeworld.com/articles/read/682/what-does-the-not-allowed-to-navigate-top-frame-to-data-url-javascript-exception-means-in-google-chrome
   function debugBase64(base64URL) {
     var win = window.open();
@@ -139,6 +87,7 @@ const MainView = () => {
     );
   }
 
+  // captures current stageRef as base64 dataURL 'uri'. Will need to use different ref when image transform and stage cropping are implemented
   const handleExport = () => {
     let uri = '';
     picture === ''
@@ -203,6 +152,8 @@ const MainView = () => {
                 setDragging(false);
                 document.body.style.cursor = 'grab';
               }}
+              onClick={onSelect}
+              onTap={onSelect}
             />
             {/* //
 // ─── CIRCLE FOR TOKEN BORDER ────────────────────────────────────────────────────
@@ -214,6 +165,7 @@ const MainView = () => {
               radius={135}
               fillEnabled={false}
             />
+            {/* // TEXT CREATED BY ADD TEXT*/}
             <Text
               text={text}
               x={width / 2}
@@ -244,6 +196,8 @@ const MainView = () => {
           </Layer>
         </Stage>
       </div>
+
+      {/* // ─── IMAGE EDITING BUTTONS ─────────────────────────────────────── */}
       <ButtonBar
         ImageChange={onImageChange}
         export={handleExport}
