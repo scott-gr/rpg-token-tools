@@ -24,6 +24,11 @@ const Layout = styled.main`
   }
 `;
 
+const Warning = styled.p`
+color: var(--appred);
+font-style: italic;
+`
+
 function App() {
   return (
     <>
@@ -33,6 +38,10 @@ function App() {
           <p>
             <D20Icon /> Upload, select styles, download <D20Icon />
           </p>
+          <Warning>
+            Project is a work in progress and some editing features may not be
+            working yet.
+          </Warning>
         </header>
         <MainView />
       </Layout>

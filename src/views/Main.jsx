@@ -64,17 +64,17 @@ const MainView = () => {
 
   // refs for stage, image, and transformer nodes
   const stageRef = React.useRef(null);
-  const imageRef = React.useRef();
-  const trRef = React.useRef();
+  // const imageRef = React.useRef();
+  // const trRef = React.useRef();
 
   // attach transformer node to canvas image https://konvajs.org/docs/react/Transformer.html
-  React.useEffect(() => {
-    if (isSelected) {
-      // we need to attach transformer manually
-      trRef.current.nodes([imageRef.current]);
-      // trRef.current.getLayer().batchDraw();
-    }
-  }, [isSelected]);
+  // React.useEffect(() => {
+  //   if (isSelected) {
+  //     // we need to attach transformer manually
+  //     trRef.current.nodes([imageRef.current]);
+  //     // trRef.current.getLayer().batchDraw();
+  //   }
+  // }, [isSelected]);
 
   // the browser won't open the base64 DataURL, this solution puts it in an iframe to open in a new tab
   // https://ourcodeworld.com/articles/read/682/what-does-the-not-allowed-to-navigate-top-frame-to-data-url-javascript-exception-means-in-google-chrome
@@ -152,8 +152,8 @@ const MainView = () => {
                 setDragging(false);
                 document.body.style.cursor = 'grab';
               }}
-              onClick={onSelect}
-              onTap={onSelect}
+              // onClick={onSelect}
+              // onTap={onSelect}
             />
             {/* //
 // ─── CIRCLE FOR TOKEN BORDER ────────────────────────────────────────────────────
