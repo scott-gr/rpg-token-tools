@@ -160,13 +160,23 @@ const ButtonBar = (props) => {
         </ButtonLabel>
       </ToolBtn>
       {/* // ─── BORDER STYLE BUTTON ───────────────────────────────────────── */}
-      <ToolBtn>
+      <ToolBtn
+        css={css`
+          opacity: 0.9;
+        `}
+      >
         <ButtonLabel htmlFor="borderstyle" labelcolor={'#f7fff7'}>
           Border Style
         </ButtonLabel>
       </ToolBtn>
       {/* // ─── Image overlay color button ───────────────────────────────────────── */}
-      <ToolBtn bgColor={overlay} form="overlaycolor">
+      <ToolBtn
+        bgColor={overlay}
+        form="overlaycolor"
+        css={css`
+          opacity: 0.9;
+        `}
+      >
         <ColorInput
           name="overlay"
           title="overlay"
