@@ -6,7 +6,6 @@ import UploadIcon from './icons/Upload';
 import UploadImage from './UploadImage';
 import DownloadImage from './DownloadImage';
 import DownloadIcon from './icons/Download';
-import TextEditor from './TextEditor';
 //
 // ─── STYLES ─────────────────────────────────────────────────────────────────────
 //
@@ -59,6 +58,7 @@ const btnStyle = css`
   letter-spacing: 1px;
   text-transform: uppercase;
   text-decoration: none;
+  text-align: center;
   border: 4px solid var(--appgrey);
   color: var(--appblack);
   background: var(--appwhite);
@@ -188,7 +188,8 @@ const ButtonBar = (props) => {
             &:focus {
               outline: none;
             }
-            align-items: center;
+            place-items: center;
+            text-align: center;
           `}
         >
           Add Text
