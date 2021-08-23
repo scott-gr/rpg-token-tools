@@ -129,14 +129,24 @@ const MainView = () => {
 
   const stageRef = React.useRef(null);
 
-  let uri = '';
+  // https://ourcodeworld.com/articles/read/682/what-does-the-not-allowed-to-navigate-top-frame-to-data-url-javascript-exception-means-in-google-chrome
+  function debugBase64(base64URL) {
+    var win = window.open();
+    win.document.write(
+      '<html style="margin:0;"><iframe src="' +
+        base64URL +
+        '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe></html>'
+    );
+  }
+
   const handleExport = () => {
+    let uri = '';
     picture === ''
-      ? alert('upload an image first')
+      ? alert('Upload an image first')
       : ((uri = stageRef.current.toDataURL({
           pixelratio: 2,
         })),
-        downloadURI(uri, 'token.png'));
+        debugBase64(uri));
   };
 
   return (
@@ -211,7 +221,7 @@ const MainView = () => {
               fill={textcolor}
               align="center"
               fontSize={30}
-              fontStyle='bold'
+              fontStyle="bold"
               draggable={true}
               onMouseOver={() => {
                 document.body.style.cursor = 'grab';
