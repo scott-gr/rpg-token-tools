@@ -1,15 +1,16 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled/macro';
 ///https://konvajs.org/docs/react/Intro.html
-import { Stage, Layer, Circle, Image, Text, Transformer } from 'react-konva';
+import { Stage, Layer, Circle, Text } from 'react-konva';
 import useImage from 'use-image';
 //https://github.com/wellyshen/react-cool-dimensions
 import useDimensions from 'react-cool-dimensions';
 import { ResizeObserver } from '@juggle/resize-observer';
 import ButtonBar from '../components/ButtonBar';
 import TextEditor from '../components/TextEditor';
+import TokenImage from '../components/TokenImage';
 
 //
 // ─── STYLES ───────────────────────────────────────────────────────────────────
@@ -39,6 +40,8 @@ const MainView = () => {
   //
   const [picture, setPicture] = useState('');
   const [altText, setAltText] = React.useState('No image uploaded');
+  const [name, setName] = React.useState(undefined);
+  const [selectedImg, selectImage] = React.useState(null);
   const [isDragging, setDragging] = React.useState(false);
   const [image] = useImage(picture);
   const [bordercolor, setBorderColor] = useState('#f7fff7');
@@ -52,10 +55,19 @@ const MainView = () => {
     polyfill: ResizeObserver, // Use polyfill to make this feature works on more browsers
   });
 
+  const checkDeselect = (e) => {
+    // deselect when clicked on empty area
+    const clickedOnEmpty = e.target === e.target.getStage();
+    if (clickedOnEmpty) {
+      selectImage(null);
+    }
+  };
+
   // Creates image object url when file is uploaded
   const onImageChange = (e) => {
     setPicture(URL.createObjectURL(e.target.files[0]));
     setAltText('Your uploaded image');
+    setName('Your Token');
   };
 
   // Change colors with input values
@@ -64,18 +76,6 @@ const MainView = () => {
 
   // refs for stage, image, and transformer nodes
   const stageRef = React.useRef(null);
-  // const imageRef = React.useRef();
-  // const trRef = React.useRef();
-
-  // attach transformer node to canvas image https://konvajs.org/docs/react/Transformer.html
-  // React.useEffect(() => {
-  //   if (isSelected) {
-  //     // we need to attach transformer manually
-  //     trRef.current.nodes([imageRef.current]);
-  //     // trRef.current.getLayer().batchDraw();
-  //   }
-  // }, [isSelected]);
-
   // the browser won't open the base64 DataURL, this solution puts it in an iframe to open in a new tab
   // https://ourcodeworld.com/articles/read/682/what-does-the-not-allowed-to-navigate-top-frame-to-data-url-javascript-exception-means-in-google-chrome
   function debugBase64(base64URL) {
@@ -121,41 +121,21 @@ const MainView = () => {
             overflow: hidden;
             height: 100%;
           `}
+          onMouseDown={checkDeselect}
+          onTouchStart={checkDeselect}
         >
           <Layer>
-            <Image
+            <TokenImage
               image={image}
-              draggable={true}
-              alt={altText}
-              css={css`
-                width: 100%;
-                height: 100%;
-                object-fit: contain;
-              `}
-              //
-              // CURSOR GRABBING HAND
-              //
-              onMouseOver={() => {
-                document.body.style.cursor = 'grab';
+              altText={altText}
+              isSelected={name === selectedImg}
+              name={name}
+              onSelect={() => {
+                selectImage(name);
               }}
-              onMouseOut={() => {
-                document.body.style.cursor = 'default';
-              }}
-              onMouseDown={() => {
-                document.body.style.cursor = 'grabbing';
-              }}
-              onDragStart={() => {
-                setDragging(true);
-                document.body.style.cursor = 'grabbing';
-              }}
-              onDragEnd={() => {
-                setDragging(false);
-                document.body.style.cursor = 'grab';
-              }}
-              // onClick={onSelect}
-              // onTap={onSelect}
             />
-            {/* //
+
+            {/*
 // ─── CIRCLE FOR TOKEN BORDER ────────────────────────────────────────────────────
 // */}
             <Circle
@@ -200,7 +180,7 @@ const MainView = () => {
       {/* // ─── IMAGE EDITING BUTTONS ─────────────────────────────────────── */}
       <ButtonBar
         ImageChange={onImageChange}
-        export={handleExport}
+        export={(checkDeselect, handleExport)}
         bordercolor={bordercolor}
         bordercolorinput={onBorderColorChange}
       >
