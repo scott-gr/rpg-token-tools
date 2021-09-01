@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import styled from '@emotion/styled/macro';
 ///https://konvajs.org/docs/react/Intro.html
-import { Stage, Layer, Circle, Text } from 'react-konva';
+import { Stage, Layer, Text } from 'react-konva';
 import useImage from 'use-image';
 //https://github.com/wellyshen/react-cool-dimensions
 import useDimensions from 'react-cool-dimensions';
@@ -11,6 +11,7 @@ import { ResizeObserver } from '@juggle/resize-observer';
 import ButtonBar from '../components/ButtonBar';
 import TextEditor from '../components/TextEditor';
 import TokenImage from '../components/TokenImage';
+import { CircleBorder, HexBorder } from '../components/BorderOptions';
 
 //
 // ─── STYLES ───────────────────────────────────────────────────────────────────
@@ -34,7 +35,7 @@ const CanvasArea = styled.div`
 `;
 // ────────────────────────────────────────────────────────────────────────────────
 
-const MainView = () => {
+const MainView = memo(() => {
   //
   // ─── State Hooks ─────────────────────────────────────────────────────────────────────
   //
@@ -62,12 +63,14 @@ const MainView = () => {
       selectImage(null);
     }
   };
-
+  let nameString = '';
   // Creates image object url when file is uploaded
   const onImageChange = (e) => {
+    selectImage(null);
     setPicture(URL.createObjectURL(e.target.files[0]));
+    nameString += nameString + picture;
     setAltText('Your uploaded image');
-    setName('Your Token');
+    setName('Token' + nameString);
   };
 
   // Change colors with input values
@@ -138,12 +141,10 @@ const MainView = () => {
             {/*
 // ─── CIRCLE FOR TOKEN BORDER ────────────────────────────────────────────────────
 // */}
-            <Circle
+            <HexBorder
               x={width / 2}
               y={height / 2}
               stroke={bordercolor ? bordercolor : '#fb4b4e'}
-              radius={135}
-              fillEnabled={false}
             />
             {/* // TEXT CREATED BY ADD TEXT*/}
             <Text
@@ -179,21 +180,20 @@ const MainView = () => {
 
       {/* // ─── IMAGE EDITING BUTTONS ─────────────────────────────────────── */}
       <ButtonBar
-        ImageChange={onImageChange}
-        export={(checkDeselect, handleExport)}
+        ImageChange={(checkDeselect, onImageChange)}
+        export={handleExport}
         bordercolor={bordercolor}
         bordercolorinput={onBorderColorChange}
       >
         <TextEditor
-          ontextcolorinput={onTextColorChange}
+          ontxtcolorinput={onTextColorChange}
           textvalue={text}
           ontextinput={(e) => setText(e.target.value)}
           txtcolorvalue={textcolor}
-          ontxtcolorinput={(e) => setTextcolor(e.target.value)}
         />
       </ButtonBar>
     </CanvasArea>
   );
-};
+});
 
 export default MainView;

@@ -1,18 +1,16 @@
-/** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Image, Transformer } from 'react-konva';
 
 const TokenImage = ({
+  image,
+  altText,
+  imgName,
   isSelected,
   onSelect,
   x,
   y,
   width,
   height,
-  image,
-  altText,
-  imgName,
 }) => {
   const imgRef = React.useRef();
   const trRef = React.useRef();
