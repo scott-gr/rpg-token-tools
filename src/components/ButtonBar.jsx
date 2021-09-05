@@ -6,7 +6,8 @@ import UploadIcon from './icons/Upload';
 import UploadImage from './UploadImage';
 import DownloadImage from './DownloadImage';
 import DownloadIcon from './icons/Download';
-import Modal from './Modal';
+import TextEditor from './TextEditor';
+import BorderStyle from './BorderStyle';
 //
 // ─── STYLES ─────────────────────────────────────────────────────────────────────
 //
@@ -99,6 +100,9 @@ export const ToolBtn = styled.button`
   ${dynamicStyle};
 `;
 
+export const Summary = ToolBtn.withComponent('summary');
+
+
 const ColorInput = styled.input`
   z-index: 4;
   width: 100%;
@@ -134,11 +138,12 @@ const ButtonBar = memo((props) => {
         </ButtonLabel>
       </ToolBtn>
       {/* // ─── BORDER STYLE BUTTON ───────────────────────────────────────── */}
-      <ToolBtn>
+      {/* <ToolBtn>
         <ButtonLabel htmlFor="borderstyle" labelcolor={'#f7fff7'}>
           Border Style
         </ButtonLabel>
-      </ToolBtn>
+      </ToolBtn> */}
+      <BorderStyle/>
       {/* // ─── Image overlay color button ───────────────────────────────────────── */}
       <ToolBtn
         bgColor={overlay}
@@ -163,7 +168,7 @@ const ButtonBar = memo((props) => {
         </ButtonLabel>
       </ToolBtn>{' '}
       {/* // ─── ADD TEXT BUTTON ───────────────────────────────────────── */}
-      {props.children}
+      <TextEditor />
       {/* // ─── IMAGE UPLOAD FORM ───────────────────────────────────────────  */}
       <UploadImage
         onImageInput={props.ImageChange}

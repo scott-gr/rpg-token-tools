@@ -1,7 +1,4 @@
-// /** @jsxImportSource @emotion/react */
-// import { css } from '@emotion/react';
 import React from 'react';
-// import styled from '@emotion/styled/macro';
 ///https://konvajs.org/docs/react/Intro.html
 import { Circle, Rect, RegularPolygon } from 'react-konva';
 

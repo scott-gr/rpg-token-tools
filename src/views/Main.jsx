@@ -9,7 +9,6 @@ import useImage from 'use-image';
 import useDimensions from 'react-cool-dimensions';
 import { ResizeObserver } from '@juggle/resize-observer';
 import ButtonBar from '../components/ButtonBar';
-import TextEditor from '../components/TextEditor';
 import TokenImage from '../components/TokenImage';
 import { CircleBorder, HexBorder } from '../components/BorderOptions';
 
@@ -49,6 +48,7 @@ const MainView = memo(() => {
   // const [overlay, setOverlay] = useState('');
   const [text, setText] = useState('');
   const [textcolor, setTextcolor] = React.useState('#fb4b4e');
+  const [borderStyle, setBorderStyle] = React.useState('circle');
 
   // useDimensions hook, observes the size of Stage for the other canvas elements to reference
   const { observe, width, height } = useDimensions({
@@ -63,21 +63,20 @@ const MainView = memo(() => {
       selectImage(null);
     }
   };
-  let nameString = '';
+
   // Creates image object url when file is uploaded
   const onImageChange = (e) => {
-    selectImage(null);
     setPicture(URL.createObjectURL(e.target.files[0]));
-    nameString += nameString + picture;
     setAltText('Your uploaded image');
-    setName('Token' + nameString);
+    setName('Token' + picture);
+    console.log(name);
   };
 
   // Change colors with input values
   const onBorderColorChange = (e) => setBorderColor(e.target.value);
   const onTextColorChange = (e) => setTextcolor(e.target.value);
+  const onTextInput = (e) => setText(e.target.value);
 
-  // refs for stage, image, and transformer nodes
   const stageRef = React.useRef(null);
   // the browser won't open the base64 DataURL, this solution puts it in an iframe to open in a new tab
   // https://ourcodeworld.com/articles/read/682/what-does-the-not-allowed-to-navigate-top-frame-to-data-url-javascript-exception-means-in-google-chrome
@@ -130,24 +129,24 @@ const MainView = memo(() => {
           <Layer>
             <TokenImage
               image={image}
-              altText={altText}
-              isSelected={name === selectedImg}
+              alt={altText}
               name={name}
+              x={40}
+              y={40}
+              isSelected={image === selectedImg}
               onSelect={() => {
-                selectImage(name);
+                checkDeselect;
+                selectImage(image);
               }}
             />
 
             {/*
 // ─── CIRCLE FOR TOKEN BORDER ────────────────────────────────────────────────────
 // */}
-            <HexBorder
-              x={width / 2}
-              y={height / 2}
-              stroke={bordercolor ? bordercolor : '#fb4b4e'}
-            />
+            <HexBorder x={width / 2} y={height / 2} stroke={bordercolor} />
             {/* // TEXT CREATED BY ADD TEXT*/}
             <Text
+              value={text}
               text={text}
               x={width / 2}
               y={height / 2 + 100}
@@ -184,14 +183,13 @@ const MainView = memo(() => {
         export={handleExport}
         bordercolor={bordercolor}
         bordercolorinput={onBorderColorChange}
-      >
-        <TextEditor
-          ontxtcolorinput={onTextColorChange}
-          textvalue={text}
-          ontextinput={(e) => setText(e.target.value)}
-          txtcolorvalue={textcolor}
-        />
-      </ButtonBar>
+        // TextEditor props
+        ontxtcolorinput={onTextColorChange}
+        textvalue={text}
+        ontextinput={onTextInput}
+        txtcolorvalue={textcolor}
+        //
+      ></ButtonBar>
     </CanvasArea>
   );
 });

@@ -3,7 +3,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled/macro';
 import CloseModal from './icons/Close';
 import React, { memo } from 'react';
-import { ToolBtn, ButtonLabel } from './ButtonBar';
+import { Summary, ButtonLabel } from './ButtonBar';
 
 const OpenModal = styled.div`
   background: var(--appwhite);
@@ -15,7 +15,7 @@ const OpenModal = styled.div`
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 25rem;
+  width: 30rem;
   max-height: 90vh;
   z-index: 2;
   display: flex;
@@ -34,8 +34,6 @@ const ModalContent = styled.div`
   padding: 1rem;
   gap: 1rem;
 `;
-
-const Summary = ToolBtn.withComponent('summary');
 
 const ModalWrapper = styled.details`
   & ::-webkit-details-marker {
