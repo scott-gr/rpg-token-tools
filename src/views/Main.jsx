@@ -9,6 +9,7 @@ import useImage from 'use-image';
 import useDimensions from 'react-cool-dimensions';
 import { ResizeObserver } from '@juggle/resize-observer';
 import ButtonBar from '../components/ButtonBar';
+import TextEditor from '../components/TextEditor';
 import TokenImage from '../components/TokenImage';
 import { CircleBorder, HexBorder } from '../components/BorderOptions';
 
@@ -61,6 +62,7 @@ const MainView = memo(() => {
     const clickedOnEmpty = e.target === e.target.getStage();
     if (clickedOnEmpty) {
       selectImage(null);
+      setTxtToggle(false);
     }
   };
 
@@ -146,15 +148,17 @@ const MainView = memo(() => {
             <HexBorder x={width / 2} y={height / 2} stroke={bordercolor} />
             {/* // TEXT CREATED BY ADD TEXT*/}
             <Text
-              value={text}
               text={text}
-              x={width / 2}
-              y={height / 2 + 100}
+              x={width / 2 - 10}
+              y={height / 2 + 80}
               fill={textcolor}
               align="center"
               fontSize={30}
               fontStyle="bold"
               draggable={true}
+              onDblClick={() => {
+                document.getElementById('TextModal').open = true;
+              }}
               onMouseOver={() => {
                 document.body.style.cursor = 'grab';
               }}
@@ -183,13 +187,14 @@ const MainView = memo(() => {
         export={handleExport}
         bordercolor={bordercolor}
         bordercolorinput={onBorderColorChange}
-        // TextEditor props
-        ontxtcolorinput={onTextColorChange}
-        textvalue={text}
-        ontextinput={onTextInput}
-        txtcolorvalue={textcolor}
-        //
-      ></ButtonBar>
+      >
+        <TextEditor
+          ontxtcolorinput={onTextColorChange}
+          textvalue={text}
+          ontextinput={onTextInput}
+          txtcolorvalue={textcolor}
+        />
+      </ButtonBar>
     </CanvasArea>
   );
 });

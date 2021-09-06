@@ -59,9 +59,10 @@ const Overlay = styled.div`
   }
 `;
 
-const Modal = memo((props) => {
+const Modal = (props) => {
+
   return (
-    <ModalWrapper>
+    <ModalWrapper id={props.modalID}>
       <Summary
         labelcolor={'#080008'}
         css={css`
@@ -85,6 +86,6 @@ const Modal = memo((props) => {
       </OpenModal>
     </ModalWrapper>
   );
-});
+};
 
 export default Modal;

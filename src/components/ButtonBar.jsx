@@ -6,7 +6,7 @@ import UploadIcon from './icons/Upload';
 import UploadImage from './UploadImage';
 import DownloadImage from './DownloadImage';
 import DownloadIcon from './icons/Download';
-import TextEditor from './TextEditor';
+// import TextEditor from './TextEditor';
 import BorderStyle from './BorderStyle';
 //
 // ─── STYLES ─────────────────────────────────────────────────────────────────────
@@ -102,7 +102,6 @@ export const ToolBtn = styled.button`
 
 export const Summary = ToolBtn.withComponent('summary');
 
-
 const ColorInput = styled.input`
   z-index: 4;
   width: 100%;
@@ -143,7 +142,7 @@ const ButtonBar = memo((props) => {
           Border Style
         </ButtonLabel>
       </ToolBtn> */}
-      <BorderStyle/>
+      <BorderStyle />
       {/* // ─── Image overlay color button ───────────────────────────────────────── */}
       <ToolBtn
         bgColor={overlay}
@@ -168,7 +167,7 @@ const ButtonBar = memo((props) => {
         </ButtonLabel>
       </ToolBtn>{' '}
       {/* // ─── ADD TEXT BUTTON ───────────────────────────────────────── */}
-      <TextEditor />
+      {props.children}
       {/* // ─── IMAGE UPLOAD FORM ───────────────────────────────────────────  */}
       <UploadImage
         onImageInput={props.ImageChange}
