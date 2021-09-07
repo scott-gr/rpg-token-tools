@@ -34,7 +34,7 @@ const TextColorPicker = styled.input`
 const TextEditor = (props) => {
 
   return (
-    <Modal btntxt='Add Text' modalID="TextModal">
+    <Modal btntxt='Add Text' modalID="TextModal" width="25rem">
       <TokenText
         name="tokentext"
         title="tokentext"

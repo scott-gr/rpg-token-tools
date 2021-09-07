@@ -50,6 +50,8 @@ const MainView = memo(() => {
   const [text, setText] = useState('');
   const [textcolor, setTextcolor] = React.useState('#fb4b4e');
   const [borderStyle, setBorderStyle] = React.useState('circle');
+  const [xAxis, setxAxis] = useState(40);
+  const [yAxis, setyAxis] = useState(40);
 
   // useDimensions hook, observes the size of Stage for the other canvas elements to reference
   const { observe, width, height } = useDimensions({
@@ -62,7 +64,6 @@ const MainView = memo(() => {
     const clickedOnEmpty = e.target === e.target.getStage();
     if (clickedOnEmpty) {
       selectImage(null);
-      setTxtToggle(false);
     }
   };
 
@@ -133,8 +134,8 @@ const MainView = memo(() => {
               image={image}
               alt={altText}
               name={name}
-              x={40}
-              y={40}
+              x={xAxis}
+              y={yAxis}
               isSelected={image === selectedImg}
               onSelect={() => {
                 checkDeselect;

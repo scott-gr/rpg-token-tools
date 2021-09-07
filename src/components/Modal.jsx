@@ -15,7 +15,7 @@ const OpenModal = styled.div`
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 30rem;
+  /* width: 30rem; */
   max-height: 90vh;
   z-index: 2;
   display: flex;
@@ -60,7 +60,6 @@ const Overlay = styled.div`
 `;
 
 const Modal = (props) => {
-
   return (
     <ModalWrapper id={props.modalID}>
       <Summary
@@ -80,7 +79,11 @@ const Modal = (props) => {
         {props.btntxt}
         <Overlay />
       </Summary>
-      <OpenModal>
+      <OpenModal
+        css={css`
+          width: ${props.width};
+        `}
+      >
         <CloseModal />
         <ModalContent>{props.children}</ModalContent>
       </OpenModal>

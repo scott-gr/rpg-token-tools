@@ -27,7 +27,7 @@ const RadioInput = styled.input`
 // inspired by https://codepen.io/eliasmeire/pen/JGjaov/
 const BorderStyle = memo((props) => {
   return (
-    <Modal btntxt="Border Style">
+    <Modal btntxt="Border Style" width="25rem">
       <div>
         <label htmlFor="circle">
           <RadioInput

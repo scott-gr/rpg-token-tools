@@ -71,6 +71,12 @@ const TokenImage = ({
           width = Math.max(5, node.width() * scaleX);
           height = Math.max(node.height() * scaleY);
         }}
+        onChange={() => {
+          x = 40;
+          y = 40;
+          node.scaleY(1);
+          node.scaleX(1);
+        }}
       />
       {isSelected && (
         <Transformer
