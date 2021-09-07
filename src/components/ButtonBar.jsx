@@ -1,11 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import styled from '@emotion/styled/macro';
 import UploadIcon from './icons/Upload';
 import UploadImage from './UploadImage';
 import DownloadImage from './DownloadImage';
 import DownloadIcon from './icons/Download';
+// import TextEditor from './TextEditor';
+import BorderStyle from './BorderStyle';
 //
 // ─── STYLES ─────────────────────────────────────────────────────────────────────
 //
@@ -37,7 +39,7 @@ const Buttons = styled.section`
     flex-basis: 100%;
   }
 `;
-const ButtonLabel = styled.label`
+export const ButtonLabel = styled.label`
   ${dynamicStyle};
   z-index: 0;
   font-size: var(--s1);
@@ -93,10 +95,12 @@ const btnStyle = css`
   }
 `;
 
-const ToolBtn = styled.button`
+export const ToolBtn = styled.button`
   ${btnStyle}
   ${dynamicStyle};
 `;
+
+export const Summary = ToolBtn.withComponent('summary');
 
 const ColorInput = styled.input`
   z-index: 4;
@@ -111,34 +115,7 @@ const ColorInput = styled.input`
   position: absolute;
 `;
 
-// Add Text button is an html details Element. Instead of expanding/ dropping down, the details appear as a modal
-const Summary = ToolBtn.withComponent('summary');
-
-const TextModal = styled.details`
-  & ::-webkit-details-marker {
-    display: none;
-  }
-`;
-
-// gray overlay over everything when modal is open
-const Overlay = styled.div`
-  transition: opacity 0.2s ease-out;
-  pointer-events: none;
-  background: rgba(15, 23, 42, 0.8);
-  position: fixed;
-  opacity: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  top: 0;
-  ${TextModal}[open] & {
-    opacity: 0.5;
-    pointer-events: all;
-    z-index: 2;
-  }
-`;
-
-const ButtonBar = (props) => {
+const ButtonBar = memo((props) => {
   const [overlay, setOverlay] = useState('');
 
   return (
@@ -160,15 +137,12 @@ const ButtonBar = (props) => {
         </ButtonLabel>
       </ToolBtn>
       {/* // ─── BORDER STYLE BUTTON ───────────────────────────────────────── */}
-      <ToolBtn
-        css={css`
-          opacity: 0.9;
-        `}
-      >
+      {/* <ToolBtn>
         <ButtonLabel htmlFor="borderstyle" labelcolor={'#f7fff7'}>
           Border Style
         </ButtonLabel>
-      </ToolBtn>
+      </ToolBtn> */}
+      <BorderStyle />
       {/* // ─── Image overlay color button ───────────────────────────────────────── */}
       <ToolBtn
         bgColor={overlay}
@@ -193,26 +167,7 @@ const ButtonBar = (props) => {
         </ButtonLabel>
       </ToolBtn>{' '}
       {/* // ─── ADD TEXT BUTTON ───────────────────────────────────────── */}
-      <TextModal>
-        <Summary
-          labelcolor={'#080008'}
-          css={css`
-            ${ButtonLabel}
-
-            cursor: pointer;
-            list-style: none;
-            &:focus {
-              outline: none;
-            }
-            place-items: center;
-            text-align: center;
-          `}
-        >
-          Add Text
-          <Overlay />
-        </Summary>
-        {props.children}
-      </TextModal>
+      {props.children}
       {/* // ─── IMAGE UPLOAD FORM ───────────────────────────────────────────  */}
       <UploadImage
         onImageInput={props.ImageChange}
@@ -263,6 +218,6 @@ const ButtonBar = (props) => {
       </DownloadImage>
     </Buttons>
   );
-};
+});
 
 export default ButtonBar;

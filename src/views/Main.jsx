@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import styled from '@emotion/styled/macro';
 ///https://konvajs.org/docs/react/Intro.html
-import { Stage, Layer, Circle, Text } from 'react-konva';
+import { Stage, Layer, Text } from 'react-konva';
 import useImage from 'use-image';
 //https://github.com/wellyshen/react-cool-dimensions
 import useDimensions from 'react-cool-dimensions';
@@ -11,6 +11,7 @@ import { ResizeObserver } from '@juggle/resize-observer';
 import ButtonBar from '../components/ButtonBar';
 import TextEditor from '../components/TextEditor';
 import TokenImage from '../components/TokenImage';
+import { CircleBorder, HexBorder } from '../components/BorderOptions';
 
 //
 // ─── STYLES ───────────────────────────────────────────────────────────────────
@@ -34,7 +35,7 @@ const CanvasArea = styled.div`
 `;
 // ────────────────────────────────────────────────────────────────────────────────
 
-const MainView = () => {
+const MainView = memo(() => {
   //
   // ─── State Hooks ─────────────────────────────────────────────────────────────────────
   //
@@ -48,6 +49,9 @@ const MainView = () => {
   // const [overlay, setOverlay] = useState('');
   const [text, setText] = useState('');
   const [textcolor, setTextcolor] = React.useState('#fb4b4e');
+  const [borderStyle, setBorderStyle] = React.useState('circle');
+  const [xAxis, setxAxis] = useState(40);
+  const [yAxis, setyAxis] = useState(40);
 
   // useDimensions hook, observes the size of Stage for the other canvas elements to reference
   const { observe, width, height } = useDimensions({
@@ -67,14 +71,15 @@ const MainView = () => {
   const onImageChange = (e) => {
     setPicture(URL.createObjectURL(e.target.files[0]));
     setAltText('Your uploaded image');
-    setName('Your Token');
+    setName('Token' + picture);
+    console.log(name);
   };
 
   // Change colors with input values
   const onBorderColorChange = (e) => setBorderColor(e.target.value);
   const onTextColorChange = (e) => setTextcolor(e.target.value);
+  const onTextInput = (e) => setText(e.target.value);
 
-  // refs for stage, image, and transformer nodes
   const stageRef = React.useRef(null);
   // the browser won't open the base64 DataURL, this solution puts it in an iframe to open in a new tab
   // https://ourcodeworld.com/articles/read/682/what-does-the-not-allowed-to-navigate-top-frame-to-data-url-javascript-exception-means-in-google-chrome
@@ -127,34 +132,34 @@ const MainView = () => {
           <Layer>
             <TokenImage
               image={image}
-              altText={altText}
-              isSelected={name === selectedImg}
+              alt={altText}
               name={name}
+              x={xAxis}
+              y={yAxis}
+              isSelected={image === selectedImg}
               onSelect={() => {
-                selectImage(name);
+                checkDeselect;
+                selectImage(image);
               }}
             />
 
             {/*
 // ─── CIRCLE FOR TOKEN BORDER ────────────────────────────────────────────────────
 // */}
-            <Circle
-              x={width / 2}
-              y={height / 2}
-              stroke={bordercolor ? bordercolor : '#fb4b4e'}
-              radius={135}
-              fillEnabled={false}
-            />
+            <HexBorder x={width / 2} y={height / 2} stroke={bordercolor} />
             {/* // TEXT CREATED BY ADD TEXT*/}
             <Text
               text={text}
-              x={width / 2}
-              y={height / 2 + 100}
+              x={width / 2 - 10}
+              y={height / 2 + 80}
               fill={textcolor}
               align="center"
               fontSize={30}
               fontStyle="bold"
               draggable={true}
+              onDblClick={() => {
+                document.getElementById('TextModal').open = true;
+              }}
               onMouseOver={() => {
                 document.body.style.cursor = 'grab';
               }}
@@ -179,21 +184,20 @@ const MainView = () => {
 
       {/* // ─── IMAGE EDITING BUTTONS ─────────────────────────────────────── */}
       <ButtonBar
-        ImageChange={onImageChange}
-        export={(checkDeselect, handleExport)}
+        ImageChange={(checkDeselect, onImageChange)}
+        export={handleExport}
         bordercolor={bordercolor}
         bordercolorinput={onBorderColorChange}
       >
         <TextEditor
-          ontextcolorinput={onTextColorChange}
+          ontxtcolorinput={onTextColorChange}
           textvalue={text}
-          ontextinput={(e) => setText(e.target.value)}
+          ontextinput={onTextInput}
           txtcolorvalue={textcolor}
-          ontxtcolorinput={(e) => setTextcolor(e.target.value)}
         />
       </ButtonBar>
     </CanvasArea>
   );
-};
+});
 
 export default MainView;

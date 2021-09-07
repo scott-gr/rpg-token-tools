@@ -1,22 +1,20 @@
-/** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Image, Transformer } from 'react-konva';
 
 const TokenImage = ({
+  image,
+  alt,
   isSelected,
   onSelect,
   x,
   y,
   width,
   height,
-  image,
-  altText,
-  imgName,
 }) => {
   const imgRef = React.useRef();
   const trRef = React.useRef();
   const [imgDragging, setImgDragging] = React.useState(false);
+  const node = imgRef.current;
 
   React.useEffect(() => {
     if (isSelected) {
@@ -28,14 +26,13 @@ const TokenImage = ({
     <>
       <Image
         image={image}
+        alt={alt}
         draggable={true}
-        alt={altText}
-        name={imgName}
         ref={imgRef}
+        height={height}
+        width={width}
         x={x}
         y={y}
-        width={width}
-        height={height}
         onClick={onSelect}
         onTap={onSelect}
         onMouseOver={() => {
@@ -65,19 +62,20 @@ const TokenImage = ({
           height = e.target.height();
         }}
         onTransformEnd={(e) => {
-          const node = imgRef.current;
           const scaleX = node.scaleX();
           const scaleY = node.scaleY();
-
-          // we will reset it back
-          // node.scaleX(1);
-          // node.scaleY(1);
 
           x = node.x();
           y = node.y();
           // set minimal value
           width = Math.max(5, node.width() * scaleX);
           height = Math.max(node.height() * scaleY);
+        }}
+        onChange={() => {
+          x = 40;
+          y = 40;
+          node.scaleY(1);
+          node.scaleX(1);
         }}
       />
       {isSelected && (
