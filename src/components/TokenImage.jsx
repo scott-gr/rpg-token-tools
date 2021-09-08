@@ -16,6 +16,7 @@ const TokenImage = ({
   const [imgDragging, setImgDragging] = React.useState(false);
   const node = imgRef.current;
 
+
   React.useEffect(() => {
     if (isSelected) {
       trRef.current.nodes([imgRef.current]);
