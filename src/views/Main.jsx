@@ -40,18 +40,20 @@ const MainView = memo(() => {
   // ─── State Hooks ─────────────────────────────────────────────────────────────────────
   //
   const [picture, setPicture] = useState('');
-  const [altText, setAltText] = React.useState('No image uploaded');
-  const [name, setName] = React.useState(undefined);
-  const [selectedImg, selectImage] = React.useState(null);
-  const [isDragging, setDragging] = React.useState(false);
+  const [altText, setAltText] = useState('No image uploaded');
+  const [name, setName] = useState(undefined);
+  const [selectedImg, selectImage] = useState(null);
+  const [isDragging, setDragging] = useState(false);
   const [image] = useImage(picture);
   const [bordercolor, setBorderColor] = useState('#f7fff7');
   // const [overlay, setOverlay] = useState('');
   const [text, setText] = useState('');
-  const [textcolor, setTextcolor] = React.useState('#fb4b4e');
-  const [borderStyle, setBorderStyle] = React.useState('circle');
-  const [xAxis, setxAxis] = React.useState(null);
-  const [yAxis, setyAxis] = React.useState(null);
+  const [textcolor, setTextcolor] = useState('#fb4b4e');
+  const [borderStyle, setBorderStyle] = useState('circle');
+  const [xAxis, setxAxis] = useState(null);
+  const [yAxis, setyAxis] = useState(null);
+  const [scaleX, setScaleX] = useState(null);
+  const [scaleY, setScaleY] = useState(null);
 
   // useDimensions hook, observes the size of Stage for the other canvas elements to reference
   const { observe, width, height } = useDimensions({
@@ -69,15 +71,17 @@ const MainView = memo(() => {
 
   // Creates image object url when file is uploaded
   const onImageChange = (e) => {
-    resetXY;
+    resetToken;
     setPicture(URL.createObjectURL(e.target.files[0]));
     setAltText('Your uploaded image');
     setName('Token' + picture);
   };
 
-  const resetXY = () => {
+  const resetToken = () => {
     setxAxis(image ? width / 2 - image.width / 2 : 40);
-    setyAxis(image ? height / 2 - image.height / 3 : 40);
+    setyAxis(image ? height / 2 - image.height / 2 : 40);
+    setScaleX(1);
+    setScaleY(1);
   };
 
   // Change colors with input values
@@ -156,7 +160,9 @@ const MainView = memo(() => {
                 alt={altText}
                 name={name}
                 x={xAxis ? xAxis : image ? width / 2 - image.width / 2 : 40}
-                y={yAxis ? yAxis : image ? height / 2 - image.height / 3 : 40}
+                y={yAxis ? yAxis : image ? height / 2 - image.height / 2 : 40}
+                scaleX={scaleX ? scaleX : image ? image.scaleX : 1}
+                scaleY={scaleY ? scaleY : image ? image.scaleY : 1}
                 isSelected={image === selectedImg}
                 onSelect={() => {
                   checkDeselect;
@@ -167,7 +173,7 @@ const MainView = memo(() => {
               {/*
 // ─── CIRCLE FOR TOKEN BORDER ────────────────────────────────────────────────────
 // */}
-              <HexBorder x={width / 2} y={height / 2} stroke={bordercolor} />
+              <CircleBorder x={width / 2} y={height / 2} stroke={bordercolor} />
               {/* // TEXT CREATED BY ADD TEXT*/}
               <Text
                 text={text}
