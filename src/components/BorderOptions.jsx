@@ -1,3 +1,4 @@
+import { Emboss } from 'konva/lib/filters/Emboss';
 import React from 'react';
 ///https://konvajs.org/docs/react/Intro.html
 import { Circle, Rect, RegularPolygon } from 'react-konva';
@@ -6,7 +7,7 @@ export const CircleBorder = (circleProps) => {
   return (
     <Circle
       {...circleProps}
-      radius={135}
+      radius={135}   
       strokeWidth={10}
       shadowBlur={5}
       fillEnabled={false}

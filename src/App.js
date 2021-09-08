@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import MainView from './views/Main';
-import D20Icon from './components/icons/d20';
+import D20Icon from './icons/d20';
 
 // ─── FLEXBOX LAYOUT WRAPPER ──────────────
 const Layout = styled.main`

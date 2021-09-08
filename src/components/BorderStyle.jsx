@@ -7,7 +7,7 @@ import {
   HexAIcon,
   HexBIcon,
   SquareIcon,
-} from './icons/BorderIcons';
+} from '../icons/BorderIcons';
 
 const RadioInput = styled.input`
   &[type='radio'] {

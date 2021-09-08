@@ -2,10 +2,10 @@
 import { css } from '@emotion/react';
 import React, { memo, useState } from 'react';
 import styled from '@emotion/styled/macro';
-import UploadIcon from './icons/Upload';
+import UploadIcon from '../icons/Upload';
 import UploadImage from './UploadImage';
 import DownloadImage from './DownloadImage';
-import DownloadIcon from './icons/Download';
+import DownloadIcon from '../icons/Download';
 // import TextEditor from './TextEditor';
 import BorderStyle from './BorderStyle';
 //

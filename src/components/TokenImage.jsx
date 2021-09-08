@@ -10,6 +10,8 @@ const TokenImage = ({
   y,
   width,
   height,
+  scaleX,
+  scaleY,
 }) => {
   const imgRef = React.useRef();
   const trRef = React.useRef();
@@ -55,6 +57,8 @@ const TokenImage = ({
           setImgDragging(false);
           document.body.style.cursor = 'grab';
         }}
+        scaleX={scaleX}
+        scaleY={scaleY}
         onTransformStart={(e) => {
           x = e.target.x();
           y = e.target.y();
@@ -62,20 +66,15 @@ const TokenImage = ({
           height = e.target.height();
         }}
         onTransformEnd={(e) => {
-          const scaleX = node.scaleX();
-          const scaleY = node.scaleY();
+          scaleX = node.scaleX();
+          scaleY = node.scaleY();
 
           x = node.x();
           y = node.y();
+
           // set minimal value
           width = Math.max(5, node.width() * scaleX);
           height = Math.max(node.height() * scaleY);
-        }}
-        onChange={() => {
-          x = 40;
-          y = 40;
-          node.scaleY(1);
-          node.scaleX(1);
         }}
       />
       {isSelected && (
