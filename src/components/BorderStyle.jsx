@@ -24,11 +24,20 @@ const RadioInput = styled.input`
   }
 `;
 
+const ShapeMenu = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 1rem;
+  justify-content: space-evenly;
+  align-items: center;
+`;
+
 // inspired by https://codepen.io/eliasmeire/pen/JGjaov/
 const BorderStyle = memo((props) => {
   return (
     <Modal btntxt="Border Style" width="25rem">
-      <div>
+      <ShapeMenu>
         <label htmlFor="circle">
           <RadioInput
             type="radio"
@@ -58,7 +67,7 @@ const BorderStyle = memo((props) => {
           <RadioInput type="radio" id="hexB" name="borderstyle" value="hexB" />
           <HexBIcon />
         </label>
-      </div>
+      </ShapeMenu>
     </Modal>
   );
 });

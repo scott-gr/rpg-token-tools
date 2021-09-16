@@ -10,29 +10,31 @@ const OpenModal = styled.div`
   border-radius: 0.5em;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   left: 50%;
-  max-width: 90%;
   pointer-events: none;
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
-  /* width: 30rem; */
   max-height: 90vh;
   z-index: 2;
   display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 18rem;
+  max-width: 80%;
   cursor: default;
-  place-content: center;
-  flex-direction: column;
+  flex-direction: row;
 `;
 
 const ModalContent = styled.div`
   pointer-events: all;
-  overflow: auto;
-  width: fit-content;
-  flex: 1 1 75%;
   display: flex;
-  align-content: center;
-  padding: 1rem;
+  width: 100%;
+  align-items: center;
+  justify-items: center;
   gap: 1rem;
+  margin: 0 1rem 1rem 1rem;
 `;
 
 const ModalWrapper = styled.details`
@@ -84,6 +86,7 @@ const Modal = (props) => {
           width: ${props.width};
         `}
       >
+        {' '}
         <CloseModal />
         <ModalContent>{props.children}</ModalContent>
       </OpenModal>
