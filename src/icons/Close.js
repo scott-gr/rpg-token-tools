@@ -1,31 +1,33 @@
 import styled from '@emotion/styled';
 
 const CloseIcon = styled.svg`
-  color: var(--appblack);
   height: 3rem;
   width: 3rem;
-  max-height: min-content;
-  max-width: min-content;
   z-index: 6;
   fill: var(--appblack);
   background-color: transparent;
-  pointer-events: none;
-  display: block;
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 0;
-  padding: 0;
-  flex: 1 1 25%;
+  justify-self: right;
+  cursor: pointer;
+  margin-inline-end: 0.5rem;
+    &:hover {
+    fill: var(--appred);
+  }`;
+
+
+const WithIcon = styled.span`
+  display: inline-flex;
+  align-items: center;
+  justify-content: right;
+  width: 100%;
 `;
 
 const CloseModal = () => {
   return (
-    <CloseIcon viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M20 6.91L17.09 4 12 9.09 6.91 4 4 6.91 9.09 12 4 17.09 6.91 20 12 14.91 17.09 20 20 17.09 14.91 12 20 6.91z"
-      />
-    </CloseIcon>
+    <WithIcon>
+      <CloseIcon viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 6.91L17.09 4 12 9.09 6.91 4 4 6.91 9.09 12 4 17.09 6.91 20 12 14.91 17.09 20 20 17.09 14.91 12 20 6.91z" />
+      </CloseIcon>
+    </WithIcon>
   );
 };
 

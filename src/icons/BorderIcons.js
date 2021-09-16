@@ -6,15 +6,16 @@ import styled from '@emotion/styled';
 
 const ShapeIcon = styled.svg`
   color: var(--appblack);
-  height: 3rem;
-  width: 3rem;
-  max-height: min-content;
-  max-width: min-content;
+  height: var(--s4);
+  width: var(--s4);
   z-index: 6;
   fill: var(--appblack);
   background-color: transparent;
   flex: 1 1 25%;
-`;
+  transition: all .125s;
+  &:hover {
+    fill: var(--appblue);
+  }`;
 
 export const CircleIcon = () => {
   return (
