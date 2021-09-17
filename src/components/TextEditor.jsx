@@ -41,11 +41,11 @@ const TxtGrid = styled.form`
   width: 100%;
 `;
 
-
-
 const TxtGridColumn = styled.div`
   display: flex;
   justify-content: center;
+  align-self: flex-start;
+  gap: var(--s1);
   flex-direction: column;
   & > * {
     margin-top: 0;
@@ -60,6 +60,7 @@ const TxtGridColumn = styled.div`
 const TxtInputLabel = styled.label`
   color: var(--appblack);
   font-size: 1rem;
+  margin-bottom: -1.25rem;
 `;
 const TextEditor = (props) => {
   return (
@@ -76,6 +77,25 @@ const TextEditor = (props) => {
             onChange={props.ontextinput}
             color={'#292f36'}
           />
+          <TxtInputLabel for="txtsize">Text Size</TxtInputLabel>
+          <input
+            type="range"
+            name="txtsize"
+            min="1"
+            max="7"
+            step="1"
+            list="tickmarks"
+            value="3"
+          />
+          <datalist id="tickmarks">
+            <option value="1" />
+            <option value="2" />
+            <option value="3" />
+            <option value="4" />
+            <option value="5" />
+            <option value="6" />
+            <option value="7" />
+          </datalist>
         </TxtGridColumn>
         <TxtGridColumn>
           <TxtInputLabel>Text Color</TxtInputLabel>
@@ -86,6 +106,14 @@ const TextEditor = (props) => {
             value={props.txtcolorvalue}
             onChange={props.ontxtcolorinput}
           />
+          <TxtInputLabel>Font</TxtInputLabel>
+
+          <select>
+            {/* this text is too large. Create emotion css element */}
+            <option value="">select...</option>
+            <option value="dog">Dog</option>
+            <option value="cat">Cat</option>
+          </select>
         </TxtGridColumn>
       </TxtGrid>
     </Modal>
