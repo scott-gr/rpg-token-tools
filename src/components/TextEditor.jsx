@@ -8,6 +8,7 @@ import Modal from './Modal';
 const customStyle = (props) =>
   css`
     color: ${props.color};
+    font-family: ${props.fontfamily};
   `;
 
 const TokenText = styled.input`
@@ -19,6 +20,7 @@ const TokenText = styled.input`
     border: 2px dashed var(--appblack);
   }
   min-width: 50%;
+  max-width: 15rem;
 `;
 
 const TextColorPicker = styled.input`
@@ -31,6 +33,15 @@ const TextColorPicker = styled.input`
     border: 2px dashed var(--appblack);
   }
 `;
+
+const TextSizeSlider = styled.input``;
+
+const FontPicker = styled.select`
+  ${customStyle}
+  font-size: var(--s1);
+`;
+
+const FontOption = styled.option``;
 
 const TxtGrid = styled.form`
   display: flex;
@@ -59,7 +70,7 @@ const TxtGridColumn = styled.div`
 
 const TxtInputLabel = styled.label`
   color: var(--appblack);
-  font-size: 1rem;
+  font-size: var(--s0);
   margin-bottom: -1.25rem;
 `;
 const TextEditor = (props) => {
@@ -67,7 +78,7 @@ const TextEditor = (props) => {
     <Modal btntxt="Add Text" modalID="TextModal">
       <TxtGrid>
         <TxtGridColumn>
-          <TxtInputLabel for="tokentext">Display Text</TxtInputLabel>
+          <TxtInputLabel htmlFor="tokentext">Display Text</TxtInputLabel>
           <TokenText
             name="tokentext"
             title="tokentext"
@@ -77,24 +88,27 @@ const TextEditor = (props) => {
             onChange={props.ontextinput}
             color={'#292f36'}
           />
-          <TxtInputLabel for="txtsize">Text Size</TxtInputLabel>
-          <input
+          <TxtInputLabel htmlFor="txtsize">Text Size</TxtInputLabel>
+          <TextSizeSlider
             type="range"
             name="txtsize"
-            min="1"
-            max="7"
-            step="1"
+            min="20"
+            max="90"
+            step="5"
             list="tickmarks"
-            value="3"
+            value={props.textsize}
+            onChange={props.ontextslide}
           />
+          {/* not all browsers support the tickmarks, and that's okay. It's just aesthetic */}
           <datalist id="tickmarks">
-            <option value="1" />
-            <option value="2" />
-            <option value="3" />
-            <option value="4" />
-            <option value="5" />
-            <option value="6" />
-            <option value="7" />
+            <option value="20" />
+            <option value="30" />
+            <option value="40" />
+            <option value="50" />
+            <option value="60" />
+            <option value="70" />
+            <option value="80" />
+            <option value="90" />
           </datalist>
         </TxtGridColumn>
         <TxtGridColumn>
@@ -106,14 +120,14 @@ const TextEditor = (props) => {
             value={props.txtcolorvalue}
             onChange={props.ontxtcolorinput}
           />
-          <TxtInputLabel>Font</TxtInputLabel>
+          <TxtInputLabel htmlFor="font">Font</TxtInputLabel>
 
-          <select>
+          <FontPicker name="font">
             {/* this text is too large. Create emotion css element */}
-            <option value="">select...</option>
-            <option value="dog">Dog</option>
-            <option value="cat">Cat</option>
-          </select>
+            <FontOption value=""></FontOption>
+            <FontOption value="font1">Font1</FontOption>
+            <FontOption value="font2">Font2</FontOption>
+          </FontPicker>
         </TxtGridColumn>
       </TxtGrid>
     </Modal>

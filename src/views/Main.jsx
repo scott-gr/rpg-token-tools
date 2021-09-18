@@ -49,6 +49,7 @@ const MainView = memo(() => {
   // const [overlay, setOverlay] = useState('');
   const [text, setText] = useState('');
   const [textcolor, setTextcolor] = useState('#fb4b4e');
+  const [textsize, setTextsize] = useState('30')
   const [borderStyle, setBorderStyle] = useState('circle');
   const [xAxis, setxAxis] = useState(null);
   const [yAxis, setyAxis] = useState(null);
@@ -88,6 +89,8 @@ const MainView = memo(() => {
   const onBorderColorChange = (e) => setBorderColor(e.target.value);
   const onTextColorChange = (e) => setTextcolor(e.target.value);
   const onTextInput = (e) => setText(e.target.value);
+  const onTextSlide = (e) => setTextsize(e.target.value);
+
 
   const stageRef = React.useRef(null);
   // the browser won't open the base64 DataURL, this solution puts it in an iframe to open in a new tab
@@ -181,7 +184,7 @@ const MainView = memo(() => {
                 y={height / 2 + 80}
                 fill={textcolor}
                 align="center"
-                fontSize={30}
+                fontSize={textsize}
                 fontStyle="bold"
                 draggable={true}
                 onDblClick={() => {
@@ -222,6 +225,8 @@ const MainView = memo(() => {
           textvalue={text}
           ontextinput={onTextInput}
           txtcolorvalue={textcolor}
+          ontextslide={onTextSlide}
+          textsize={textsize}
         />
       </ButtonBar>
     </CanvasArea>
