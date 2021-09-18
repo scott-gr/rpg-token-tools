@@ -9,7 +9,7 @@ import DownloadIcon from '../icons/Download';
 // import TextEditor from './TextEditor';
 import BorderStyle from './BorderStyle';
 //
-// ─── STYLES ─────────────────────────────────────────────────────────────────────
+// ─── STYLES ────────────────────────────────────────────────────f─────────────────
 //
 
 // Dynamic color props for button style to match color selector input values

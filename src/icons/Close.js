@@ -9,10 +9,10 @@ const CloseIcon = styled.svg`
   justify-self: right;
   cursor: pointer;
   margin-inline-end: 0.5rem;
-    &:hover {
+  &:hover {
     fill: var(--appred);
-  }`;
-
+  }
+`;
 
 const WithIcon = styled.span`
   display: inline-flex;
@@ -24,6 +24,7 @@ const WithIcon = styled.span`
 const CloseModal = () => {
   return (
     <WithIcon>
+
       <CloseIcon viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path d="M20 6.91L17.09 4 12 9.09 6.91 4 4 6.91 9.09 12 4 17.09 6.91 20 12 14.91 17.09 20 20 17.09 14.91 12 20 6.91z" />
       </CloseIcon>
