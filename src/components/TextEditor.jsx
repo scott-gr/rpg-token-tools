@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import styled from '@emotion/styled/macro';
+import FontFaceObserver from 'fontfaceobserver';
 import Modal from './Modal';
 //
 // ─── STYLES ─────────────────────────────────────────────────────────────────────
@@ -13,7 +14,7 @@ const customStyle = (props) =>
 
 const TokenText = styled.input`
   ${customStyle}
-  font-size: var(--s1);
+  font-size: var(--s2);
   border: 2px solid var(--appgrey);
   cursor: text;
   &:hover {
@@ -83,8 +84,9 @@ const TextEditor = (props) => {
             name="tokentext"
             title="tokentext"
             type="text"
+            fontfamily={props.fontfamily}
             value={props.textvalue}
-            placeholder="heroic name here"
+            placeholder="Adventurer"
             onChange={props.ontextinput}
             color={'#292f36'}
           />
@@ -92,8 +94,8 @@ const TextEditor = (props) => {
           <TextSizeSlider
             type="range"
             name="txtsize"
-            min="20"
-            max="90"
+            min={20}
+            max={90}
             step="5"
             list="tickmarks"
             value={props.textsize}
@@ -101,14 +103,14 @@ const TextEditor = (props) => {
           />
           {/* not all browsers support the tickmarks, and that's okay. It's just aesthetic */}
           <datalist id="tickmarks">
-            <option value="20" />
-            <option value="30" />
-            <option value="40" />
-            <option value="50" />
-            <option value="60" />
-            <option value="70" />
-            <option value="80" />
-            <option value="90" />
+            <option value={20} />
+            <option value={30} />
+            <option value={40} />
+            <option value={50} />
+            <option value={60} />
+            <option value={70} />
+            <option value={80} />
+            <option value={90} />
           </datalist>
         </TxtGridColumn>
         <TxtGridColumn>
@@ -122,11 +124,61 @@ const TextEditor = (props) => {
           />
           <TxtInputLabel htmlFor="font">Font</TxtInputLabel>
 
-          <FontPicker name="font">
-            {/* this text is too large. Create emotion css element */}
-            <FontOption value=""></FontOption>
-            <FontOption value="font1">Font1</FontOption>
-            <FontOption value="font2">Font2</FontOption>
+          <FontPicker
+            name="font"
+            value={props.fontfamily}
+            fontfamily={props.fontfamily}
+            onChange={props.onfontpick}
+          >
+            <FontOption
+              css={css`
+                font-family: var(--nouveau);
+              `}
+              value="var(--nouveau)"
+            >
+              nouveau
+            </FontOption>
+            <FontOption
+              css={css`
+                font-family: var(--vanilla);
+              `}
+              value="var(--vanilla)"
+            >
+              vanilla
+            </FontOption>
+            <FontOption
+              css={css`
+                font-family: var(--olde);
+              `}
+              value="var(--olde)"
+            >
+              olde
+            </FontOption>
+            <FontOption
+              css={css`
+                font-family: var(--elvish);
+                font-size: var(--s2);
+              `}
+              value="var(--elvish)"
+            >
+              elvish
+            </FontOption>
+            <FontOption
+              css={css`
+                font-family: var(--npc);
+              `}
+              value="var(--npc)"
+            >
+              npc
+            </FontOption>
+            <FontOption
+              css={css`
+                font-family: var(--digital);
+              `}
+              value="var(--digital)"
+            >
+              digital
+            </FontOption>
           </FontPicker>
         </TxtGridColumn>
       </TxtGrid>

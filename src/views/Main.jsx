@@ -49,12 +49,13 @@ const MainView = memo(() => {
   // const [overlay, setOverlay] = useState('');
   const [text, setText] = useState('');
   const [textcolor, setTextcolor] = useState('#fb4b4e');
-  const [textsize, setTextsize] = useState('30')
+  const [textsize, setTextsize] = useState(30);
   const [borderStyle, setBorderStyle] = useState('circle');
   const [xAxis, setxAxis] = useState(null);
   const [yAxis, setyAxis] = useState(null);
   const [scaleX, setScaleX] = useState(null);
   const [scaleY, setScaleY] = useState(null);
+  const [fontfamily, setFontFamily] = useState('var(--nouveau)');
 
   // useDimensions hook, observes the size of Stage for the other canvas elements to reference
   const { observe, width, height } = useDimensions({
@@ -90,7 +91,7 @@ const MainView = memo(() => {
   const onTextColorChange = (e) => setTextcolor(e.target.value);
   const onTextInput = (e) => setText(e.target.value);
   const onTextSlide = (e) => setTextsize(e.target.value);
-
+  const onFontPick = (e) => setFontFamily(e.target.value);
 
   const stageRef = React.useRef(null);
   // the browser won't open the base64 DataURL, this solution puts it in an iframe to open in a new tab
@@ -179,13 +180,12 @@ const MainView = memo(() => {
               <CircleBorder x={width / 2} y={height / 2} stroke={bordercolor} />
               {/* // TEXT CREATED BY ADD TEXT*/}
               <Text
-                text={text}
                 x={width / 2 - 10}
                 y={height / 2 + 80}
                 fill={textcolor}
                 align="center"
+                text={text}
                 fontSize={textsize}
-                fontStyle="bold"
                 draggable={true}
                 onDblClick={() => {
                   document.getElementById('TextModal').open = true;
@@ -227,6 +227,8 @@ const MainView = memo(() => {
           txtcolorvalue={textcolor}
           ontextslide={onTextSlide}
           textsize={textsize}
+          onfontpick={onFontPick}
+          fontfamily={fontfamily}
         />
       </ButtonBar>
     </CanvasArea>
