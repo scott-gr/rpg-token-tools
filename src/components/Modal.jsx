@@ -10,7 +10,6 @@ const OpenModal = styled.div`
   border-radius: 0.5em;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   left: 50%;
-  pointer-events: none;
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -18,17 +17,21 @@ const OpenModal = styled.div`
   z-index: 2;
   display: flex;
   flex-wrap: wrap;
-  gap: .5rem;
+  pointer-events: auto;
+  gap: 0.5rem;
   justify-content: space-between;
   align-items: center;
   min-width: 18rem;
   max-width: 80%;
   cursor: default;
   flex-direction: row;
+  & > svg:hover {
+    fill: var(--appred);
+  }
 `;
 
 const ModalContent = styled.div`
-  pointer-events: all;
+  pointer-events: none;
   display: flex;
   width: 100%;
   align-items: center;
@@ -46,7 +49,7 @@ const ModalWrapper = styled.details`
 // gray overlay over everything when modal is open
 const Overlay = styled.div`
   transition: opacity 0.2s ease-out;
-  pointer-events: none;
+  pointer-events: auto;
   background: rgba(15, 23, 42, 0.8);
   position: fixed;
   opacity: 0;
@@ -62,6 +65,11 @@ const Overlay = styled.div`
 `;
 
 const Modal = (props) => {
+
+  function handleXClick() {
+    document.getElementById(props.modalID).removeAttribute('open');
+    console.log("click")
+  }
   return (
     <ModalWrapper id={props.modalID}>
       <Summary
@@ -87,7 +95,7 @@ const Modal = (props) => {
         `}
       >
         {' '}
-        <CloseModal />
+        <CloseModal click={handleXClick} />
         <ModalContent>{props.children}</ModalContent>
       </OpenModal>
     </ModalWrapper>

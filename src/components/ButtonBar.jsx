@@ -96,8 +96,9 @@ const btnStyle = css`
 `;
 
 export const ToolBtn = styled.button`
-  ${btnStyle}
+  ${btnStyle};
   ${dynamicStyle};
+  pointer-events: auto;
 `;
 
 export const Summary = ToolBtn.withComponent('summary');
