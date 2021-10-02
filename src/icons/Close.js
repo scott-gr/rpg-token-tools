@@ -7,7 +7,7 @@ const CloseIcon = styled.svg`
   fill: var(--appblack);
   background-color: transparent;
   justify-self: right;
-  pointer-events: all;
+  pointer-events: visible;
   cursor: pointer;
   margin-inline-end: 0.5rem;
   &:hover {

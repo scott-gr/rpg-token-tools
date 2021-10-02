@@ -36,7 +36,7 @@ const ShapeMenu = styled.div`
 // inspired by https://codepen.io/eliasmeire/pen/JGjaov/
 const BorderStyle = memo((props) => {
   return (
-    <Modal btntxt="Border Style" width="25rem">
+    <Modal btntxt="Border Style" width="25rem" modalID="bordermodal">
       <ShapeMenu>
         <label htmlFor="circle">
           <RadioInput

@@ -17,7 +17,7 @@ const OpenModal = styled.div`
   z-index: 2;
   display: flex;
   flex-wrap: wrap;
-  pointer-events: auto;
+  pointer-events: all;
   gap: 0.5rem;
   justify-content: space-between;
   align-items: center;
@@ -49,7 +49,7 @@ const ModalWrapper = styled.details`
 // gray overlay over everything when modal is open
 const Overlay = styled.div`
   transition: opacity 0.2s ease-out;
-  pointer-events: auto;
+  pointer-events: none;
   background: rgba(15, 23, 42, 0.8);
   position: fixed;
   opacity: 0;
@@ -65,10 +65,8 @@ const Overlay = styled.div`
 `;
 
 const Modal = (props) => {
-
   function handleXClick() {
     document.getElementById(props.modalID).removeAttribute('open');
-    console.log("click")
   }
   return (
     <ModalWrapper id={props.modalID}>
