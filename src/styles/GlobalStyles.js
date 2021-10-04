@@ -4,6 +4,12 @@ export const GlobalStyles = () => (
   <Global
     styles={css`
       :root {
+        --nouveau: 'Federo', sans-serif;
+        --vanilla: 'Hina Mincho', serif;
+        --olde: 'IM Fell English SC', serif;
+        --elvish: 'Tangerine', cursive;
+        --npc: 'Geo', sans-serif;
+        --digital: 'Quantico', sans-serif;
         --londrina: 'Londrina Solid', serif;
         --opensans: 'Open Sans', system;
         --sans: 'Inconsolata', 'Helvetica', 'Arial', sans-serif;
