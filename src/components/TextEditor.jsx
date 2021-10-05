@@ -15,6 +15,7 @@ const customStyle = (props) =>
 const TokenText = styled.input`
   ${customStyle}
   font-size: var(--s2);
+  pointer-events: all;
   border: 2px solid var(--appgrey);
   cursor: text;
   &:hover {
@@ -27,6 +28,7 @@ const TokenText = styled.input`
 const TextColorPicker = styled.input`
   height: 3rem;
   width: 5rem;
+  pointer-events: all;
   border: 2px solid var(--appgrey);
   cursor: pointer;
   background-color: none;
@@ -35,11 +37,16 @@ const TextColorPicker = styled.input`
   }
 `;
 
-const TextSizeSlider = styled.input``;
+const TextSizeSlider = styled.input`
+  pointer-events: all;
+`;
 
 const FontPicker = styled.select`
   ${customStyle}
   font-size: var(--s1);
+  pointer-events: all;
+  cursor: pointer;
+  cursor: context-menu;
 `;
 
 const FontOption = styled.option``;

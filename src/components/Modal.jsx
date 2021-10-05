@@ -7,10 +7,10 @@ import { Summary, ButtonLabel } from './ButtonBar';
 
 const OpenModal = styled.div`
   background: var(--appwhite);
-  border-radius: 0.5em;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  border-radius: var(--s-2);
+  border:none;
+  box-shadow: 0 10px 20px rgba(5, 2, 2, 0.5);
   left: 50%;
-  pointer-events: none;
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -18,17 +18,21 @@ const OpenModal = styled.div`
   z-index: 2;
   display: flex;
   flex-wrap: wrap;
-  gap: .5rem;
+  pointer-events: all;
+  gap: 0.5rem;
   justify-content: space-between;
   align-items: center;
   min-width: 18rem;
   max-width: 80%;
   cursor: default;
   flex-direction: row;
+  & > svg:hover {
+    fill: var(--appred);
+  }
 `;
 
 const ModalContent = styled.div`
-  pointer-events: all;
+  pointer-events: none;
   display: flex;
   width: 100%;
   align-items: center;
@@ -62,6 +66,9 @@ const Overlay = styled.div`
 `;
 
 const Modal = (props) => {
+  function handleXClick() {
+    document.getElementById(props.modalID).removeAttribute('open');
+  }
   return (
     <ModalWrapper id={props.modalID}>
       <Summary
@@ -87,7 +94,7 @@ const Modal = (props) => {
         `}
       >
         {' '}
-        <CloseModal />
+        <CloseModal click={handleXClick} />
         <ModalContent>{props.children}</ModalContent>
       </OpenModal>
     </ModalWrapper>

@@ -11,7 +11,7 @@ import { ResizeObserver } from '@juggle/resize-observer';
 import ButtonBar from '../components/ButtonBar';
 import TextEditor from '../components/TextEditor';
 import TokenImage from '../components/TokenImage';
-import { CircleBorder, HexBorder } from '../components/BorderOptions';
+import { CircleBorder, HexBorder, SquareBorder } from '../components/BorderOptions';
 
 //
 // ─── STYLES ───────────────────────────────────────────────────────────────────
