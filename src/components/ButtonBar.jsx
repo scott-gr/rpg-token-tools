@@ -137,11 +137,6 @@ const ButtonBar = memo((props) => {
         </ButtonLabel>
       </ToolBtn>
       {/* // ─── BORDER STYLE BUTTON ───────────────────────────────────────── */}
-      {/* <ToolBtn>
-        <ButtonLabel htmlFor="borderstyle" labelcolor={'#f7fff7'}>
-          Border Style
-        </ButtonLabel>
-      </ToolBtn> */}
       <BorderStyle />
       {/* // ─── Image overlay color button ───────────────────────────────────────── */}
       <ToolBtn

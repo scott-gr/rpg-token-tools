@@ -11,7 +11,7 @@ import {
 
 const RadioInput = styled.input`
   &[type='radio'] {
-    opacity: 0; /* hidden but still tabable */
+    opacity: 1; /* hidden but still tabable */
     position: absolute;
   }
   &[type='radio'] + span {
@@ -22,15 +22,26 @@ const RadioInput = styled.input`
     transition: all 0.4s;
     -webkit-transition: all 0.4s;
   }
+  &[checked]{
+    background-color: red;
+  }
 `;
 
-const ShapeMenu = styled.div`
+const ShapeMenu = styled.fieldset`
   display: flex;
   flex-wrap: wrap;
+  border: none;
   width: 100%;
   gap: 1rem;
   justify-content: space-evenly;
   align-items: center;
+  padding-top: var(--s1);
+`;
+
+const BorderLegend = styled.legend`
+color: var(--appblack);
+text-align: center;
+font-size: var(--s1);
 `;
 
 // inspired by https://codepen.io/eliasmeire/pen/JGjaov/
@@ -38,6 +49,7 @@ const BorderStyle = memo((props) => {
   return (
     <Modal btntxt="Border Style" width="25rem" modalID="bordermodal">
       <ShapeMenu>
+        <BorderLegend>Choose the shape of your token</BorderLegend>
         <label htmlFor="circle">
           <RadioInput
             type="radio"
@@ -45,7 +57,7 @@ const BorderStyle = memo((props) => {
             name="borderstyle"
             value="circle"
           />
-          <CircleIcon />
+          <CircleIcon/>
         </label>
 
         <label htmlFor="square">

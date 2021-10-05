@@ -7,10 +7,16 @@ export const CircleBorder = (circleProps) => {
   return (
     <Circle
       {...circleProps}
-      radius={135}   
+      radius={135}
       strokeWidth={10}
-      shadowBlur={5}
+      shadowBlur={3}
       fillEnabled={false}
+      onMouseDown={() => {
+        document.body.style.cursor = 'no-drop';
+      }}
+      onMouseUp={() => {
+        document.body.style.cursor = 'default';
+      }}
     />
   );
 };
@@ -22,8 +28,14 @@ export const SquareBorder = (squareProps) => {
       height={270}
       width={270}
       strokeWidth={10}
-      shadowBlur={5}
+      shadowBlur={3}
       fillEnabled={false}
+      onMouseDown={() => {
+        document.body.style.cursor = 'no-drop';
+      }}
+      onMouseUp={() => {
+        document.body.style.cursor = 'default';
+      }}
     />
   );
 };
@@ -35,8 +47,14 @@ export const HexBorder = (hexProps) => {
       sides={6}
       radius={135}
       strokeWidth={10}
-      shadowBlur={5}
+      shadowBlur={3}
       fillEnabled={false}
+      onMouseDown={() => {
+        document.body.style.cursor = 'no-drop';
+      }}
+      onMouseUp={() => {
+        document.body.style.cursor = 'default';
+      }}
     />
   );
 };

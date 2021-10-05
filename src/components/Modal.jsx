@@ -7,8 +7,9 @@ import { Summary, ButtonLabel } from './ButtonBar';
 
 const OpenModal = styled.div`
   background: var(--appwhite);
-  border-radius: 0.5em;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  border-radius: var(--s-2);
+  border:none;
+  box-shadow: 0 10px 20px rgba(5, 2, 2, 0.5);
   left: 50%;
   position: absolute;
   top: 50%;
