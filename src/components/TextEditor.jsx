@@ -133,7 +133,7 @@ const TextEditor = (props) => {
 
           <FontPicker
             name="font"
-            value={props.fontfamily}
+            // value={props.fontfamily}
             fontfamily={props.fontfamily}
             onChange={props.onfontpick}
           >

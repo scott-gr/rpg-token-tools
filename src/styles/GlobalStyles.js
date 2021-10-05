@@ -4,7 +4,7 @@ export const GlobalStyles = () => (
   <Global
     styles={css`
       :root {
-        --nouveau: 'Federo', sans-serif;
+        --nouveau: 'Federo';
         --vanilla: 'Hina Mincho', serif;
         --olde: 'IM Fell English SC', serif;
         --elvish: 'Tangerine', cursive;
