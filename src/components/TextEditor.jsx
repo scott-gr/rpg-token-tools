@@ -133,15 +133,23 @@ const TextEditor = (props) => {
 
           <FontPicker
             name="font"
-            // value={props.fontfamily}
+            value={props.fontfamily}
             fontfamily={props.fontfamily}
             onChange={props.onfontpick}
           >
+            {/*
+              --nouveau: 'Federo';
+              --vanilla: 'Hina Mincho', serif;
+              --olde: 'IM Fell English SC', serif;
+              --elvish: 'Tangerine', cursive;
+              --npc: 'Geo', sans-serif;
+              --digital: 'Quantico', sans-serif; 
+              */}
             <FontOption
               css={css`
                 font-family: var(--nouveau);
               `}
-              value="var(--nouveau)"
+              value="Federo"
             >
               nouveau
             </FontOption>
@@ -149,7 +157,7 @@ const TextEditor = (props) => {
               css={css`
                 font-family: var(--vanilla);
               `}
-              value="var(--vanilla)"
+              value="Hina Mincho, serif"
             >
               vanilla
             </FontOption>
@@ -157,7 +165,7 @@ const TextEditor = (props) => {
               css={css`
                 font-family: var(--olde);
               `}
-              value="var(--olde)"
+              value="IM Fell English SC, serif"
             >
               olde
             </FontOption>
@@ -166,7 +174,7 @@ const TextEditor = (props) => {
                 font-family: var(--elvish);
                 font-size: var(--s2);
               `}
-              value="var(--elvish)"
+              value="Tangerine, cursive"
             >
               elvish
             </FontOption>
@@ -174,7 +182,7 @@ const TextEditor = (props) => {
               css={css`
                 font-family: var(--npc);
               `}
-              value="var(--npc)"
+              value="Geo, sans-serif"
             >
               npc
             </FontOption>
@@ -182,7 +190,7 @@ const TextEditor = (props) => {
               css={css`
                 font-family: var(--digital);
               `}
-              value="var(--digital)"
+              value="Quantico, sans-serif"
             >
               digital
             </FontOption>
