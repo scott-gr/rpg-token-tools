@@ -11,7 +11,11 @@ import { ResizeObserver } from '@juggle/resize-observer';
 import ButtonBar from '../components/ButtonBar';
 import TextEditor from '../components/TextEditor';
 import TokenImage from '../components/TokenImage';
-import { CircleBorder, HexBorder, SquareBorder } from '../components/BorderOptions';
+import {
+  CircleBorder,
+  HexBorder,
+  SquareBorder,
+} from '../components/BorderOptions';
 
 //
 // ─── STYLES ───────────────────────────────────────────────────────────────────
@@ -49,13 +53,13 @@ const MainView = memo(() => {
   // const [overlay, setOverlay] = useState('');
   const [text, setText] = useState('');
   const [textcolor, setTextcolor] = useState('#fb4b4e');
+  const [fontfamily, setFontFamily] = useState('var(--nouveau)');
   const [textsize, setTextsize] = useState(30);
   const [borderStyle, setBorderStyle] = useState('circle');
   const [xAxis, setxAxis] = useState(null);
   const [yAxis, setyAxis] = useState(null);
   const [scaleX, setScaleX] = useState(null);
   const [scaleY, setScaleY] = useState(null);
-  const [fontfamily, setFontFamily] = useState('var(--nouveau)');
 
   // useDimensions hook, observes the size of Stage for the other canvas elements to reference
   const { observe, width, height } = useDimensions({
@@ -91,7 +95,9 @@ const MainView = memo(() => {
   const onTextColorChange = (e) => setTextcolor(e.target.value);
   const onTextInput = (e) => setText(e.target.value);
   const onTextSlide = (e) => setTextsize(e.target.value);
-  const onFontPick = (e) => setFontFamily(e.target.value);
+  const onFontPick = (e) => {
+    setFontFamily(e.target.value), console.log({ fontfamily });
+  };
 
   const stageRef = React.useRef(null);
   // the browser won't open the base64 DataURL, this solution puts it in an iframe to open in a new tab
@@ -99,9 +105,9 @@ const MainView = memo(() => {
   function debugBase64(base64URL) {
     var win = window.open();
     win.document.write(
-      '<html style="margin:0; background:black;"><iframe src="' +
+      '<iframe allowfullscreen allow-same-origin allow-scripts title="Your Token" src="' +
         base64URL +
-        '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%" allowfullscreen></iframe></html>'
+        '"style="border:0; width:100%; height:100%; object-fit:scale-down; object-position:center center;"></iframe>'
     );
   }
 
@@ -116,7 +122,7 @@ const MainView = memo(() => {
     picture === ''
       ? alert('Upload an image first')
       : ((uri = stageRef.current.toDataURL({
-          pixelratio: 2,
+          pixelRatio: 1.5,
         })),
         debugBase64(uri));
   };
@@ -185,6 +191,7 @@ const MainView = memo(() => {
                 fill={textcolor}
                 align="center"
                 text={text}
+                fontFamily={fontfamily}
                 fontSize={textsize}
                 draggable={true}
                 onDblClick={() => {
