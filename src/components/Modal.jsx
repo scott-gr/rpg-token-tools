@@ -58,6 +58,7 @@ const Overlay = styled.div`
   right: 0;
   left: 0;
   top: 0;
+  cursor: default;
   ${ModalWrapper}[open] & {
     opacity: 0.5;
     pointer-events: all;

@@ -13,6 +13,7 @@ const RadioInput = styled.input`
   &[type='radio'] {
     opacity: 1; /* hidden but still tabable */
     position: absolute;
+    cursor: pointer;
     pointer-events: all;
   }
   &[type='radio'] + span {
