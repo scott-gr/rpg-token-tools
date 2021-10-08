@@ -3,7 +3,7 @@ import React from 'react';
 ///https://konvajs.org/docs/react/Intro.html
 import { Circle, Rect, RegularPolygon } from 'react-konva';
 
-export const CircleBorder = (circleProps) => {
+const CircleBorder = (circleProps) => {
   return (
     <Circle
       {...circleProps}
@@ -21,7 +21,7 @@ export const CircleBorder = (circleProps) => {
   );
 };
 
-export const SquareBorder = (squareProps) => {
+const SquareBorder = (squareProps) => {
   return (
     <Rect
       {...squareProps}
@@ -40,7 +40,7 @@ export const SquareBorder = (squareProps) => {
   );
 };
 
-export const HexBorder = (hexProps) => {
+const HexBorderA = (hexProps) => {
   return (
     <RegularPolygon
       {...hexProps}
@@ -58,3 +58,63 @@ export const HexBorder = (hexProps) => {
     />
   );
 };
+
+const HexBorderB = (hexProps) => {
+  return (
+    <RegularPolygon
+      {...hexProps}
+      sides={6}
+      radius={135}
+      strokeWidth={10}
+      shadowBlur={3}
+      fillEnabled={false}
+      rotation={30}
+      onMouseDown={() => {
+        document.body.style.cursor = 'no-drop';
+      }}
+      onMouseUp={() => {
+        document.body.style.cursor = 'default';
+      }}
+
+    />
+  );
+};
+
+const Bordershape = (props) => {
+  if (props.borderstyle === 'hexA') {
+    return (
+      <HexBorderA
+        x={props.width / 2}
+        y={props.height / 2}
+        stroke={props.bordercolor}
+      />
+    );
+  } else if (props.borderstyle === 'square') {
+    return (
+      <SquareBorder
+        x={props.width / 2 - 135}
+        y={props.height / 2 -135}
+        stroke={props.bordercolor}
+      />
+    );
+  } else if (props.borderstyle === 'hexB') {
+    return (
+      <HexBorderB
+        x={props.width / 2}
+        y={props.height / 2}
+        stroke={props.bordercolor}
+
+      />
+    );
+  } else {
+    return (
+      <CircleBorder
+        x={props.width / 2}
+        y={props.height / 2}
+        stroke={props.bordercolor}
+      />
+    );
+  }
+};
+
+export default Bordershape;

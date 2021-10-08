@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import Modal from './Modal';
-import { CircleBorder, HexBorder, SquareBorder } from './BorderOptions';
+// import { CircleBorder, HexBorder, SquareBorder } from './BorderOptions';
 import styled from '@emotion/styled/macro';
 import {
   CircleIcon,
@@ -13,6 +13,7 @@ const RadioInput = styled.input`
   &[type='radio'] {
     opacity: 1; /* hidden but still tabable */
     position: absolute;
+    pointer-events: all;
   }
   &[type='radio'] + span {
     font-family: 'Material Icons';
@@ -21,9 +22,6 @@ const RadioInput = styled.input`
     padding: 12px;
     transition: all 0.4s;
     -webkit-transition: all 0.4s;
-  }
-  &[checked]{
-    background-color: red;
   }
 `;
 
@@ -48,7 +46,7 @@ font-size: var(--s1);
 const BorderStyle = memo((props) => {
   return (
     <Modal btntxt="Border Style" width="25rem" modalID="bordermodal">
-      <ShapeMenu>
+      <ShapeMenu onChange={props.onshapechange}>
         <BorderLegend>Choose the shape of your token</BorderLegend>
         <label htmlFor="circle">
           <RadioInput
@@ -57,7 +55,7 @@ const BorderStyle = memo((props) => {
             name="borderstyle"
             value="circle"
           />
-          <CircleIcon/>
+          <CircleIcon />
         </label>
 
         <label htmlFor="square">
@@ -72,12 +70,12 @@ const BorderStyle = memo((props) => {
 
         <label htmlFor="hexA">
           <RadioInput type="radio" id="hexA" name="borderstyle" value="hexA" />
-          <HexAIcon />
+          <HexAIcon  />
         </label>
 
         <label htmlFor="hexB">
           <RadioInput type="radio" id="hexB" name="borderstyle" value="hexB" />
-          <HexBIcon />
+          <HexBIcon  />
         </label>
       </ShapeMenu>
     </Modal>

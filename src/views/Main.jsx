@@ -11,11 +11,7 @@ import { ResizeObserver } from '@juggle/resize-observer';
 import ButtonBar from '../components/ButtonBar';
 import TextEditor from '../components/TextEditor';
 import TokenImage from '../components/TokenImage';
-import {
-  CircleBorder,
-  HexBorder,
-  SquareBorder,
-} from '../components/BorderOptions';
+import  Bordershape  from '../components/BorderOptions';
 
 //
 // ─── STYLES ───────────────────────────────────────────────────────────────────
@@ -95,9 +91,8 @@ const MainView = memo(() => {
   const onTextColorChange = (e) => setTextcolor(e.target.value);
   const onTextInput = (e) => setText(e.target.value);
   const onTextSlide = (e) => setTextsize(e.target.value);
-  const onFontPick = (e) => {
-    setFontFamily(e.target.value), console.log({ fontfamily });
-  };
+  const onFontPick = (e) => setFontFamily(e.target.value);
+  const onBorderShapeChange = (e) => setBorderStyle(e.target.value);
 
   const stageRef = React.useRef(null);
   // the browser won't open the base64 DataURL, this solution puts it in an iframe to open in a new tab
@@ -183,7 +178,9 @@ const MainView = memo(() => {
               {/*
 // ─── CIRCLE FOR TOKEN BORDER ────────────────────────────────────────────────────
 // */}
-              <CircleBorder x={width / 2} y={height / 2} stroke={bordercolor} />
+
+              {/* <CircleBorder x={width / 2} y={height / 2} stroke={bordercolor} /> */}
+              <Bordershape width={width} height={height} borderstyle={borderStyle} bordercolor={bordercolor}/>
               {/* // TEXT CREATED BY ADD TEXT*/}
               <Text
                 x={width / 2 - 10}
@@ -226,6 +223,7 @@ const MainView = memo(() => {
         export={handleExport}
         bordercolor={bordercolor}
         bordercolorinput={onBorderColorChange}
+        onshapechange={onBorderShapeChange}
       >
         <TextEditor
           ontxtcolorinput={onTextColorChange}

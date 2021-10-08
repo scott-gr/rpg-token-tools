@@ -137,7 +137,7 @@ const ButtonBar = memo((props) => {
         </ButtonLabel>
       </ToolBtn>
       {/* // ─── BORDER STYLE BUTTON ───────────────────────────────────────── */}
-      <BorderStyle />
+      <BorderStyle onshapechange={props.onshapechange}/>
       {/* // ─── Image overlay color button ───────────────────────────────────────── */}
       <ToolBtn
         bgColor={overlay}
