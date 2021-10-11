@@ -94,7 +94,7 @@ const MainView = memo(() => {
   const onFontPick = (e) => setFontFamily(e.target.value);
   const onBorderShapeChange = (e) => setBorderStyle(e.target.value);
 
-  const stageRef = React.useRef(null);
+  const groupRef = React.useRef(null);
   // the browser won't open the base64 DataURL, this solution puts it in an iframe to open in a new tab
   // https://ourcodeworld.com/articles/read/682/what-does-the-not-allowed-to-navigate-top-frame-to-data-url-javascript-exception-means-in-google-chrome
   function debugBase64(base64URL) {
@@ -116,7 +116,7 @@ const MainView = memo(() => {
     let uri = '';
     picture === ''
       ? alert('Upload an image first')
-      : ((uri = stageRef.current.toDataURL({
+      : ((uri = groupRef.current.toDataURL({
           pixelRatio: 1.5,
         })),
         debugBase64(uri));
@@ -147,7 +147,7 @@ const MainView = memo(() => {
         <Stage
           width={width}
           height={height * 0.99}
-          ref={stageRef}
+          // ref={stageRef}
           css={css`
             border-color: var(--appgrey);
             border-style: dashed;
@@ -159,7 +159,11 @@ const MainView = memo(() => {
           onTouchStart={checkDeselect}
         >
           <Layer>
-            <Group>
+            <Group ref={groupRef}
+                    clipFunc={ function (ctx) {
+          ctx.arc(250, 120, 50, 0, Math.PI * 2, false);
+          ctx.arc(150, 120, 60, 0, Math.PI * 2, false);
+        }}>
               <TokenImage
                 image={image}
                 alt={altText}
@@ -184,7 +188,7 @@ const MainView = memo(() => {
               {/* // TEXT CREATED BY ADD TEXT*/}
               <Text
                 x={width / 2 - 10}
-                y={height / 2 + 80}
+                y={height / 2 }
                 fill={textcolor}
                 align="center"
                 text={text}

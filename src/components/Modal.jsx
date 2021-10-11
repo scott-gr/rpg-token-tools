@@ -15,7 +15,7 @@ const OpenModal = styled.div`
   top: 50%;
   transform: translate(-50%, -50%);
   max-height: 90vh;
-  z-index: 10;
+  z-index: 5;
   display: flex;
   flex-wrap: wrap;
   pointer-events: all;
@@ -62,8 +62,9 @@ const Overlay = styled.div`
   cursor: default;
   ${ModalWrapper}[open] & {
     opacity: 0.5;
+    /* prevents clicking other buttons while modal open */
     pointer-events: auto;
-    z-index: 9;
+    z-index: 4;
   }
 `;
 

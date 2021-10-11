@@ -12,7 +12,7 @@ import {
 const RadioInput = styled.input`
   &[type='radio'] {
     opacity: 1; /* hidden but still tabable */
-    position: absolute;
+    /* position: absolute; */
     cursor: pointer;
     pointer-events: all;
   }
@@ -23,6 +23,9 @@ const RadioInput = styled.input`
     padding: 12px;
     transition: all 0.4s;
     -webkit-transition: all 0.4s;
+  }
+  &[type='radio']:focus + label {
+    outline: rgba(77, 97, 171, 0.5) auto 3px;
   }
 `;
 
@@ -38,9 +41,9 @@ const ShapeMenu = styled.fieldset`
 `;
 
 const BorderLegend = styled.legend`
-color: var(--appblack);
-text-align: center;
-font-size: var(--s1);
+  color: var(--appblack);
+  text-align: center;
+  font-size: var(--s1);
 `;
 
 // inspired by https://codepen.io/eliasmeire/pen/JGjaov/
@@ -49,34 +52,31 @@ const BorderStyle = memo((props) => {
     <Modal btntxt="Border Style" width="25rem" modalID="bordermodal">
       <ShapeMenu onChange={props.onshapechange}>
         <BorderLegend>Choose the shape of your token</BorderLegend>
+        <RadioInput
+          type="radio"
+          id="circle"
+          name="borderstyle"
+          value="circle"
+        />
         <label htmlFor="circle">
-          <RadioInput
-            type="radio"
-            id="circle"
-            name="borderstyle"
-            value="circle"
-          />
           <CircleIcon />
         </label>
-
+        <RadioInput
+          type="radio"
+          id="square"
+          name="borderstyle"
+          value="square"
+        />
         <label htmlFor="square">
-          <RadioInput
-            type="radio"
-            id="square"
-            name="borderstyle"
-            value="square"
-          />
           <SquareIcon />
         </label>
-
+        <RadioInput type="radio" id="hexA" name="borderstyle" value="hexA" />
         <label htmlFor="hexA">
-          <RadioInput type="radio" id="hexA" name="borderstyle" value="hexA" />
-          <HexAIcon  />
+          <HexAIcon />
         </label>
-
+        <RadioInput type="radio" id="hexB" name="borderstyle" value="hexB" />
         <label htmlFor="hexB">
-          <RadioInput type="radio" id="hexB" name="borderstyle" value="hexB" />
-          <HexBIcon  />
+          <HexBIcon />
         </label>
       </ShapeMenu>
     </Modal>
