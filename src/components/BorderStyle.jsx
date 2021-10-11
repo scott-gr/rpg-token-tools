@@ -15,9 +15,9 @@ const RadioInput = styled.input`
     /* position: absolute; */
     cursor: pointer;
     pointer-events: all;
+    
   }
-  &[type='radio'] + span {
-    font-family: 'Material Icons';
+  &[type='radio'] + label {
     color: #b3cefb;
     border-radius: 50%;
     padding: 12px;

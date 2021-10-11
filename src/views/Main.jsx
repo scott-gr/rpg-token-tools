@@ -160,10 +160,11 @@ const MainView = memo(() => {
         >
           <Layer>
             <Group ref={groupRef}
-                    clipFunc={ function (ctx) {
-          ctx.arc(250, 120, 50, 0, Math.PI * 2, false);
-          ctx.arc(150, 120, 60, 0, Math.PI * 2, false);
-        }}>
+        //             clipFunc={ function (ctx) {
+        //   ctx.arc(250, 120, 50, 0, Math.PI * 2, false);
+        //   ctx.arc(150, 120, 60, 0, Math.PI * 2, false);
+        // }}
+        >
               <TokenImage
                 image={image}
                 alt={altText}
