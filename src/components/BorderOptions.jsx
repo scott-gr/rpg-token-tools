@@ -75,7 +75,6 @@ const HexBorderB = (hexProps) => {
       onMouseUp={() => {
         document.body.style.cursor = 'default';
       }}
-
     />
   );
 };
@@ -93,7 +92,7 @@ const Bordershape = (props) => {
     return (
       <SquareBorder
         x={props.width / 2 - 135}
-        y={props.height / 2 -135}
+        y={props.height / 2 - 135}
         stroke={props.bordercolor}
       />
     );
@@ -103,7 +102,6 @@ const Bordershape = (props) => {
         x={props.width / 2}
         y={props.height / 2}
         stroke={props.bordercolor}
-
       />
     );
   } else {

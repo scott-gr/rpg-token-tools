@@ -11,7 +11,9 @@ import { ResizeObserver } from '@juggle/resize-observer';
 import ButtonBar from '../components/ButtonBar';
 import TextEditor from '../components/TextEditor';
 import TokenImage from '../components/TokenImage';
-import  Bordershape  from '../components/BorderOptions';
+import Bordershape from '../components/BorderOptions';
+import Konva from 'konva';
+import { __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED } from 'react';
 
 //
 // ─── STYLES ───────────────────────────────────────────────────────────────────
@@ -49,13 +51,15 @@ const MainView = memo(() => {
   // const [overlay, setOverlay] = useState('');
   const [text, setText] = useState('');
   const [textcolor, setTextcolor] = useState('#fb4b4e');
-  const [fontfamily, setFontFamily] = useState('var(--nouveau)');
+  const [fontfamily, setFontFamily] = useState('Federo');
   const [textsize, setTextsize] = useState(30);
   const [borderStyle, setBorderStyle] = useState('circle');
   const [xAxis, setxAxis] = useState(null);
   const [yAxis, setyAxis] = useState(null);
   const [scaleX, setScaleX] = useState(null);
   const [scaleY, setScaleY] = useState(null);
+
+  const layerRef = React.useRef(null);
 
   // useDimensions hook, observes the size of Stage for the other canvas elements to reference
   const { observe, width, height } = useDimensions({
@@ -70,6 +74,12 @@ const MainView = memo(() => {
       selectImage(null);
     }
   };
+  const resetToken = () => {
+    setxAxis(image ? width / 2 - image.width / 2 : 40);
+    setyAxis(image ? height / 2 - image.height / 2 : 40);
+    setScaleX(null);
+    setScaleY(null);
+  };
 
   // Creates image object url when file is uploaded
   const onImageChange = (e) => {
@@ -77,13 +87,6 @@ const MainView = memo(() => {
     setPicture(URL.createObjectURL(e.target.files[0]));
     setAltText('Your uploaded image');
     setName('Token' + picture);
-  };
-
-  const resetToken = () => {
-    setxAxis(image ? width / 2 - image.width / 2 : 40);
-    setyAxis(image ? height / 2 - image.height / 2 : 40);
-    setScaleX(1);
-    setScaleY(1);
   };
 
   // Change colors with input values
@@ -94,7 +97,6 @@ const MainView = memo(() => {
   const onFontPick = (e) => setFontFamily(e.target.value);
   const onBorderShapeChange = (e) => setBorderStyle(e.target.value);
 
-  const groupRef = React.useRef(null);
   // the browser won't open the base64 DataURL, this solution puts it in an iframe to open in a new tab
   // https://ourcodeworld.com/articles/read/682/what-does-the-not-allowed-to-navigate-top-frame-to-data-url-javascript-exception-means-in-google-chrome
   function debugBase64(base64URL) {
@@ -111,22 +113,47 @@ const MainView = memo(() => {
     selectedImg === image ? selectImage(null) : console.log('nothing selected');
   };
 
+  const clipImg = function (ctx) {
+    const a = (2 * Math.PI) / 6;
+    // clip areas based on selected borderstyle
+    if (borderStyle === 'hexA') {
+    } else if (borderStyle === 'square') {
+      ctx.rect(width / 2 - 140, height / 2 - 140, 280, 280);
+    } else if (borderStyle === 'hexB') {
+      ctx.beginPath();
+      for (var i = 0; i < 6; i++) {
+        ctx.lineTo(
+          width / 2 - 141 * Math.cos(a * i),
+          height / 2 - 141 * Math.sin(a * i)
+        );
+      }
+      ctx.closePath();
+    } else {
+      ctx.arc(width / 2, height / 2, 139, 0, Math.PI * 2, false);
+    }
+  };
+
   // captures current stageRef as base64 dataURL 'uri'. Will need to use different ref when image transform and stage cropping are implemented
   const createImgUrl = () => {
     let uri = '';
     picture === ''
       ? alert('Upload an image first')
-      : ((uri = groupRef.current.toDataURL({
+      : ((uri = layerRef.current.toDataURL({
           pixelRatio: 1.5,
         })),
         debugBase64(uri));
   };
-
+  // const clipLayer = () => {
+  //   layerRef.setAttrs({
+  //     clipFunc: clipImg,
+  //   });
+  // };
   // opens the token in a new browser tab
   const handleExport = async () => {
     try {
       const stepOne = await deselectImg();
-      const stepTwo = await createImgUrl();
+      // const stepTwo = await clipLayer()
+      const stepThree = await createImgUrl();
     } catch (err) {
       console.log('Sorry, something went wrong!');
     }
@@ -147,7 +174,6 @@ const MainView = memo(() => {
         <Stage
           width={width}
           height={height * 0.99}
-          // ref={stageRef}
           css={css`
             border-color: var(--appgrey);
             border-style: dashed;
@@ -158,66 +184,64 @@ const MainView = memo(() => {
           onMouseDown={checkDeselect}
           onTouchStart={checkDeselect}
         >
-          <Layer>
-            <Group ref={groupRef}
-        //             clipFunc={ function (ctx) {
-        //   ctx.arc(250, 120, 50, 0, Math.PI * 2, false);
-        //   ctx.arc(150, 120, 60, 0, Math.PI * 2, false);
-        // }}
-        >
-              <TokenImage
-                image={image}
-                alt={altText}
-                name={name}
-                x={xAxis ? xAxis : image ? width / 2 - image.width / 2 : 40}
-                y={yAxis ? yAxis : image ? height / 2 - image.height / 2 : 40}
-                scaleX={scaleX ? scaleX : image ? image.scaleX : 1}
-                scaleY={scaleY ? scaleY : image ? image.scaleY : 1}
-                isSelected={image === selectedImg}
-                onSelect={() => {
-                  checkDeselect;
-                  selectImage(image);
-                }}
-              />
+          <Layer ref={layerRef}>
+            <TokenImage
+              image={image}
+              alt={altText}
+              name={name}
+              x={xAxis ? xAxis : image ? width / 2 - image.width / 2 : 40}
+              y={yAxis ? yAxis : image ? height / 2 - image.height / 2 : 40}
+              scaleX={scaleX ? scaleX : image ? image.scaleX : 1}
+              scaleY={scaleY ? scaleY : image ? image.scaleY : 1}
+              isSelected={image === selectedImg}
+              onSelect={() => {
+                checkDeselect;
+                selectImage(image);
+              }}
+            />
 
-              {/*
+            {/*
 // ─── CIRCLE FOR TOKEN BORDER ────────────────────────────────────────────────────
 // */}
 
-              {/* <CircleBorder x={width / 2} y={height / 2} stroke={bordercolor} /> */}
-              <Bordershape width={width} height={height} borderstyle={borderStyle} bordercolor={bordercolor}/>
-              {/* // TEXT CREATED BY ADD TEXT*/}
-              <Text
-                x={width / 2 - 10}
-                y={height / 2 }
-                fill={textcolor}
-                align="center"
-                text={text}
-                fontFamily={fontfamily}
-                fontSize={textsize}
-                draggable={true}
-                onDblClick={() => {
-                  document.getElementById('TextModal').open = true;
-                }}
-                onMouseOver={() => {
-                  document.body.style.cursor = 'grab';
-                }}
-                onMouseOut={() => {
-                  document.body.style.cursor = 'default';
-                }}
-                onMouseDown={() => {
-                  document.body.style.cursor = 'grabbing';
-                }}
-                onDragStart={() => {
-                  setDragging(true);
-                  document.body.style.cursor = 'grabbing';
-                }}
-                onDragEnd={() => {
-                  setDragging(false);
-                  document.body.style.cursor = 'grab';
-                }}
-              />
-            </Group>
+            <Bordershape
+              width={width}
+              height={height}
+              borderstyle={borderStyle}
+              bordercolor={bordercolor}
+            />
+
+            {/* // TEXT CREATED BY ADD TEXT*/}
+            <Text
+              x={width / 2 - 10}
+              y={height / 2}
+              fill={textcolor}
+              align="center"
+              text={text}
+              fontFamily={fontfamily}
+              fontSize={textsize}
+              draggable={true}
+              onDblClick={() => {
+                document.getElementById('TextModal').open = true;
+              }}
+              onMouseOver={() => {
+                document.body.style.cursor = 'grab';
+              }}
+              onMouseOut={() => {
+                document.body.style.cursor = 'default';
+              }}
+              onMouseDown={() => {
+                document.body.style.cursor = 'grabbing';
+              }}
+              onDragStart={() => {
+                setDragging(true);
+                document.body.style.cursor = 'grabbing';
+              }}
+              onDragEnd={() => {
+                setDragging(false);
+                document.body.style.cursor = 'grab';
+              }}
+            />
           </Layer>
         </Stage>
       </div>
