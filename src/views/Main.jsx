@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useEffect, useState, useRef } from 'react';
 import styled from '@emotion/styled/macro';
 ///https://konvajs.org/docs/react/Intro.html
 import { Stage, Layer, Text, Group } from 'react-konva';
@@ -12,8 +12,7 @@ import ButtonBar from '../components/ButtonBar';
 import TextEditor from '../components/TextEditor';
 import TokenImage from '../components/TokenImage';
 import Bordershape from '../components/BorderOptions';
-import Konva from 'konva';
-import { __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED } from 'react';
+// import Konva from 'konva';
 
 //
 // ─── STYLES ───────────────────────────────────────────────────────────────────
@@ -58,8 +57,9 @@ const MainView = memo(() => {
   const [yAxis, setyAxis] = useState(null);
   const [scaleX, setScaleX] = useState(null);
   const [scaleY, setScaleY] = useState(null);
+  // const [clip, setClip] = useState('');
 
-  const layerRef = React.useRef(null);
+  const layerRef = useRef();
 
   // useDimensions hook, observes the size of Stage for the other canvas elements to reference
   const { observe, width, height } = useDimensions({
@@ -79,6 +79,7 @@ const MainView = memo(() => {
     setyAxis(image ? height / 2 - image.height / 2 : 40);
     setScaleX(null);
     setScaleY(null);
+    // setClip('');
   };
 
   // Creates image object url when file is uploaded
@@ -87,7 +88,38 @@ const MainView = memo(() => {
     setPicture(URL.createObjectURL(e.target.files[0]));
     setAltText('Your uploaded image');
     setName('Token' + picture);
+    // setClip(clipImg)
   };
+
+
+
+  const a = (2 * Math.PI) / 6;
+  // const clipImg = (ctx) => {
+  //   // clip areas based on selected borderstyle
+  //   if (borderStyle === 'hexA') {
+  //     ctx.beginPath();
+  //     for (var i = 0; i < 6; i++) {
+  //       ctx.lineTo(
+  //         width / 2 - 141 * Math.cos(a * i),
+  //         height / 2 - 141 * Math.sin(a * i)
+  //       );
+  //     }
+  //     ctx.closePath();
+  //   } else if (borderStyle === 'square') {
+  //     ctx.rect(width / 2 - 140, height / 2 - 140, 280, 280);
+  //   } else if (borderStyle === 'hexB') {
+  //     ctx.beginPath();
+  //     for (var i = 0; i < 6; i++) {
+  //       ctx.lineTo(
+  //         width / 2 - 141 * Math.cos(a * i),
+  //         height / 2 - 141 * Math.sin(a * i)
+  //       );
+  //     }
+  //     ctx.closePath();
+  //   } else {
+  //     ctx.arc(width / 2, height / 2, 139, 0, Math.PI * 2, false);
+  //   }
+  // };
 
   // Change colors with input values
   const onBorderColorChange = (e) => setBorderColor(e.target.value);
@@ -113,46 +145,26 @@ const MainView = memo(() => {
     selectedImg === image ? selectImage(null) : console.log('nothing selected');
   };
 
-  const clipImg = function (ctx) {
-    const a = (2 * Math.PI) / 6;
-    // clip areas based on selected borderstyle
-    if (borderStyle === 'hexA') {
-    } else if (borderStyle === 'square') {
-      ctx.rect(width / 2 - 140, height / 2 - 140, 280, 280);
-    } else if (borderStyle === 'hexB') {
-      ctx.beginPath();
-      for (var i = 0; i < 6; i++) {
-        ctx.lineTo(
-          width / 2 - 141 * Math.cos(a * i),
-          height / 2 - 141 * Math.sin(a * i)
-        );
-      }
-      ctx.closePath();
-    } else {
-      ctx.arc(width / 2, height / 2, 139, 0, Math.PI * 2, false);
-    }
-  };
-
   // captures current stageRef as base64 dataURL 'uri'. Will need to use different ref when image transform and stage cropping are implemented
   const createImgUrl = () => {
+    // setClip(clipImg);
     let uri = '';
     picture === ''
       ? alert('Upload an image first')
       : ((uri = layerRef.current.toDataURL({
           pixelRatio: 1.5,
+          height: 284,
+          width: 284,
+          x: width / 2 - 142,
+          y: height / 2 - 142,
         })),
         debugBase64(uri));
   };
-  // const clipLayer = () => {
-  //   layerRef.setAttrs({
-  //     clipFunc: clipImg,
-  //   });
-  // };
+
   // opens the token in a new browser tab
   const handleExport = async () => {
     try {
       const stepOne = await deselectImg();
-      // const stepTwo = await clipLayer()
       const stepThree = await createImgUrl();
     } catch (err) {
       console.log('Sorry, something went wrong!');
@@ -203,45 +215,45 @@ const MainView = memo(() => {
             {/*
 // ─── CIRCLE FOR TOKEN BORDER ────────────────────────────────────────────────────
 // */}
+              <Bordershape
+                width={width}
+                height={height}
+                borderstyle={borderStyle}
+                bordercolor={bordercolor}
+              />
 
-            <Bordershape
-              width={width}
-              height={height}
-              borderstyle={borderStyle}
-              bordercolor={bordercolor}
-            />
-
-            {/* // TEXT CREATED BY ADD TEXT*/}
-            <Text
-              x={width / 2 - 10}
-              y={height / 2}
-              fill={textcolor}
-              align="center"
-              text={text}
-              fontFamily={fontfamily}
-              fontSize={textsize}
-              draggable={true}
-              onDblClick={() => {
-                document.getElementById('TextModal').open = true;
-              }}
-              onMouseOver={() => {
-                document.body.style.cursor = 'grab';
-              }}
-              onMouseOut={() => {
-                document.body.style.cursor = 'default';
-              }}
-              onMouseDown={() => {
-                document.body.style.cursor = 'grabbing';
-              }}
-              onDragStart={() => {
-                setDragging(true);
-                document.body.style.cursor = 'grabbing';
-              }}
-              onDragEnd={() => {
-                setDragging(false);
-                document.body.style.cursor = 'grab';
-              }}
-            />
+              {/* // TEXT CREATED BY ADD TEXT*/}
+              <Text
+                x={width / 2 - 10}
+                y={height / 2}
+                fill={textcolor}
+                align="center"
+                text={text}
+                fontFamily={fontfamily}
+                fontSize={textsize}
+                draggable={true}
+                onDblClick={() => {
+                  document.getElementById('TextModal').open = true;
+                }}
+                onMouseOver={() => {
+                  document.body.style.cursor = 'grab';
+                }}
+                onMouseOut={() => {
+                  document.body.style.cursor = 'default';
+                }}
+                onMouseDown={() => {
+                  document.body.style.cursor = 'grabbing';
+                }}
+                onDragStart={() => {
+                  setDragging(true);
+                  document.body.style.cursor = 'grabbing';
+                }}
+                onDragEnd={() => {
+                  setDragging(false);
+                  document.body.style.cursor = 'grab';
+                }}
+              />
+           
           </Layer>
         </Stage>
       </div>

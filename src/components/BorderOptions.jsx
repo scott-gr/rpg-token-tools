@@ -107,6 +107,7 @@ const Bordershape = (props) => {
   } else {
     return (
       <CircleBorder
+
         x={props.width / 2}
         y={props.height / 2}
         stroke={props.bordercolor}
