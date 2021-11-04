@@ -13,7 +13,6 @@ import TextEditor from '../components/TextEditor';
 import TokenImage from '../components/TokenImage';
 import Bordershape from '../components/BorderOptions';
 import Konva from 'konva';
-// import Konva from 'konva';
 
 //
 // ─── STYLES ───────────────────────────────────────────────────────────────────
@@ -182,6 +181,7 @@ const MainView = memo(() => {
           height: unset;
           max-height: 400px;
           min-height: 288px;
+          
         `}
       >
         <Stage
@@ -193,10 +193,8 @@ const MainView = memo(() => {
             /* border-color: var(--appgrey);
             border-style: dashed;
             border-width: 1px; */
-            overflow: visible;
-            overflow-block: clip;
-            margin-left: -1rem;
             height: 100%;
+            width: 100%;
           `}
           onMouseDown={checkDeselect}
           onTouchStart={checkDeselect}

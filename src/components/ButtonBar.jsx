@@ -24,8 +24,8 @@ const Buttons = styled.section`
   flex-wrap: wrap;
   font-size: var(--s1);
   gap: 0.5rem;
-  padding-inline-start: 0;
-  padding-inline-end: 0;
+  padding-inline-start: 1rem;
+  padding-inline-end: 1rem;
   margin-block-start: 0;
   height: 100%;
   margin-block-end: 0;

@@ -43,6 +43,7 @@ export const GlobalStyles = () => (
       body {
         font-family: var(--sans);
         overflow-x: hidden;
+
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
       }
@@ -50,6 +51,7 @@ export const GlobalStyles = () => (
         background-color: var(--appblack);
         color: var(--appwhite);
         font-size: 1em;
+        overflow-y: hidden;
       }
       button {
         cursor: pointer;

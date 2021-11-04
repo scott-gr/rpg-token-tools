@@ -8,7 +8,6 @@ const Layout = styled.main`
   display: flex;
   flex-flow: column nowrap;
   min-height: 100vh;
-  padding: 0 1rem;
   & > * {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
