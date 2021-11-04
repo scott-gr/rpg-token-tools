@@ -12,11 +12,14 @@ import ButtonBar from '../components/ButtonBar';
 import TextEditor from '../components/TextEditor';
 import TokenImage from '../components/TokenImage';
 import Bordershape from '../components/BorderOptions';
+import Konva from 'konva';
 // import Konva from 'konva';
 
 //
 // ─── STYLES ───────────────────────────────────────────────────────────────────
 //
+Konva.hitOnDragEnabled = true;
+
 const CanvasArea = styled.div`
   max-height: 400px;
   min-height: 300px;
@@ -55,8 +58,8 @@ const MainView = memo(() => {
   const [borderStyle, setBorderStyle] = useState('circle');
   const [xAxis, setxAxis] = useState(null);
   const [yAxis, setyAxis] = useState(null);
-  const [scaleX, setScaleX] = useState(null);
-  const [scaleY, setScaleY] = useState(null);
+  const [scaleX, setScaleX] = useState(.75);
+  const [scaleY, setScaleY] = useState(.75);
   // const [clip, setClip] = useState('');
 
   const layerRef = useRef();
@@ -90,8 +93,6 @@ const MainView = memo(() => {
     setName('Token' + picture);
     // setClip(clipImg)
   };
-
-
 
   const a = (2 * Math.PI) / 6;
   // const clipImg = (ctx) => {
@@ -184,19 +185,24 @@ const MainView = memo(() => {
         `}
       >
         <Stage
-          width={width}
-          height={height * 0.99}
+          width={window.innerWidth}
+          height={window.innerHeight}
+          // width={width}
+          // height={height * 0.99}
           css={css`
-            border-color: var(--appgrey);
+            /* border-color: var(--appgrey);
             border-style: dashed;
-            border-width: 1px;
-            overflow: hidden;
+            border-width: 1px; */
+            overflow: visible;
+            overflow-block: clip;
+            margin-left: -1rem;
             height: 100%;
           `}
           onMouseDown={checkDeselect}
           onTouchStart={checkDeselect}
+          onTap={checkDeselect}
         >
-          <Layer ref={layerRef}>
+          <Layer ref={layerRef} width={width} height={height * 0.99}>
             <TokenImage
               image={image}
               alt={altText}
@@ -210,50 +216,59 @@ const MainView = memo(() => {
                 checkDeselect;
                 selectImage(image);
               }}
+              onTap={() => {
+                checkDeselect;
+                selectImage(image);
+              }}
             />
 
             {/*
 // ─── CIRCLE FOR TOKEN BORDER ────────────────────────────────────────────────────
 // */}
-              <Bordershape
-                width={width}
-                height={height}
-                borderstyle={borderStyle}
-                bordercolor={bordercolor}
-              />
+            <Bordershape
+              width={width}
+              height={height}
+              borderstyle={borderStyle}
+              bordercolor={bordercolor}
+            />
 
-              {/* // TEXT CREATED BY ADD TEXT*/}
-              <Text
-                x={width / 2 - 10}
-                y={height / 2}
-                fill={textcolor}
-                align="center"
-                text={text}
-                fontFamily={fontfamily}
-                fontSize={textsize}
-                draggable={true}
-                onDblClick={() => {
-                  document.getElementById('TextModal').open = true;
-                }}
-                onMouseOver={() => {
-                  document.body.style.cursor = 'grab';
-                }}
-                onMouseOut={() => {
-                  document.body.style.cursor = 'default';
-                }}
-                onMouseDown={() => {
-                  document.body.style.cursor = 'grabbing';
-                }}
-                onDragStart={() => {
-                  setDragging(true);
-                  document.body.style.cursor = 'grabbing';
-                }}
-                onDragEnd={() => {
-                  setDragging(false);
-                  document.body.style.cursor = 'grab';
-                }}
-              />
-           
+            {/* // TEXT CREATED BY ADD TEXT*/}
+            <Text
+              x={width / 2 - 10}
+              y={height / 2}
+              fill={textcolor}
+              align="center"
+              text={text}
+              fontFamily={fontfamily}
+              fontSize={textsize}
+              draggable={true}
+              onDblClick={() => {
+                document.getElementById('TextModal').open = true;
+              }}
+              onMouseOver={() => {
+                document.body.style.cursor = 'grab';
+              }}
+              onMouseOut={() => {
+                document.body.style.cursor = 'default';
+              }}
+              onMouseDown={() => {
+                document.body.style.cursor = 'grabbing';
+              }}
+              onDragStart={() => {
+                setDragging(true);
+                document.body.style.cursor = 'grabbing';
+              }}
+              onDragEnd={() => {
+                setDragging(false);
+                document.body.style.cursor = 'grab';
+              }}
+              onTouchStart={() => {
+                setDragging(true);
+              }}
+              onTouchEnd={() => {
+                setDragging(false);
+              }}
+            />
           </Layer>
         </Stage>
       </div>
