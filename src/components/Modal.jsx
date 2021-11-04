@@ -15,7 +15,7 @@ const OpenModal = styled.div`
   top: 50%;
   transform: translate(-50%, -50%);
   max-height: 90vh;
-  z-index: 2;
+  z-index: 5;
   display: flex;
   flex-wrap: wrap;
   pointer-events: all;
@@ -51,6 +51,7 @@ const ModalWrapper = styled.details`
 const Overlay = styled.div`
   transition: opacity 0.2s ease-out;
   pointer-events: none;
+  display: block;
   background: rgba(15, 23, 42, 0.8);
   position: fixed;
   opacity: 0;
@@ -61,8 +62,9 @@ const Overlay = styled.div`
   cursor: default;
   ${ModalWrapper}[open] & {
     opacity: 0.5;
-    pointer-events: all;
-    z-index: 2;
+    /* prevents clicking other buttons while modal open */
+    pointer-events: auto;
+    z-index: 4;
   }
 `;
 

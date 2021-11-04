@@ -20,7 +20,6 @@ const dynamicStyle = (props) => css`
 `;
 
 const Buttons = styled.section`
-  pointer-events: none;
   display: flex;
   flex-wrap: wrap;
   font-size: var(--s1);
@@ -99,7 +98,6 @@ const btnStyle = css`
 export const ToolBtn = styled.button`
   ${btnStyle};
   ${dynamicStyle};
-  pointer-events: auto;
 `;
 
 export const Summary = ToolBtn.withComponent('summary');

@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useEffect, useState, useRef } from 'react';
 import styled from '@emotion/styled/macro';
 ///https://konvajs.org/docs/react/Intro.html
 import { Stage, Layer, Text, Group } from 'react-konva';
@@ -11,11 +11,15 @@ import { ResizeObserver } from '@juggle/resize-observer';
 import ButtonBar from '../components/ButtonBar';
 import TextEditor from '../components/TextEditor';
 import TokenImage from '../components/TokenImage';
-import  Bordershape  from '../components/BorderOptions';
+import Bordershape from '../components/BorderOptions';
+import Konva from 'konva';
+// import Konva from 'konva';
 
 //
 // ─── STYLES ───────────────────────────────────────────────────────────────────
 //
+Konva.hitOnDragEnabled = true;
+
 const CanvasArea = styled.div`
   max-height: 400px;
   min-height: 300px;
@@ -49,13 +53,16 @@ const MainView = memo(() => {
   // const [overlay, setOverlay] = useState('');
   const [text, setText] = useState('');
   const [textcolor, setTextcolor] = useState('#fb4b4e');
-  const [fontfamily, setFontFamily] = useState('var(--nouveau)');
+  const [fontfamily, setFontFamily] = useState('Federo');
   const [textsize, setTextsize] = useState(30);
   const [borderStyle, setBorderStyle] = useState('circle');
   const [xAxis, setxAxis] = useState(null);
   const [yAxis, setyAxis] = useState(null);
-  const [scaleX, setScaleX] = useState(null);
-  const [scaleY, setScaleY] = useState(null);
+  const [scaleX, setScaleX] = useState(.75);
+  const [scaleY, setScaleY] = useState(.75);
+  // const [clip, setClip] = useState('');
+
+  const layerRef = useRef();
 
   // useDimensions hook, observes the size of Stage for the other canvas elements to reference
   const { observe, width, height } = useDimensions({
@@ -70,6 +77,13 @@ const MainView = memo(() => {
       selectImage(null);
     }
   };
+  const resetToken = () => {
+    setxAxis(image ? width / 2 - image.width / 2 : 40);
+    setyAxis(image ? height / 2 - image.height / 2 : 40);
+    setScaleX(null);
+    setScaleY(null);
+    // setClip('');
+  };
 
   // Creates image object url when file is uploaded
   const onImageChange = (e) => {
@@ -77,14 +91,36 @@ const MainView = memo(() => {
     setPicture(URL.createObjectURL(e.target.files[0]));
     setAltText('Your uploaded image');
     setName('Token' + picture);
+    // setClip(clipImg)
   };
 
-  const resetToken = () => {
-    setxAxis(image ? width / 2 - image.width / 2 : 40);
-    setyAxis(image ? height / 2 - image.height / 2 : 40);
-    setScaleX(1);
-    setScaleY(1);
-  };
+  const a = (2 * Math.PI) / 6;
+  // const clipImg = (ctx) => {
+  //   // clip areas based on selected borderstyle
+  //   if (borderStyle === 'hexA') {
+  //     ctx.beginPath();
+  //     for (var i = 0; i < 6; i++) {
+  //       ctx.lineTo(
+  //         width / 2 - 141 * Math.cos(a * i),
+  //         height / 2 - 141 * Math.sin(a * i)
+  //       );
+  //     }
+  //     ctx.closePath();
+  //   } else if (borderStyle === 'square') {
+  //     ctx.rect(width / 2 - 140, height / 2 - 140, 280, 280);
+  //   } else if (borderStyle === 'hexB') {
+  //     ctx.beginPath();
+  //     for (var i = 0; i < 6; i++) {
+  //       ctx.lineTo(
+  //         width / 2 - 141 * Math.cos(a * i),
+  //         height / 2 - 141 * Math.sin(a * i)
+  //       );
+  //     }
+  //     ctx.closePath();
+  //   } else {
+  //     ctx.arc(width / 2, height / 2, 139, 0, Math.PI * 2, false);
+  //   }
+  // };
 
   // Change colors with input values
   const onBorderColorChange = (e) => setBorderColor(e.target.value);
@@ -94,7 +130,6 @@ const MainView = memo(() => {
   const onFontPick = (e) => setFontFamily(e.target.value);
   const onBorderShapeChange = (e) => setBorderStyle(e.target.value);
 
-  const stageRef = React.useRef(null);
   // the browser won't open the base64 DataURL, this solution puts it in an iframe to open in a new tab
   // https://ourcodeworld.com/articles/read/682/what-does-the-not-allowed-to-navigate-top-frame-to-data-url-javascript-exception-means-in-google-chrome
   function debugBase64(base64URL) {
@@ -113,11 +148,16 @@ const MainView = memo(() => {
 
   // captures current stageRef as base64 dataURL 'uri'. Will need to use different ref when image transform and stage cropping are implemented
   const createImgUrl = () => {
+    // setClip(clipImg);
     let uri = '';
     picture === ''
       ? alert('Upload an image first')
-      : ((uri = stageRef.current.toDataURL({
+      : ((uri = layerRef.current.toDataURL({
           pixelRatio: 1.5,
+          height: 284,
+          width: 284,
+          x: width / 2 - 142,
+          y: height / 2 - 142,
         })),
         debugBase64(uri));
   };
@@ -126,7 +166,7 @@ const MainView = memo(() => {
   const handleExport = async () => {
     try {
       const stepOne = await deselectImg();
-      const stepTwo = await createImgUrl();
+      const stepThree = await createImgUrl();
     } catch (err) {
       console.log('Sorry, something went wrong!');
     }
@@ -145,74 +185,90 @@ const MainView = memo(() => {
         `}
       >
         <Stage
-          width={width}
-          height={height * 0.99}
-          ref={stageRef}
+          width={window.innerWidth}
+          height={window.innerHeight}
+          // width={width}
+          // height={height * 0.99}
           css={css`
-            border-color: var(--appgrey);
+            /* border-color: var(--appgrey);
             border-style: dashed;
-            border-width: 1px;
-            overflow: hidden;
+            border-width: 1px; */
+            overflow: visible;
+            overflow-block: clip;
+            margin-left: -1rem;
             height: 100%;
           `}
           onMouseDown={checkDeselect}
           onTouchStart={checkDeselect}
+          onTap={checkDeselect}
         >
-          <Layer>
-            <Group>
-              <TokenImage
-                image={image}
-                alt={altText}
-                name={name}
-                x={xAxis ? xAxis : image ? width / 2 - image.width / 2 : 40}
-                y={yAxis ? yAxis : image ? height / 2 - image.height / 2 : 40}
-                scaleX={scaleX ? scaleX : image ? image.scaleX : 1}
-                scaleY={scaleY ? scaleY : image ? image.scaleY : 1}
-                isSelected={image === selectedImg}
-                onSelect={() => {
-                  checkDeselect;
-                  selectImage(image);
-                }}
-              />
+          <Layer ref={layerRef} width={width} height={height * 0.99}>
+            <TokenImage
+              image={image}
+              alt={altText}
+              name={name}
+              x={xAxis ? xAxis : image ? width / 2 - image.width / 2 : 40}
+              y={yAxis ? yAxis : image ? height / 2 - image.height / 2 : 40}
+              scaleX={scaleX ? scaleX : image ? image.scaleX : 1}
+              scaleY={scaleY ? scaleY : image ? image.scaleY : 1}
+              isSelected={image === selectedImg}
+              onSelect={() => {
+                checkDeselect;
+                selectImage(image);
+              }}
+              onTap={() => {
+                checkDeselect;
+                selectImage(image);
+              }}
+            />
 
-              {/*
+            {/*
 // ─── CIRCLE FOR TOKEN BORDER ────────────────────────────────────────────────────
 // */}
+            <Bordershape
+              width={width}
+              height={height}
+              borderstyle={borderStyle}
+              bordercolor={bordercolor}
+            />
 
-              {/* <CircleBorder x={width / 2} y={height / 2} stroke={bordercolor} /> */}
-              <Bordershape width={width} height={height} borderstyle={borderStyle} bordercolor={bordercolor}/>
-              {/* // TEXT CREATED BY ADD TEXT*/}
-              <Text
-                x={width / 2 - 10}
-                y={height / 2 + 80}
-                fill={textcolor}
-                align="center"
-                text={text}
-                fontFamily={fontfamily}
-                fontSize={textsize}
-                draggable={true}
-                onDblClick={() => {
-                  document.getElementById('TextModal').open = true;
-                }}
-                onMouseOver={() => {
-                  document.body.style.cursor = 'grab';
-                }}
-                onMouseOut={() => {
-                  document.body.style.cursor = 'default';
-                }}
-                onMouseDown={() => {
-                  document.body.style.cursor = 'grabbing';
-                }}
-                onDragStart={() => {
-                  setDragging(true);
-                  document.body.style.cursor = 'grabbing';
-                }}
-                onDragEnd={() => {
-                  setDragging(false);
-                  document.body.style.cursor = 'grab';
-                }}
-              />
-            </Group>
+            {/* // TEXT CREATED BY ADD TEXT*/}
+            <Text
+              x={width / 2 - 10}
+              y={height / 2}
+              fill={textcolor}
+              align="center"
+              text={text}
+              fontFamily={fontfamily}
+              fontSize={textsize}
+              draggable={true}
+              onDblClick={() => {
+                document.getElementById('TextModal').open = true;
+              }}
+              onMouseOver={() => {
+                document.body.style.cursor = 'grab';
+              }}
+              onMouseOut={() => {
+                document.body.style.cursor = 'default';
+              }}
+              onMouseDown={() => {
+                document.body.style.cursor = 'grabbing';
+              }}
+              onDragStart={() => {
+                setDragging(true);
+                document.body.style.cursor = 'grabbing';
+              }}
+              onDragEnd={() => {
+                setDragging(false);
+                document.body.style.cursor = 'grab';
+              }}
+              onTouchStart={() => {
+                setDragging(true);
+              }}
+              onTouchEnd={() => {
+                setDragging(false);
+              }}
+            />
           </Layer>
         </Stage>
       </div>
