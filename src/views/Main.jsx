@@ -185,7 +185,7 @@ const MainView = memo(() => {
         `}
       >
         <Stage
-          width={window.innerWidth}
+          width={width}
           height={window.innerHeight}
           // width={width}
           // height={height * 0.99}
