@@ -57,6 +57,12 @@ const TokenImage = ({
           setImgDragging(false);
           document.body.style.cursor = 'grab';
         }}
+        onTouchStart={() => {
+          setImgDragging(true);
+        }}
+        onTouchEnd={() => {
+          setImgDragging(false);
+        }}
         scaleX={scaleX}
         scaleY={scaleY}
         onTransformStart={(e) => {

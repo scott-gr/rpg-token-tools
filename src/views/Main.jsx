@@ -57,8 +57,8 @@ const MainView = memo(() => {
   const [borderStyle, setBorderStyle] = useState('circle');
   const [xAxis, setxAxis] = useState(null);
   const [yAxis, setyAxis] = useState(null);
-  const [scaleX, setScaleX] = useState(.75);
-  const [scaleY, setScaleY] = useState(.75);
+  const [scaleX, setScaleX] = useState(null);
+  const [scaleY, setScaleY] = useState(null);
   // const [clip, setClip] = useState('');
 
   const layerRef = useRef();
@@ -80,7 +80,7 @@ const MainView = memo(() => {
     setxAxis(image ? width / 2 - image.width / 2 : 40);
     setyAxis(image ? height / 2 - image.height / 2 : 40);
     setScaleX(null);
-    setScaleY(null);
+    setScaleY(null)
     // setClip('');
   };
 
@@ -90,6 +90,7 @@ const MainView = memo(() => {
     setPicture(URL.createObjectURL(e.target.files[0]));
     setAltText('Your uploaded image');
     setName('Token' + picture);
+
     // setClip(clipImg)
   };
 
@@ -181,7 +182,6 @@ const MainView = memo(() => {
           height: unset;
           max-height: 400px;
           min-height: 288px;
-          
         `}
       >
         <Stage
@@ -211,10 +211,6 @@ const MainView = memo(() => {
               scaleY={scaleY ? scaleY : image ? image.scaleY : 1}
               isSelected={image === selectedImg}
               onSelect={() => {
-                checkDeselect;
-                selectImage(image);
-              }}
-              onTap={() => {
                 checkDeselect;
                 selectImage(image);
               }}
